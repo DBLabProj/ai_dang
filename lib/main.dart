@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dbHandler.dart';
+import 'views/camera.dart';
+import 'views/loginPage.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -14,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page12341'),
+      home: const MyHomePage(title: '메인페이지 AppBar'),
     );
   }
 }
@@ -57,19 +60,36 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              '첫 화면 메인 페이지11',
+            ),TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.blue,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CameraExample())
+                );
+              },
+              child: Text('카메라 페이지로 이동'),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+
+
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.blue,
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => loginPage())
+                );
+              },
+              child: Text('로그인 페이지로 이동'),
+            )
+
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ),
     );
   }
