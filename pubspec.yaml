@@ -11,8 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
   mysql1: ^0.19.2
-  cupertino_icons: ^1.0.2
   image_picker: ^0.8.5
+  flutter_screenutil: ^5.4.0
+  table_calendar: ^3.0.5
 
 dev_dependencies:
   flutter_test:
@@ -22,3 +23,19 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+fonts:
+  - family: Noto_Sans_KR
+    fonts:
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Thin.otf
+        weight: 200
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Light.otf
+        weight: 300
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Regular.otf
+        weight: 400
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Medium.otf
+        weight: 500
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Bold.otf
+        weight: 700
+      - asset: assets/font/Noto_Sans_KR/NotoSansKR-Black.otf
+        weight: 900

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'dbHandler.dart';
 import 'views/camera.dart';
 import 'views/loginPage.dart';
+import 'views/home.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
-  runApp(const MyApp());
+  initializeDateFormatting().then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -73,8 +75,6 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               child: Text('카메라 페이지로 이동'),
             ),
-
-
             TextButton(
               style: TextButton.styleFrom(
                 primary: Colors.blue,
@@ -86,8 +86,19 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
               child: Text('로그인 페이지로 이동'),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                primary: Colors.blue,
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage())
+                );
+              },
+              child: Text('홈 페이지로 이동'),
             )
-
           ],
         ),
       ),
