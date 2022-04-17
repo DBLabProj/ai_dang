@@ -3,7 +3,7 @@ import 'navbar.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 var colorGray = Color(0xff535353);
 var colorRed = Color(0xffCF2525);
@@ -34,9 +34,10 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  int _count = 0;
+  var rmicons = false;
   var _selectedDay = DateTime.now();
   var _calendarFormat = CalendarFormat.week;
+  ValueNotifier<bool> isDialOpen = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
@@ -222,9 +223,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     ],
                   ),
                 ),
-
                 Expanded(
-                  flex: 7,
                   child: Container(
                     color: colorLightGray,
                   ),
@@ -234,11 +233,30 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() => _count++),
+      floatingActionButton: SpeedDial(
         tooltip: 'Increment Counter',
+        icon: Icons.add,
+        activeIcon: Icons.close,
+        iconTheme: const IconThemeData(size: 32),
+        spacing: 10,
+        spaceBetweenChildren: 4,
         backgroundColor: colorRed,
-        child: const Icon(Icons.add, size: 42),
+        children: [
+          SpeedDialChild(
+            child: const Icon(Icons.camera_alt),
+            backgroundColor: Colors.white,
+            foregroundColor: colorGray,
+            label: '카메라로 추가하기',
+            onTap: () {},
+          ),
+          SpeedDialChild(
+            child: const Icon(Icons.photo),
+            backgroundColor: Colors.white,
+            foregroundColor: colorGray,
+            label: '앨범에서 추가하기',
+            onTap: () {},
+          ),
+        ],
       ),
       bottomNavigationBar: Navbar()
     );

@@ -14,12 +14,14 @@ dependencies:
   image_picker: ^0.8.5
   flutter_screenutil: ^5.4.0
   table_calendar: ^3.0.5
+  flutter_speed_dial: ^5.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^1.0.0
+
 
 flutter:
   uses-material-design: true
