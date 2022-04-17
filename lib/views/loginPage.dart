@@ -47,18 +47,56 @@ class loginPage extends StatelessWidget {
                       height: (MediaQuery.of(context).size.height) * 0.15,
                     ),
 
-                    TextField(
-                      decoration: InputDecoration(
-                        filled: true,
-                        labelText: 'Username',
+                    SizedBox(
+                      width: (MediaQuery.of(context).size.width) -
+                          (MediaQuery.of(context).size.width) * 0.5,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: 'Email',
+                          hintText: 'Enter your email',
+                          labelStyle: TextStyle(color: Color(0xffCF2525)),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+
                       ),
                     ),
-                    TextField(
-                      decoration: InputDecoration(
-                        filled: true,
-                        labelText: 'Password',
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.01,
+                    ),
+
+                    SizedBox(
+                      width: (MediaQuery.of(context).size.width) -
+                          (MediaQuery.of(context).size.width) * 0.5,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          filled: true,
+                          labelText: 'Password',
+                          hintText: 'Enter your password',
+                          labelStyle: TextStyle(color: Color(0xffCF2525)),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                        ),
+                        obscureText: true,
                       ),
-                      obscureText: true,
                     ),
                   ],
                 ),
