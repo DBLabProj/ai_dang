@@ -1,3 +1,4 @@
+import 'package:ai_dang/views/signup.dart';
 import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +14,7 @@ class loginPage extends StatelessWidget {
     },
     child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         body: Center(
           child: Column(
             children: <Widget>[
@@ -23,7 +24,7 @@ class loginPage extends StatelessWidget {
               Container(
                 color: Colors.white,
                 height: (MediaQuery.of(context).size.height) -
-                    (MediaQuery.of(context).size.height) * 0.3,
+                    (MediaQuery.of(context).size.height) * 0.2,
                 width: (MediaQuery.of(context).size.width) -
                     (MediaQuery.of(context).size.width) * 0.3,
                 child: Column(
@@ -44,12 +45,12 @@ class loginPage extends StatelessWidget {
                           color: Color(0xffCF2525)),
                     ),
                     SizedBox(
-                      height: (MediaQuery.of(context).size.height) * 0.15,
+                      height: (MediaQuery.of(context).size.height) * 0.20,
                     ),
 
                     SizedBox(
                       width: (MediaQuery.of(context).size.width) -
-                          (MediaQuery.of(context).size.width) * 0.5,
+                          (MediaQuery.of(context).size.width) * 0.35,
                       child: TextField(
                         decoration: InputDecoration(
                           labelText: 'Email',
@@ -76,7 +77,7 @@ class loginPage extends StatelessWidget {
 
                     SizedBox(
                       width: (MediaQuery.of(context).size.width) -
-                          (MediaQuery.of(context).size.width) * 0.5,
+                          (MediaQuery.of(context).size.width) * 0.35,
                       child: TextField(
                         decoration: InputDecoration(
                           filled: true,
@@ -98,7 +99,7 @@ class loginPage extends StatelessWidget {
                         obscureText: true,
                       ),
                     ),
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.05,
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.10,
                     ),
                     SizedBox(
                       height: (MediaQuery.of(context).size.height) * 0.065,
@@ -111,7 +112,9 @@ class loginPage extends StatelessWidget {
                             MaterialPageRoute(builder: (context) => testpage()),
                           );
                         },
-                          child: const Text('지금 시작하기'),
+                          child: Text('지금 시작하기', style: TextStyle(
+                            fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26
+                          ),),
                           style: ElevatedButton.styleFrom(shape: new RoundedRectangleBorder(
                             borderRadius: new BorderRadius.circular(20.0)),
                             primary : Color(0xffCF2525),),
@@ -119,8 +122,19 @@ class loginPage extends StatelessWidget {
                     ),
 
                     SizedBox(
-
-                    )
+                      height: (MediaQuery.of(context).size.height) * 0.085,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => signup()),
+                            );
+                          }, child: Text('처음이신가요? 회원가입',style: TextStyle(
+                            fontSize:
+                            ((MediaQuery.of(context).size.width) * 0.16) * 0.26,
+                            color: Color(0xffCF2525)),
+                        ),),
+                        ),
                   ],
                 ),
               )
