@@ -1,5 +1,5 @@
+import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class loginPage extends StatelessWidget {
   const loginPage({Key? key}) : super(key: key);
@@ -98,6 +98,29 @@ class loginPage extends StatelessWidget {
                         obscureText: true,
                       ),
                     ),
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.05,
+                    ),
+                    SizedBox(
+                      height: (MediaQuery.of(context).size.height) * 0.065,
+                      width: (MediaQuery.of(context).size.width) -
+                          (MediaQuery.of(context).size.width) * 0.5,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => testpage()),
+                          );
+                        },
+                          child: const Text('지금 시작하기'),
+                          style: ElevatedButton.styleFrom(shape: new RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(20.0)),
+                            primary : Color(0xffCF2525),),
+                      ),
+                    ),
+
+                    SizedBox(
+
+                    )
                   ],
                 ),
               )
