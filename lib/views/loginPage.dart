@@ -80,7 +80,7 @@ class loginPage extends StatelessWidget {
                           (MediaQuery.of(context).size.width) * 0.35,
                       child: TextField(
                         decoration: InputDecoration(
-                          filled: true,
+                          // filled: true,
                           labelText: 'Password',
                           hintText: 'Enter your password',
                           labelStyle: TextStyle(color: Color(0xffCF2525)),
