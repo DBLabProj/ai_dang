@@ -42,8 +42,8 @@ class signup extends StatelessWidget {
                           (MediaQuery.of(context).size.width) * 0.35,
                       child: TextField(
                         decoration: InputDecoration(
-                          labelText: 'Email',
-                          hintText: 'Enter your email',
+                          labelText: 'Name',
+                          hintText: 'Enter your name',
                           labelStyle: TextStyle(color: Color(0xffCF2525)),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -57,8 +57,6 @@ class signup extends StatelessWidget {
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
                         ),
-                        keyboardType: TextInputType.emailAddress,
-
                       ),
                     ),
                     SizedBox(height: (MediaQuery.of(context).size.height) * 0.05,
