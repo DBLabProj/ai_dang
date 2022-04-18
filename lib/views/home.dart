@@ -1,14 +1,19 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'navbar.dart';
-import 'package:table_calendar/table_calendar.dart';
-
+import 'package:ai_dang/dbHandler.dart';
 import 'package:intl/intl.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
-var colorGray = Color(0xff535353);
-var colorRed = Color(0xffCF2525);
-var colorLightGray = Color(0xffF3F3F3);
-var colorDarkGray = Color(0xffE0E0E0);
+var colorBlack = const Color(0xff535353);
+var colorRed = const Color(0xffCF2525);
+var colorLightGray = const Color(0xffF3F3F3);
+var colorGray = const Color(0xffE0E0E0);
+var colorDarkGray = const Color(0xffADADBE);
+var colorOrange = const Color(0xffFBAA47);
+var colorGreen = const Color(0xff8AD03C);
+
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -37,7 +42,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   var rmicons = false;
   var _selectedDay = DateTime.now();
   var _calendarFormat = CalendarFormat.week;
-  ValueNotifier<bool> isDialOpen = ValueNotifier(false);
+
+  void printData() {
+    var db = DbHandler();
+    db.connect().then((conn) {
+      db.printData(conn).then((results) {
+        print(results);
+      });
+      conn.close();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +76,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         daysOfWeekHeight: 20,
                         focusedDay: _selectedDay,
                         calendarFormat: _calendarFormat,
-                        availableCalendarFormats: const {
-                          CalendarFormat.month: 'Month',
-                          CalendarFormat.week: 'Week',
-                        },
                         calendarStyle: const CalendarStyle(
                           isTodayHighlighted: false,
                         ),
@@ -169,7 +179,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     width: 110,
                                     height: 5,
                                     child: LinearProgressIndicator(
-                                      backgroundColor: colorDarkGray,
+                                      backgroundColor: colorGray,
                                       valueColor: AlwaysStoppedAnimation(colorRed),
                                       value: 0.40,
                                     ),
@@ -188,7 +198,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     width: 110,
                                     height: 5,
                                     child: LinearProgressIndicator(
-                                      backgroundColor: colorDarkGray,
+                                      backgroundColor: colorGray,
                                       valueColor: AlwaysStoppedAnimation(colorRed),
                                       value: 0.50,
                                     ),
@@ -207,7 +217,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     width: 110,
                                     height: 5,
                                     child: LinearProgressIndicator(
-                                      backgroundColor: colorDarkGray,
+                                      backgroundColor: colorGray,
                                       valueColor: AlwaysStoppedAnimation(colorRed),
                                       value: 0.35,
                                     ),
@@ -223,9 +233,216 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     ],
                   ),
                 ),
+                // 식단 정보
                 Expanded(
                   child: Container(
                     color: colorLightGray,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child:  SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          children: [
+                            // 식단 컴포넌트
+                            Container(
+                              height: 220,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                // 식단 컴포넌트 내용 시작
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // 식단 이미지
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                        child: Image.asset("assets/image/001.jpg",
+                                          fit: BoxFit.fitHeight,
+                                          width: 170, height: 180,),
+                                    ),
+                                    // 식단 정보
+                                    Expanded(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(15.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            // 식단 이름
+                                            Text("돼지국밥",
+                                              style: TextStyle(
+                                                  color: colorBlack, fontSize: 18,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            // 시간 및 식사종류
+                                            const SizedBox(height: 7),
+                                            Text("오전 10:24 · 아침",
+                                                style: TextStyle(
+                                                color: colorDarkGray, fontSize: 13,
+                                                fontWeight: FontWeight.w400),
+                                            ),
+                                            // 식단 설명
+                                            const SizedBox(height: 20),
+                                            Text("시장 장터순대국밥\n꽤 맛있었는데 좀 짰음",
+                                              style: TextStyle(
+                                                  color: colorDarkGray, fontSize: 13,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ),
+                                    // 혈당 정보 간략하게 표시하는 도형
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(0, 18, 0, 0),
+                                      child: Container(
+                                        width: 20, height: 20,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(4),
+                                          color: colorOrange
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            // 식단 컴포넌트
+                            Container(
+                              height: 220,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                // 식단 컴포넌트 내용 시작
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // 식단 이미지
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.asset("assets/image/002.jpg",
+                                        fit: BoxFit.fitHeight,
+                                        width: 170, height: 180,),
+                                    ),
+                                    // 식단 정보
+                                    Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              // 식단 이름
+                                              Text("치즈버거",
+                                                style: TextStyle(
+                                                    color: colorBlack, fontSize: 18,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                              // 시간 및 식사종류
+                                              const SizedBox(height: 7),
+                                              Text("오후 01:13 · 점심",
+                                                style: TextStyle(
+                                                    color: colorDarkGray, fontSize: 13,
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                              // 식단 설명
+                                              const SizedBox(height: 20),
+                                              Text("맥도날드 치즈버거\n혈관이 텁텁하게 막히는 느낌",
+                                                style: TextStyle(
+                                                    color: colorDarkGray, fontSize: 13,
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                    ),
+                                    // 혈당 정보 간략하게 표시하는 도형
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(0, 18, 0, 0),
+                                      child: Container(
+                                        width: 20, height: 20,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(4),
+                                            color: colorRed
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            // 식단 컴포넌트
+                            Container(
+                              height: 220,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white),
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                // 식단 컴포넌트 내용 시작
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // 식단 이미지
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: Image.asset("assets/image/003.jpg",
+                                        fit: BoxFit.fitHeight,
+                                        width: 170, height: 180,),
+                                    ),
+                                    // 식단 정보
+                                    Expanded(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              // 식단 이름
+                                              Text("된장찌개",
+                                                style: TextStyle(
+                                                    color: colorBlack, fontSize: 18,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                              // 시간 및 식사종류
+                                              const SizedBox(height: 7),
+                                              Text("오후 06:33 · 저녁",
+                                                style: TextStyle(
+                                                    color: colorDarkGray, fontSize: 13,
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                              // 식단 설명
+                                              const SizedBox(height: 20),
+                                              Text("집밥 된장찌개\n간도 알맞고 꽤 맛있었음",
+                                                style: TextStyle(
+                                                    color: colorDarkGray, fontSize: 13,
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(0, 18, 0, 0),
+                                      child: Container(
+                                        width: 20, height: 20,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(4),
+                                            color: colorGreen
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -245,20 +462,20 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           SpeedDialChild(
             child: const Icon(Icons.camera_alt),
             backgroundColor: Colors.white,
-            foregroundColor: colorGray,
+            foregroundColor: colorBlack,
             label: '카메라로 추가하기',
-            onTap: () {},
+            onTap: () {printData();},
           ),
           SpeedDialChild(
             child: const Icon(Icons.photo),
             backgroundColor: Colors.white,
-            foregroundColor: colorGray,
+            foregroundColor: colorBlack,
             label: '앨범에서 추가하기',
             onTap: () {},
           ),
         ],
       ),
-      bottomNavigationBar: Navbar()
+      bottomNavigationBar: const Navbar()
     );
   }
 }

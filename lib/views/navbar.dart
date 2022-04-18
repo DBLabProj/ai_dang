@@ -16,8 +16,8 @@ class Navbar extends StatelessWidget {
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
-            label: 'Calendar',
-            icon: Icon(Icons.calendar_today),
+            label: 'Statistics',
+            icon: Icon(Icons.insert_chart),
           ),
           BottomNavigationBarItem(
             label: 'My Page',
