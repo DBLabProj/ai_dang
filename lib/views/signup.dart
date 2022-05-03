@@ -1,3 +1,4 @@
+import 'package:ai_dang/views/loginPage.dart';
 import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 
@@ -45,7 +46,7 @@ class signup extends StatelessWidget {
                               0.26,
                           color: Color(0xffCF2525)),
                     ),
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.10,
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.20,
                     ),
 
                     SizedBox(
@@ -155,7 +156,7 @@ class signup extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => signup()),
+                            MaterialPageRoute(builder: (context) => loginPage()),
                           );
                         }, child: Text('이미 계정이 있으신가요? 로그인',style: TextStyle(
                           fontSize:
