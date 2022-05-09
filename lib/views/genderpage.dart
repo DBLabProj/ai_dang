@@ -44,8 +44,8 @@ class _genderPageState extends State<genderPage> {
               ),
 
               SizedBox(
-                width: (MediaQuery.of(context).size.width) * 0.35,
-                height: (MediaQuery.of(context).size.height) * 0.2,
+                width: (MediaQuery.of(context).size.width) * 0.25,
+                height: (MediaQuery.of(context).size.height) * 0.17,
                 child: ElevatedButton(
 
                   onPressed: (){
@@ -87,8 +87,8 @@ class _genderPageState extends State<genderPage> {
               ),
 
               SizedBox(
-                width: (MediaQuery.of(context).size.width) * 0.35,
-                height: (MediaQuery.of(context).size.height) * 0.2,
+                width: (MediaQuery.of(context).size.width) * 0.25,
+                height: (MediaQuery.of(context).size.height) * 0.17,
                 child: ElevatedButton(
 
                   onPressed: (){
@@ -124,7 +124,6 @@ class _genderPageState extends State<genderPage> {
                 ),),
                 height: (MediaQuery.of(context).size.height) * 0.10,
               ),
-
 
               SizedBox(
                 height: (MediaQuery.of(context).size.height) * 0.065,
