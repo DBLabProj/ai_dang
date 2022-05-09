@@ -99,12 +99,12 @@ class loginPage extends StatelessWidget {
                         obscureText: true,
                       ),
                     ),
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.10,
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.125,
                     ),
                     SizedBox(
                       height: (MediaQuery.of(context).size.height) * 0.065,
                       width: (MediaQuery.of(context).size.width) -
-                          (MediaQuery.of(context).size.width) * 0.5,
+                          (MediaQuery.of(context).size.width) * 0.40,
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -116,7 +116,7 @@ class loginPage extends StatelessWidget {
                             fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26
                           ),),
                           style: ElevatedButton.styleFrom(shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(20.0)),
+                            borderRadius: new BorderRadius.circular(10.0)),
                             primary : Color(0xffCF2525),),
                       ),
                     ),

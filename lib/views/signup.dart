@@ -1,3 +1,4 @@
+import 'package:ai_dang/views/genderpage.dart';
 import 'package:ai_dang/views/loginPage.dart';
 import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +47,7 @@ class signup extends StatelessWidget {
                               0.26,
                           color: Color(0xffCF2525)),
                     ),
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.20,
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.17,
                     ),
 
                     SizedBox(
@@ -134,19 +135,19 @@ class signup extends StatelessWidget {
                     SizedBox(
                       height: (MediaQuery.of(context).size.height) * 0.065,
                       width: (MediaQuery.of(context).size.width) -
-                          (MediaQuery.of(context).size.width) * 0.5,
+                          (MediaQuery.of(context).size.width) * 0.40,
                       child: ElevatedButton(
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => testpage()),
+                            MaterialPageRoute(builder: (context) => genderPage()),
                           );
                         },
                         child: Text('가입하기', style: TextStyle(
                             fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26
                         ),),
                         style: ElevatedButton.styleFrom(shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(20.0)),
+                            borderRadius: new BorderRadius.circular(10.0)),
                           primary : Color(0xffCF2525),),
                       ),
                     ),
@@ -164,29 +165,6 @@ class signup extends StatelessWidget {
                           color: Color(0xffCF2525)),
                       ),),
                     ),
-
-
-                    // image 버튼
-                    // SizedBox(
-                    //   width: 58,
-                    //   height: 50,
-                    //   child: TextButton.icon(
-                    //     style: ButtonStyle(
-                    //         backgroundColor:
-                    //         MaterialStateProperty.all(Colors.white)),
-                    //     onPressed: () {},
-                    //     icon: Image.asset('assets/images/user.png'),
-                    //     label: Text(
-                    //       'Button Text',
-                    //       style: TextStyle(
-                    //         color: Colors.black,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // )
-
-
                   ],
                 ),
               ),
