@@ -1,5 +1,6 @@
 import 'package:ai_dang/views/age.dart';
 import 'package:ai_dang/views/test.dart';
+import 'package:ai_dang/views/weightpage.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -126,7 +127,7 @@ class __IntegerExampleState extends State<_IntegerExample> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => heightpage()),
+                MaterialPageRoute(builder: (context) => weightpage()),
               );
             },
             child: Text('다음 단계로', style: TextStyle(
