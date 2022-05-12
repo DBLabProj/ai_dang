@@ -74,31 +74,49 @@ class __IntegerExampleState extends State<_IntegerExample> {
         SizedBox(height: (MediaQuery.of(context).size.height)*0.1),
         // Text('Default', style: Theme.of(context).textTheme.headline6),
 
-            NumberPicker(
-              itemHeight: (MediaQuery.of(context).size.height)*0.10,
-              itemWidth: (MediaQuery.of(context).size.width)*0.6,
-              value: _currentIntValue,
-              minValue: 1,
-              maxValue: 100,
-              step: 1,
-              haptics: true,
-              decoration: BoxDecoration(
-                border: Border(
-                  top:BorderSide(width: 1, color: Colors.grey),
-                  bottom: BorderSide(width: 1, color: Colors.grey),
-                )
-              ),
-              selectedTextStyle: TextStyle(
-                  fontSize: (MediaQuery.of(context).size.height)*0.065,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xffCF2525)),
-              textStyle: TextStyle(
-                  fontSize: (MediaQuery.of(context).size.height)*0.05,
-                  fontWeight: FontWeight.w300,
-                  color: Color(0xff9E9E9E)),
+        Stack(
+          children: [
+            Container(
+              child: NumberPicker(
+                  itemHeight: (MediaQuery.of(context).size.height)*0.10,
+                  itemWidth: (MediaQuery.of(context).size.width)*0.6,
+                  value: _currentIntValue,
+                  minValue: 1,
+                  maxValue: 100,
+                  step: 1,
+                  haptics: true,
+                  decoration: BoxDecoration(
+                      border: Border(
+                        top:BorderSide(width: 1, color: Colors.grey),
+                        bottom: BorderSide(width: 1, color: Colors.grey),
+                      )
+                  ),
+                  selectedTextStyle: TextStyle(
+                      fontSize: (MediaQuery.of(context).size.height)*0.065,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xffCF2525)),
+                  textStyle: TextStyle(
+                      fontSize: (MediaQuery.of(context).size.height)*0.05,
+                      fontWeight: FontWeight.w300,
+                      color: Color(0xff9E9E9E)),
 
-              onChanged: (value) => setState(() => _currentIntValue = value)
+                  onChanged: (value) => setState(() => _currentIntValue = value)
+              ),
             ),
+            Container(
+              child: Positioned(
+                bottom: 90,
+                right: 70,
+                child: Container(
+                  child: Text('세',style: TextStyle(
+                      fontSize: (MediaQuery.of(context).size.height)*0.030,
+                      color: Color(0xffCF2525)
+                  ),),
+                ),
+              ),
+            )
+          ],
+        ),
         SizedBox(
           height: (MediaQuery.of(context).size.height) * 0.14,
         ),
