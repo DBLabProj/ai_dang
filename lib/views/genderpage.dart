@@ -1,16 +1,17 @@
+import 'package:ai_dang/views/age.dart';
 import 'package:ai_dang/views/loginPage.dart';
 import 'package:ai_dang/views/signup.dart';
 import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 
-class genderPage extends StatefulWidget {
-  const genderPage({Key? key}) : super(key: key);
+class genderpage extends StatefulWidget {
+  const genderpage({Key? key}) : super(key: key);
 
   @override
-  _genderPageState createState() => _genderPageState();
+  _genderpageState createState() => _genderpageState();
 }
 
-class _genderPageState extends State<genderPage> {
+class _genderpageState extends State<genderpage> {
   var sex;
   var btnOneStyle;
   var btnTwoStyle;
@@ -133,14 +134,14 @@ class _genderPageState extends State<genderPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => genderPage()),
+                      MaterialPageRoute(builder: (context) => agepage()),
                     );
                   },
                   child: Text('다음 단계로', style: TextStyle(
                       fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26
                   ),),
-                  style: ElevatedButton.styleFrom(shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0)),
+                  style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
                     primary : Color(0xffCF2525),),
                 ),
               ),
@@ -160,11 +161,16 @@ class _genderPageState extends State<genderPage> {
                     );
                   },
                   child: Text('이전 단계로', style: TextStyle(
-                      fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26
+                    color: Color(0xffCF2525),
+                      fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26,
                   ),),
-                  style: ElevatedButton.styleFrom(shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(10.0)),
-                    primary : Color(0xffCF2525),),
+
+                  style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                  side: BorderSide(
+                    color: Color(0xffCF2525)
+                  )),
+                    primary : Colors.white,),
                 ),
               ),
 

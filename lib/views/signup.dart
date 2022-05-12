@@ -27,7 +27,7 @@ class signup extends StatelessWidget {
               Container(
                 color: Colors.white,
                 height: (MediaQuery.of(context).size.height) -
-                    (MediaQuery.of(context).size.height) * 0.2,
+                    (MediaQuery.of(context).size.height) * 0.18,
                 width: (MediaQuery.of(context).size.width) -
                     (MediaQuery.of(context).size.width) * 0.3,
                 child: Column(
@@ -140,7 +140,7 @@ class signup extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => genderPage()),
+                            MaterialPageRoute(builder: (context) => genderpage()),
                           );
                         },
                         child: Text('가입하기', style: TextStyle(
