@@ -105,8 +105,8 @@ class __IntegerExampleState extends State<_IntegerExample> {
             ),
             Container(
               child: Positioned(
-                bottom: 90,
-                right: 70,
+                bottom: (MediaQuery.of(context).size.height)*0.13,
+                right: (MediaQuery.of(context).size.width)*0.1,
                 child: Container(
                   child: Text('세',style: TextStyle(
                       fontSize: (MediaQuery.of(context).size.height)*0.030,
