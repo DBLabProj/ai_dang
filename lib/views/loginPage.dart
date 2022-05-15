@@ -2,6 +2,9 @@ import 'package:ai_dang/views/signup.dart';
 import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+import 'home.dart';
+
 class loginPage extends StatelessWidget {
   const loginPage({Key? key}) : super(key: key);
 
@@ -109,7 +112,7 @@ class loginPage extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => testpage()),
+                            MaterialPageRoute(builder: (context) => HomePage()),
                           );
                         },
                           child: Text('지금 시작하기', style: TextStyle(
