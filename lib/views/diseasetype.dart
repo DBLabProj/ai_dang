@@ -1,5 +1,7 @@
 import 'package:ai_dang/views/weightpage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
 
 import 'loginPage.dart';
 
@@ -62,7 +64,9 @@ class _diseasetypeState extends State<diseasetype> {
                           },
                           child: Text(
                             '제2형',style: TextStyle(
-                            color: Colors.grey
+                            color: Colors.grey,
+                            fontSize: (MediaQuery.of(context).size.width)*0.06,
+                            fontWeight: FontWeight.w300
                           ),
                           ),
                           style: ElevatedButton.styleFrom(
@@ -72,7 +76,8 @@ class _diseasetypeState extends State<diseasetype> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(600)
                               ),
-                              side: btnOneStyle
+                              side: btnOneStyle,
+
                           ),
                         ),
                       ),
@@ -99,7 +104,9 @@ class _diseasetypeState extends State<diseasetype> {
                           },
                           child: Text(
                             '제1형',style: TextStyle(
-                              color: Colors.grey
+                              color: Colors.grey,
+                              fontSize: (MediaQuery.of(context).size.width)*0.06,
+                              fontWeight: FontWeight.w300
                           ),
                           ),
                           style: ElevatedButton.styleFrom(
@@ -134,7 +141,9 @@ class _diseasetypeState extends State<diseasetype> {
                           },
                           child: Text(
                             '임신성',style: TextStyle(
-                              color: Colors.grey
+                              color: Colors.grey,
+                              fontSize: (MediaQuery.of(context).size.width)*0.06,
+                              fontWeight: FontWeight.w300
                           ),
                           ),
                           style: ElevatedButton.styleFrom(
