@@ -5,6 +5,8 @@ import 'package:ai_dang/dbHandler.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:image_picker/image_picker.dart';
+
 
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);
@@ -42,6 +44,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   var rmicons = false;
   var _selectedDay = DateTime.now();
   var _calendarFormat = CalendarFormat.week;
+  final picker = ImagePicker();
+
+  Future getImage(ImageSource imageSource) async {
+    final image = await picker.pickImage(source: imageSource);
+
+    setState(() {
+
+    });
+  }
 
   void printData() {
     var db = DbHandler();
@@ -464,14 +475,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             backgroundColor: Colors.white,
             foregroundColor: colorBlack,
             label: '카메라로 추가하기',
-            onTap: () {printData();},
+            onTap: () {
+              getImage(ImageSource.camera);
+              printData();},
           ),
           SpeedDialChild(
             child: const Icon(Icons.photo),
             backgroundColor: Colors.white,
             foregroundColor: colorBlack,
             label: '앨범에서 추가하기',
-            onTap: () {},
+
+            onTap: () {
+              getImage(ImageSource.gallery);
+            },
           ),
         ],
       ),
