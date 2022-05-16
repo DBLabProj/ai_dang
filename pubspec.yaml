@@ -15,6 +15,7 @@ dependencies:
   flutter_screenutil: ^5.4.0
   table_calendar: ^3.0.5
   flutter_speed_dial: ^5.1.0
+  numberpicker: ^2.1.1
 
 dev_dependencies:
   flutter_test:
