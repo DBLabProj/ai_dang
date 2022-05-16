@@ -1,3 +1,4 @@
+import 'package:ai_dang/views/navbartest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'navbar.dart';
@@ -491,7 +492,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
         ],
       ),
-      bottomNavigationBar: const Navbar()
+      // bottomNavigationBar: const Navbar()
+        bottomNavigationBar: const navbartest(),
     );
   }
 }
