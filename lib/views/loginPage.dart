@@ -5,9 +5,14 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import 'home.dart';
 
-class loginPage extends StatelessWidget {
+class loginPage extends StatefulWidget {
   const loginPage({Key? key}) : super(key: key);
 
+  @override
+  State<loginPage> createState() => _loginPageState();
+}
+
+class _loginPageState extends State<loginPage> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -54,7 +59,7 @@ class loginPage extends StatelessWidget {
                     SizedBox(
                       width: (MediaQuery.of(context).size.width) -
                           (MediaQuery.of(context).size.width) * 0.35,
-                      child: TextField(
+                      child: const TextField(
                         decoration: InputDecoration(
                           labelText: 'Email',
                           hintText: 'Enter your email',
@@ -75,18 +80,19 @@ class loginPage extends StatelessWidget {
 
                       ),
                     ),
+
                     SizedBox(height: (MediaQuery.of(context).size.height) * 0.01,
                     ),
 
                     SizedBox(
                       width: (MediaQuery.of(context).size.width) -
                           (MediaQuery.of(context).size.width) * 0.35,
-                      child: TextField(
+                      child: const TextField(
                         decoration: InputDecoration(
                           // filled: true,
                           labelText: 'Password',
                           hintText: 'Enter your password',
-                          labelStyle: TextStyle(color: Color(0xffCF2525)),
+                          labelStyle: TextStyle(color: Color(0xffcf2525)),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                             borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
@@ -102,8 +108,10 @@ class loginPage extends StatelessWidget {
                         obscureText: true,
                       ),
                     ),
+
                     SizedBox(height: (MediaQuery.of(context).size.height) * 0.125,
                     ),
+
                     SizedBox(
                       height: (MediaQuery.of(context).size.height) * 0.065,
                       width: (MediaQuery.of(context).size.width) -
@@ -118,8 +126,8 @@ class loginPage extends StatelessWidget {
                           child: Text('지금 시작하기', style: TextStyle(
                             fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26
                           ),),
-                          style: ElevatedButton.styleFrom(shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(10.0)),
+                          style: ElevatedButton.styleFrom(shape:  RoundedRectangleBorder(
+                            borderRadius:  BorderRadius.circular(10.0)),
                             primary : Color(0xffCF2525),),
                       ),
                     ),
