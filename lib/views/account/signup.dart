@@ -34,7 +34,7 @@ class signup extends StatelessWidget {
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: (MediaQuery.of(context).size.height) * 0.15,
+                height: (MediaQuery.of(context).size.height) * 0.08,
               ),
               Container(
                 color: Colors.white,
@@ -59,7 +59,7 @@ class signup extends StatelessWidget {
                               0.26,
                           color: Color(0xffCF2525)),
                     ),
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.17,
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.16,
                     ),
 
                     SizedBox(

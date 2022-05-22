@@ -25,7 +25,7 @@ class _agepageState extends State<agepage> {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: (MediaQuery.of(context).size.height) * 0.08,
+              height: (MediaQuery.of(context).size.height) * 0.10,
             ),
             Container(
               color: Colors.white,
