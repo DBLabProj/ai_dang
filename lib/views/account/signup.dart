@@ -1,13 +1,25 @@
-import 'package:ai_dang/views/genderpage.dart';
+import 'package:ai_dang/views/account/genderpage.dart';
 import 'package:ai_dang/views/loginPage.dart';
 import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 
+import 'genderpage.dart';
+
 
 
 class signup extends StatelessWidget {
+  final _idTextEditController = TextEditingController();
+  final _passwordTextEditController = TextEditingController();
 
-  const signup({Key? key}) : super(key: key);
+  @override
+  void dispose() {
+    _idTextEditController.dispose();
+    _passwordTextEditController.dispose();
+  }
+
+  signup({Key? key}) : super(key: key);
+
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -54,6 +66,7 @@ class signup extends StatelessWidget {
                       width: (MediaQuery.of(context).size.width) -
                           (MediaQuery.of(context).size.width) * 0.35,
                       child: TextField(
+                        controller: _idTextEditController,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           hintText: 'Enter your email',
@@ -71,6 +84,12 @@ class signup extends StatelessWidget {
                           ),
                         ),
                         keyboardType: TextInputType.emailAddress,
+
+
+                        onChanged: (id) {
+                          print('아이디 텍스트 필드 : $id');
+                        },
+
 
                       ),
                     ),
@@ -138,6 +157,7 @@ class signup extends StatelessWidget {
                           (MediaQuery.of(context).size.width) * 0.40,
                       child: ElevatedButton(
                         onPressed: () {
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => genderpage()),

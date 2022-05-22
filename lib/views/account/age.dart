@@ -1,19 +1,21 @@
-import 'package:ai_dang/views/diseasetype.dart';
+import 'package:ai_dang/views/account/genderpage.dart';
+import 'package:ai_dang/views/account/heightpage.dart';
+import 'package:ai_dang/views/test.dart';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-import 'heightpage.dart';
+import 'genderpage.dart';
 
 
-
-class weightpage extends StatefulWidget {
-  const weightpage({Key? key}) : super(key: key);
+class agepage extends StatefulWidget {
+  const agepage({Key? key}) : super(key: key);
 
   @override
-  _weightpageState createState() => _weightpageState();
+  _agepageState createState() => _agepageState();
 }
-
-class _weightpageState extends State<weightpage> {
+class _agepageState extends State<agepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +25,7 @@ class _weightpageState extends State<weightpage> {
         child: Column(
           children: <Widget>[
             SizedBox(
-              height: (MediaQuery.of(context).size.height) * 0.10,
+              height: (MediaQuery.of(context).size.height) * 0.08,
             ),
             Container(
               color: Colors.white,
@@ -34,7 +36,7 @@ class _weightpageState extends State<weightpage> {
               child: Column(
                 children: <Widget>[
                   Text(
-                    '체중을 선택하세요.',
+                    '나이를 선택하세요.',
                     style: TextStyle(
                         fontSize:
                         ((MediaQuery.of(context).size.width) * 0.20) *
@@ -57,14 +59,13 @@ class _weightpageState extends State<weightpage> {
   }
 }
 
-
 class _IntegerExample extends StatefulWidget {
   @override
   __IntegerExampleState createState() => __IntegerExampleState();
 }
 
 class __IntegerExampleState extends State<_IntegerExample> {
-  int _currentIntValue = 30;
+  int _currentIntValue = 1;
 
 
 
@@ -82,8 +83,8 @@ class __IntegerExampleState extends State<_IntegerExample> {
                   itemHeight: (MediaQuery.of(context).size.height)*0.10,
                   itemWidth: (MediaQuery.of(context).size.width)*0.6,
                   value: _currentIntValue,
-                  minValue: 30,
-                  maxValue: 150,
+                  minValue: 1,
+                  maxValue: 100,
                   step: 1,
                   haptics: true,
                   decoration: BoxDecoration(
@@ -109,7 +110,7 @@ class __IntegerExampleState extends State<_IntegerExample> {
                 bottom: (MediaQuery.of(context).size.height)*0.13,
                 right: (MediaQuery.of(context).size.width)*0.1,
                 child: Container(
-                  child: Text('kg',style: TextStyle(
+                  child: Text('세',style: TextStyle(
                       fontSize: (MediaQuery.of(context).size.height)*0.030,
                       color: Color(0xffCF2525)
                   ),),
@@ -129,7 +130,7 @@ class __IntegerExampleState extends State<_IntegerExample> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => diseasetype()),
+                MaterialPageRoute(builder: (context) => heightpage()),
               );
             },
             child: Text('다음 단계로', style: TextStyle(
@@ -152,7 +153,7 @@ class __IntegerExampleState extends State<_IntegerExample> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => heightpage()),
+                MaterialPageRoute(builder: (context) => genderpage()),
               );
             },
             child: Text('이전 단계로', style: TextStyle(

@@ -1,6 +1,6 @@
-import 'package:ai_dang/views/age.dart';
+import 'package:ai_dang/views/account/age.dart';
 import 'package:ai_dang/views/loginPage.dart';
-import 'package:ai_dang/views/signup.dart';
+import 'package:ai_dang/views/account/signup.dart';
 import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 

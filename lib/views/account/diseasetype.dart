@@ -1,9 +1,9 @@
-import 'package:ai_dang/views/weightpage.dart';
+import 'package:ai_dang/views/account/weightpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 
-import 'loginPage.dart';
+import '../loginPage.dart';
 
 class diseasetype extends StatefulWidget {
   const diseasetype({Key? key}) : super(key: key);

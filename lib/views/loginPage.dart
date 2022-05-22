@@ -1,6 +1,9 @@
 import 'package:ai_dang/views/signup.dart';
 import 'package:ai_dang/views/test.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:ai_dang/dbHandler.dart';
+
 
 import '../main.dart';
 import 'home.dart';
@@ -8,12 +11,29 @@ import 'home.dart';
 class loginPage extends StatefulWidget {
   const loginPage({Key? key}) : super(key: key);
 
+
+
   @override
+
   State<loginPage> createState() => _loginPageState();
 }
 
 class _loginPageState extends State<loginPage> {
+
+  final _idTextEditController = TextEditingController();
+  final _passwordTextEditController = TextEditingController();
+
+  Future conn = DbHandler().connect();
+  Future select = DbHandler().printData(DbHandler().connect());
+
   @override
+  void dispose() {
+    _idTextEditController.dispose();
+    _passwordTextEditController.dispose();
+  }
+
+  @override
+
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
@@ -59,7 +79,8 @@ class _loginPageState extends State<loginPage> {
                     SizedBox(
                       width: (MediaQuery.of(context).size.width) -
                           (MediaQuery.of(context).size.width) * 0.35,
-                      child: const TextField(
+                      child: TextField(
+                        controller: _idTextEditController,
                         decoration: InputDecoration(
                           labelText: 'Email',
                           hintText: 'Enter your email',
@@ -87,7 +108,8 @@ class _loginPageState extends State<loginPage> {
                     SizedBox(
                       width: (MediaQuery.of(context).size.width) -
                           (MediaQuery.of(context).size.width) * 0.35,
-                      child: const TextField(
+                      child: TextField(
+                        controller: _passwordTextEditController,
                         decoration: InputDecoration(
                           // filled: true,
                           labelText: 'Password',
@@ -118,6 +140,14 @@ class _loginPageState extends State<loginPage> {
                           (MediaQuery.of(context).size.width) * 0.40,
                       child: ElevatedButton(
                         onPressed: () {
+
+                          if (kDebugMode) {
+                            print(_idTextEditController.text);
+                            print( _passwordTextEditController.text);
+                            print(select);
+                          }
+
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => HomePage()),
