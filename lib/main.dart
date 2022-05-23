@@ -1,4 +1,3 @@
-import 'package:ai_dang/views/navbartest.dart';
 import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 import 'dbHandler.dart';
@@ -7,6 +6,7 @@ import 'views/loginPage.dart';
 import 'views/home.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:ai_dang/views/setting/setting.dart';
+
 
 void main() {
   initializeDateFormatting().then((_) => runApp(MyApp()));

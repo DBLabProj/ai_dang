@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import '../navbar.dart';
-import '../navbartest.dart';
-
 
 class setting extends StatefulWidget {
 

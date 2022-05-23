@@ -1,8 +1,8 @@
-import 'package:ai_dang/views/navbartest.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'navbar.dart';
 import 'package:ai_dang/dbHandler.dart';
+import 'package:ai_dang/request.dart';
+
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -45,15 +45,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   var rmicons = false;
   var _selectedDay = DateTime.now();
   var _calendarFormat = CalendarFormat.week;
-  final picker = ImagePicker();
-
-  Future getImage(ImageSource imageSource) async {
-    final image = await picker.pickImage(source: imageSource);
-
-    setState(() {
-
-    });
-  }
+  final _picker = ImagePicker();
 
   void printData() {
     var db = DbHandler();
@@ -477,8 +469,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             foregroundColor: colorBlack,
             label: '카메라로 추가하기',
             onTap: () {
-              getImage(ImageSource.camera);
-              printData();},
+              getImage(ImageSource.camera, _picker).then((image) {
+                predict(image);
+              });
+            },
           ),
           SpeedDialChild(
             child: const Icon(Icons.photo),
@@ -487,13 +481,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             label: '앨범에서 추가하기',
 
             onTap: () {
-              getImage(ImageSource.gallery);
+              getImage(ImageSource.gallery, _picker).then((image) {
+                predict(image);
+              });
             },
           ),
         ],
       ),
-      // bottomNavigationBar: const Navbar()
-      // bottomNavigationBar: navbartest(),
     );
   }
 }
