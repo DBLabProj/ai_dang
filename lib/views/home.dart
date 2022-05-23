@@ -72,91 +72,91 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         color: Colors.white,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: Column(
               children: [
                 // 캘린더
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: Column(
-                    children: [
-                      // 캘린더
-                      TableCalendar(
-                        locale: 'ko_KR',
-                        firstDay: DateTime.utc(2010, 10, 16),
-                        lastDay: DateTime.utc(2030, 3, 14),
-                        daysOfWeekHeight: 20,
-                        focusedDay: _selectedDay,
-                        calendarFormat: _calendarFormat,
-                        calendarStyle: const CalendarStyle(
-                          isTodayHighlighted: false,
-                        ),
-                        headerStyle: const HeaderStyle(
-                            headerPadding: EdgeInsets.all(20),
-                            formatButtonVisible: false,
-                            rightChevronVisible: false,
-                            leftChevronVisible: false),
-                        selectedDayPredicate: (day) {return isSameDay(_selectedDay, day);},
-                        onDaySelected: (selectedDay, focusedDay) {
-                          if (!isSameDay(_selectedDay, selectedDay)) {
-                            // Call `setState()` when updating the selected day
-                            setState(() {
-                              _selectedDay = selectedDay;
-                            });
-                          }
-                        },
-                        calendarBuilders: CalendarBuilders(
-                            selectedBuilder: (context, day, focusedDay) {
-                              var strDay = DateFormat.d().format(day);
-                              return Center(
-                                child: Container(
-                                    width: 40,
-                                    height: 40,
-                                    decoration: BoxDecoration(
-                                        color: colorRed,
-                                        shape: BoxShape.circle
-                                    ),
-                                    child: Center(
-                                        child: Text(strDay,
-                                          style: TextStyle(color: Colors.white),
-                                        ))
-                                ),
-                              );
-                            },
-
-                            headerTitleBuilder: (context, day) {
-                              var strDay = DateFormat("yyyy년 M월").format(day);
-                              var iconBtn;
-                              if(_calendarFormat == CalendarFormat.week) {
-                                iconBtn = IconButton(
-                                    onPressed: (){
-                                      setState((){
-                                        _calendarFormat = CalendarFormat.month;
-                                      });},
-                                    icon: const Icon(Icons.keyboard_arrow_down)
+                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        // 캘린더
+                        TableCalendar(
+                          locale: 'ko_KR',
+                          firstDay: DateTime.utc(2010, 10, 16),
+                          lastDay: DateTime.utc(2030, 3, 14),
+                          daysOfWeekHeight: 20,
+                          focusedDay: _selectedDay,
+                          calendarFormat: _calendarFormat,
+                          calendarStyle: const CalendarStyle(
+                            isTodayHighlighted: false,
+                          ),
+                          headerStyle: const HeaderStyle(
+                              headerPadding: EdgeInsets.all(20),
+                              formatButtonVisible: false,
+                              rightChevronVisible: false,
+                              leftChevronVisible: false),
+                          selectedDayPredicate: (day) {return isSameDay(_selectedDay, day);},
+                          onDaySelected: (selectedDay, focusedDay) {
+                            if (!isSameDay(_selectedDay, selectedDay)) {
+                              // Call `setState()` when updating the selected day
+                              setState(() {
+                                _selectedDay = selectedDay;
+                              });
+                            }
+                          },
+                          calendarBuilders: CalendarBuilders(
+                              selectedBuilder: (context, day, focusedDay) {
+                                var strDay = DateFormat.d().format(day);
+                                return Center(
+                                  child: Container(
+                                      width: 40,
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                          color: colorRed,
+                                          shape: BoxShape.circle
+                                      ),
+                                      child: Center(
+                                          child: Text(strDay,
+                                            style: TextStyle(color: Colors.white),
+                                          ))
+                                  ),
                                 );
-                              } else {
-                                iconBtn = IconButton(
-                                    onPressed: (){
-                                      setState((){
-                                        _calendarFormat = CalendarFormat.week;
-                                      });},
-                                    icon: const Icon(Icons.keyboard_arrow_up)
+                              },
+
+                              headerTitleBuilder: (context, day) {
+                                var strDay = DateFormat("yyyy년 M월").format(day);
+                                var iconBtn;
+                                if(_calendarFormat == CalendarFormat.week) {
+                                  iconBtn = IconButton(
+                                      onPressed: (){
+                                        setState((){
+                                          _calendarFormat = CalendarFormat.month;
+                                        });},
+                                      icon: const Icon(Icons.keyboard_arrow_down)
+                                  );
+                                } else {
+                                  iconBtn = IconButton(
+                                      onPressed: (){
+                                        setState((){
+                                          _calendarFormat = CalendarFormat.week;
+                                        });},
+                                      icon: const Icon(Icons.keyboard_arrow_up)
+                                  );
+                                }
+                                return Row(
+                                  children: [
+                                    Text(strDay,
+                                        style: TextStyle(color: colorRed, fontSize: 21,fontWeight: FontWeight.w600)
+                                    ),
+                                    Center(child: iconBtn)
+                                  ],
                                 );
                               }
-                              return Row(
-                                children: [
-                                  Text(strDay,
-                                      style: TextStyle(color: colorRed, fontSize: 21,fontWeight: FontWeight.w600)
-                                  ),
-                                  Center(child: iconBtn)
-                                ],
-                              );
-                            }
+                          ),
                         ),
-                      ),
-                    ],
-                  )
+                      ],
+                    )
                 ),
                 // 구분선, 영양분 섭취정보
                 Padding(
@@ -259,8 +259,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             Container(
                               height: 220,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white),
                               child: Padding(
                                 padding: const EdgeInsets.all(20.0),
                                 // 식단 컴포넌트 내용 시작
@@ -270,40 +270,40 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     // 식단 이미지
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                        child: Image.asset("assets/image/001.jpg",
-                                          fit: BoxFit.fitHeight,
-                                          width: 170, height: 180,),
+                                      child: Image.asset("assets/image/001.jpg",
+                                        fit: BoxFit.fitHeight,
+                                        width: 170, height: 180,),
                                     ),
                                     // 식단 정보
                                     Expanded(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(15.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            // 식단 이름
-                                            Text("돼지국밥",
-                                              style: TextStyle(
-                                                  color: colorBlack, fontSize: 18,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            // 시간 및 식사종류
-                                            const SizedBox(height: 7),
-                                            Text("오전 10:24 · 아침",
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(15.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              // 식단 이름
+                                              Text("돼지국밥",
                                                 style: TextStyle(
-                                                color: colorDarkGray, fontSize: 13,
-                                                fontWeight: FontWeight.w400),
-                                            ),
-                                            // 식단 설명
-                                            const SizedBox(height: 20),
-                                            Text("시장 장터순대국밥\n꽤 맛있었는데 좀 짰음",
-                                              style: TextStyle(
-                                                  color: colorDarkGray, fontSize: 13,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ],
-                                        ),
-                                      )
+                                                    color: colorBlack, fontSize: 18,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                              // 시간 및 식사종류
+                                              const SizedBox(height: 7),
+                                              Text("오전 10:24 · 아침",
+                                                style: TextStyle(
+                                                    color: colorDarkGray, fontSize: 13,
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                              // 식단 설명
+                                              const SizedBox(height: 20),
+                                              Text("시장 장터순대국밥\n꽤 맛있었는데 좀 짰음",
+                                                style: TextStyle(
+                                                    color: colorDarkGray, fontSize: 13,
+                                                    fontWeight: FontWeight.w400),
+                                              ),
+                                            ],
+                                          ),
+                                        )
                                     ),
                                     // 혈당 정보 간략하게 표시하는 도형
                                     Padding(
@@ -311,8 +311,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                       child: Container(
                                         width: 20, height: 20,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(4),
-                                          color: colorOrange
+                                            borderRadius: BorderRadius.circular(4),
+                                            color: colorOrange
                                         ),
                                       ),
                                     )
@@ -493,7 +493,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ],
       ),
       // bottomNavigationBar: const Navbar()
-        bottomNavigationBar: const navbartest(),
+      // bottomNavigationBar: navbartest(),
     );
   }
 }
