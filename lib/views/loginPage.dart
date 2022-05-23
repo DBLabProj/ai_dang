@@ -1,4 +1,4 @@
-import 'package:ai_dang/views/signup.dart';
+import 'package:ai_dang/views/account/signup.dart';
 import 'package:ai_dang/views/test.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,11 +26,11 @@ class _loginPageState extends State<loginPage> {
   Future conn = DbHandler().connect();
   Future select = DbHandler().printData(DbHandler().connect());
 
-  @override
-  void dispose() {
-    _idTextEditController.dispose();
-    _passwordTextEditController.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _idTextEditController.dispose();
+  //   _passwordTextEditController.dispose();
+  // }
 
   @override
 
@@ -47,7 +47,7 @@ class _loginPageState extends State<loginPage> {
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: (MediaQuery.of(context).size.height) * 0.15,
+                height: (MediaQuery.of(context).size.height) * 0.08,
               ),
               Container(
                 color: Colors.white,
@@ -150,7 +150,7 @@ class _loginPageState extends State<loginPage> {
 
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
+                            MaterialPageRoute(builder: (context) => MyHomePage()),
                           );
                         },
                           child: Text('지금 시작하기', style: TextStyle(
