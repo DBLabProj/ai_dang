@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/dbHandler.dart';
 import 'package:ai_dang/request.dart';
+import 'package:ai_dang/views/predResult.dart';
 
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
+
 
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);
@@ -510,11 +512,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             foregroundColor: colorBlack,
             label: '카메라로 추가하기',
             onTap: () {
-              getImage(ImageSource.camera, _picker).then((image) {
-                predict(image).then((predData) {
-
-                });
-              });
+              predict(context, ImageSource.gallery, _picker);
             },
           ),
           SpeedDialChild(
@@ -523,9 +521,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             foregroundColor: colorBlack,
             label: '앨범에서 추가하기',
             onTap: () {
-              getImage(ImageSource.gallery, _picker).then((image) {
-                predict(image);
-              });
+              predict(context, ImageSource.gallery, _picker);
             },
           ),
         ],

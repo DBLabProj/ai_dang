@@ -81,7 +81,7 @@ class _loginPageState extends State<loginPage> {
                           (MediaQuery.of(context).size.width) * 0.35,
                       child: TextField(
                         controller: _idTextEditController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Email',
                           hintText: 'Enter your email',
                           labelStyle: TextStyle(color: Color(0xffCF2525)),
@@ -110,7 +110,7 @@ class _loginPageState extends State<loginPage> {
                           (MediaQuery.of(context).size.width) * 0.35,
                       child: TextField(
                         controller: _passwordTextEditController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           // filled: true,
                           labelText: 'Password',
                           hintText: 'Enter your password',

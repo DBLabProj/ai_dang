@@ -1,17 +1,33 @@
 // 비동기 처리를
+import 'package:ai_dang/views/predResult.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'dart:io';
 
-Future getImage(ImageSource imageSource, ImagePicker picker) async {
-  XFile? image = await picker.pickImage(
-      source: imageSource);
+Future predict(BuildContext context,
+               ImageSource imageSource, ImagePicker picker) async {
+  XFile? image = await picker.pickImage(source: imageSource);
+
+  transImage(image).then((sendData) {
+    sendImage(sendData).then((predData) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) =>
+            PredResultPage(predResult: predData, image: File(image!.path))),
+      );
+    });
+  });
+}
+
+Future transImage(XFile? image) async {
   if (image != null) {
     return await MultipartFile.fromFile(image.path);
   }
   return null;
 }
 
-Future predict(var image) async {
+Future sendImage(var image) async {
   var requestUri = Uri.encodeFull('http://203.252.240.74:5000/predict');
   var formData = FormData.fromMap({"file": image});
 
