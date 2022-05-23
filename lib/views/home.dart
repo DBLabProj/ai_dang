@@ -8,7 +8,6 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);
 var colorLightGray = const Color(0xffF3F3F3);
@@ -88,7 +87,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               formatButtonVisible: false,
                               rightChevronVisible: false,
                               leftChevronVisible: false),
-                          selectedDayPredicate: (day) {return isSameDay(_selectedDay, day);},
+                          selectedDayPredicate: (day) {
+                            return isSameDay(_selectedDay, day);
+                          },
                           onDaySelected: (selectedDay, focusedDay) {
                             if (!isSameDay(_selectedDay, selectedDay)) {
                               // Call `setState()` when updating the selected day
@@ -99,57 +100,53 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           },
                           calendarBuilders: CalendarBuilders(
                               selectedBuilder: (context, day, focusedDay) {
-                                var strDay = DateFormat.d().format(day);
-                                return Center(
-                                  child: Container(
-                                      width: 40,
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                          color: colorRed,
-                                          shape: BoxShape.circle
-                                      ),
-                                      child: Center(
-                                          child: Text(strDay,
-                                            style: TextStyle(color: Colors.white),
-                                          ))
-                                  ),
-                                );
-                              },
-
-                              headerTitleBuilder: (context, day) {
-                                var strDay = DateFormat("yyyy년 M월").format(day);
-                                var iconBtn;
-                                if(_calendarFormat == CalendarFormat.week) {
-                                  iconBtn = IconButton(
-                                      onPressed: (){
-                                        setState((){
-                                          _calendarFormat = CalendarFormat.month;
-                                        });},
-                                      icon: const Icon(Icons.keyboard_arrow_down)
-                                  );
-                                } else {
-                                  iconBtn = IconButton(
-                                      onPressed: (){
-                                        setState((){
-                                          _calendarFormat = CalendarFormat.week;
-                                        });},
-                                      icon: const Icon(Icons.keyboard_arrow_up)
-                                  );
-                                }
-                                return Row(
-                                  children: [
-                                    Text(strDay,
-                                        style: TextStyle(color: colorRed, fontSize: 21,fontWeight: FontWeight.w600)
-                                    ),
-                                    Center(child: iconBtn)
-                                  ],
-                                );
-                              }
-                          ),
+                            var strDay = DateFormat.d().format(day);
+                            return Center(
+                              child: Container(
+                                  width: 40,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                      color: colorRed, shape: BoxShape.circle),
+                                  child: Center(
+                                      child: Text(
+                                    strDay,
+                                    style: TextStyle(color: Colors.white),
+                                  ))),
+                            );
+                          }, headerTitleBuilder: (context, day) {
+                            var strDay = DateFormat("yyyy년 M월").format(day);
+                            var iconBtn;
+                            if (_calendarFormat == CalendarFormat.week) {
+                              iconBtn = IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _calendarFormat = CalendarFormat.month;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.keyboard_arrow_down));
+                            } else {
+                              iconBtn = IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _calendarFormat = CalendarFormat.week;
+                                    });
+                                  },
+                                  icon: const Icon(Icons.keyboard_arrow_up));
+                            }
+                            return Row(
+                              children: [
+                                Text(strDay,
+                                    style: TextStyle(
+                                        color: colorRed,
+                                        fontSize: 21,
+                                        fontWeight: FontWeight.w600)),
+                                Center(child: iconBtn)
+                              ],
+                            );
+                          }),
                         ),
                       ],
-                    )
-                ),
+                    )),
                 // 구분선, 영양분 섭취정보
                 Padding(
                   padding: const EdgeInsets.fromLTRB(25, 0, 25, 20),
@@ -163,13 +160,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: const [
-                            Text('하루 섭취량',),
-                            Text('694 / 1,428 kcal', style: TextStyle(fontSize: 17),)
+                            Text(
+                              '하루 섭취량',
+                            ),
+                            Text(
+                              '694 / 1,428 kcal',
+                              style: TextStyle(fontSize: 17),
+                            )
                           ],
                         ),
                       ),
                       // 일간 영양정보
-                      Padding(padding: const EdgeInsets.fromLTRB(5, 20, 5, 0),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(5, 20, 5, 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -178,13 +181,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               children: [
                                 const Text('탄수화물'),
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(0, 13, 0, 13),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 13, 0, 13),
                                   child: SizedBox(
                                     width: 110,
                                     height: 5,
                                     child: LinearProgressIndicator(
                                       backgroundColor: colorGray,
-                                      valueColor: AlwaysStoppedAnimation(colorRed),
+                                      valueColor:
+                                          AlwaysStoppedAnimation(colorRed),
                                       value: 0.40,
                                     ),
                                   ),
@@ -197,13 +202,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               children: [
                                 const Text('단백질'),
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(5, 13, 5, 13),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 13, 5, 13),
                                   child: SizedBox(
                                     width: 110,
                                     height: 5,
                                     child: LinearProgressIndicator(
                                       backgroundColor: colorGray,
-                                      valueColor: AlwaysStoppedAnimation(colorRed),
+                                      valueColor:
+                                          AlwaysStoppedAnimation(colorRed),
                                       value: 0.50,
                                     ),
                                   ),
@@ -216,13 +223,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               children: [
                                 const Text('지방'),
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(5, 13, 5, 13),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 13, 5, 13),
                                   child: SizedBox(
                                     width: 110,
                                     height: 5,
                                     child: LinearProgressIndicator(
                                       backgroundColor: colorGray,
-                                      valueColor: AlwaysStoppedAnimation(colorRed),
+                                      valueColor:
+                                          AlwaysStoppedAnimation(colorRed),
                                       value: 0.35,
                                     ),
                                   ),
@@ -230,7 +239,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                 const Text('15 / 40 g'),
                               ],
                             ),
-
                           ],
                         ),
                       )
@@ -243,7 +251,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     color: colorLightGray,
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
-                      child:  SingleChildScrollView(
+                      child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Column(
                           children: [
@@ -262,50 +270,61 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     // 식단 이미지
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image.asset("assets/image/001.jpg",
+                                      child: Image.asset(
+                                        "assets/image/001.jpg",
                                         fit: BoxFit.fitHeight,
-                                        width: 170, height: 180,),
+                                        width: 170,
+                                        height: 180,
+                                      ),
                                     ),
                                     // 식단 정보
                                     Expanded(
                                         child: Padding(
-                                          padding: const EdgeInsets.all(15.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              // 식단 이름
-                                              Text("돼지국밥",
-                                                style: TextStyle(
-                                                    color: colorBlack, fontSize: 18,
-                                                    fontWeight: FontWeight.w500),
-                                              ),
-                                              // 시간 및 식사종류
-                                              const SizedBox(height: 7),
-                                              Text("오전 10:24 · 아침",
-                                                style: TextStyle(
-                                                    color: colorDarkGray, fontSize: 13,
-                                                    fontWeight: FontWeight.w400),
-                                              ),
-                                              // 식단 설명
-                                              const SizedBox(height: 20),
-                                              Text("시장 장터순대국밥\n꽤 맛있었는데 좀 짰음",
-                                                style: TextStyle(
-                                                    color: colorDarkGray, fontSize: 13,
-                                                    fontWeight: FontWeight.w400),
-                                              ),
-                                            ],
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // 식단 이름
+                                          Text(
+                                            "돼지국밥",
+                                            style: TextStyle(
+                                                color: colorBlack,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
                                           ),
-                                        )
-                                    ),
+                                          // 시간 및 식사종류
+                                          const SizedBox(height: 7),
+                                          Text(
+                                            "오전 10:24 · 아침",
+                                            style: TextStyle(
+                                                color: colorDarkGray,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          // 식단 설명
+                                          const SizedBox(height: 20),
+                                          Text(
+                                            "시장 장터순대국밥\n꽤 맛있었는데 좀 짰음",
+                                            style: TextStyle(
+                                                color: colorDarkGray,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
                                     // 혈당 정보 간략하게 표시하는 도형
                                     Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 18, 0, 0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 18, 0, 0),
                                       child: Container(
-                                        width: 20, height: 20,
+                                        width: 20,
+                                        height: 20,
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(4),
-                                            color: colorOrange
-                                        ),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color: colorOrange),
                                       ),
                                     )
                                   ],
@@ -328,50 +347,61 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     // 식단 이미지
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image.asset("assets/image/002.jpg",
+                                      child: Image.asset(
+                                        "assets/image/002.jpg",
                                         fit: BoxFit.fitHeight,
-                                        width: 170, height: 180,),
+                                        width: 170,
+                                        height: 180,
+                                      ),
                                     ),
                                     // 식단 정보
                                     Expanded(
                                         child: Padding(
-                                          padding: const EdgeInsets.all(15.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              // 식단 이름
-                                              Text("치즈버거",
-                                                style: TextStyle(
-                                                    color: colorBlack, fontSize: 18,
-                                                    fontWeight: FontWeight.w500),
-                                              ),
-                                              // 시간 및 식사종류
-                                              const SizedBox(height: 7),
-                                              Text("오후 01:13 · 점심",
-                                                style: TextStyle(
-                                                    color: colorDarkGray, fontSize: 13,
-                                                    fontWeight: FontWeight.w400),
-                                              ),
-                                              // 식단 설명
-                                              const SizedBox(height: 20),
-                                              Text("맥도날드 치즈버거\n혈관이 텁텁하게 막히는 느낌",
-                                                style: TextStyle(
-                                                    color: colorDarkGray, fontSize: 13,
-                                                    fontWeight: FontWeight.w400),
-                                              ),
-                                            ],
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // 식단 이름
+                                          Text(
+                                            "치즈버거",
+                                            style: TextStyle(
+                                                color: colorBlack,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
                                           ),
-                                        )
-                                    ),
+                                          // 시간 및 식사종류
+                                          const SizedBox(height: 7),
+                                          Text(
+                                            "오후 01:13 · 점심",
+                                            style: TextStyle(
+                                                color: colorDarkGray,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          // 식단 설명
+                                          const SizedBox(height: 20),
+                                          Text(
+                                            "맥도날드 치즈버거\n혈관이 텁텁하게 막히는 느낌",
+                                            style: TextStyle(
+                                                color: colorDarkGray,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
                                     // 혈당 정보 간략하게 표시하는 도형
                                     Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 18, 0, 0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 18, 0, 0),
                                       child: Container(
-                                        width: 20, height: 20,
+                                        width: 20,
+                                        height: 20,
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(4),
-                                            color: colorRed
-                                        ),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color: colorRed),
                                       ),
                                     )
                                   ],
@@ -394,49 +424,60 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     // 식단 이미지
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(10),
-                                      child: Image.asset("assets/image/003.jpg",
+                                      child: Image.asset(
+                                        "assets/image/003.jpg",
                                         fit: BoxFit.fitHeight,
-                                        width: 170, height: 180,),
+                                        width: 170,
+                                        height: 180,
+                                      ),
                                     ),
                                     // 식단 정보
                                     Expanded(
                                         child: Padding(
-                                          padding: const EdgeInsets.all(15.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              // 식단 이름
-                                              Text("된장찌개",
-                                                style: TextStyle(
-                                                    color: colorBlack, fontSize: 18,
-                                                    fontWeight: FontWeight.w500),
-                                              ),
-                                              // 시간 및 식사종류
-                                              const SizedBox(height: 7),
-                                              Text("오후 06:33 · 저녁",
-                                                style: TextStyle(
-                                                    color: colorDarkGray, fontSize: 13,
-                                                    fontWeight: FontWeight.w400),
-                                              ),
-                                              // 식단 설명
-                                              const SizedBox(height: 20),
-                                              Text("집밥 된장찌개\n간도 알맞고 꽤 맛있었음",
-                                                style: TextStyle(
-                                                    color: colorDarkGray, fontSize: 13,
-                                                    fontWeight: FontWeight.w400),
-                                              ),
-                                            ],
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // 식단 이름
+                                          Text(
+                                            "된장찌개",
+                                            style: TextStyle(
+                                                color: colorBlack,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500),
                                           ),
-                                        )
-                                    ),
+                                          // 시간 및 식사종류
+                                          const SizedBox(height: 7),
+                                          Text(
+                                            "오후 06:33 · 저녁",
+                                            style: TextStyle(
+                                                color: colorDarkGray,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                          // 식단 설명
+                                          const SizedBox(height: 20),
+                                          Text(
+                                            "집밥 된장찌개\n간도 알맞고 꽤 맛있었음",
+                                            style: TextStyle(
+                                                color: colorDarkGray,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+                                    )),
                                     Padding(
-                                      padding: const EdgeInsets.fromLTRB(0, 18, 0, 0),
+                                      padding: const EdgeInsets.fromLTRB(
+                                          0, 18, 0, 0),
                                       child: Container(
-                                        width: 20, height: 20,
+                                        width: 20,
+                                        height: 20,
                                         decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(4),
-                                            color: colorGreen
-                                        ),
+                                            borderRadius:
+                                                BorderRadius.circular(4),
+                                            color: colorGreen),
                                       ),
                                     )
                                   ],
@@ -470,7 +511,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             label: '카메라로 추가하기',
             onTap: () {
               getImage(ImageSource.camera, _picker).then((image) {
-                predict(image);
+                predict(image).then((predData) {
+
+                });
               });
             },
           ),
@@ -479,7 +522,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             backgroundColor: Colors.white,
             foregroundColor: colorBlack,
             label: '앨범에서 추가하기',
-
             onTap: () {
               getImage(ImageSource.gallery, _picker).then((image) {
                 predict(image);
