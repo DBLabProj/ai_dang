@@ -23,8 +23,8 @@ class _loginPageState extends State<loginPage> {
   final _idTextEditController = TextEditingController();
   final _passwordTextEditController = TextEditingController();
 
-  Future conn = DbHandler().connect();
-  Future select = DbHandler().printData(DbHandler().connect());
+  // Future conn = DbHandler().connect();
+  // Future select = DbHandler().printData(DbHandler().connect());
 
   // @override
   // void dispose() {
@@ -140,13 +140,6 @@ class _loginPageState extends State<loginPage> {
                           (MediaQuery.of(context).size.width) * 0.40,
                       child: ElevatedButton(
                         onPressed: () {
-
-                          if (kDebugMode) {
-                            print(_idTextEditController.text);
-                            print( _passwordTextEditController.text);
-                            print(select);
-                          }
-
 
                           Navigator.push(
                             context,

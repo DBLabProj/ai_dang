@@ -49,17 +49,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final _picker = ImagePicker();
 
   void printData() {
-    var db = DbHandler();
-    db.connect().then((conn) {
-      db.printData(conn).then((results) {
-        print(results);
+    connect().then((conn) {
+      printPreds(conn).then((preds) {
+        // for(var row in preds) {
+        //   print('no: ${row[0]}');
+        // }
+        insertPreds(conn);
       });
-      conn.close();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    printData();
     return Scaffold(
       body: Container(
         color: Colors.white,

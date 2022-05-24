@@ -36,15 +36,6 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   void _incrementCounter() {
-
-    var db = DbHandler();
-    db.connect().then((conn) {
-      db.printData(conn).then((results) {
-        print(results);
-      });
-      conn.close();
-    });
-
     setState(() {
       _counter++;
     });
