@@ -7,18 +7,28 @@ import 'genderpage.dart';
 
 
 
-class signup extends StatelessWidget {
+class signup extends StatefulWidget {
+  signup({Key? key}) : super(key: key);
+
+  @override
+  State<signup> createState() => _signupState();
+}
+
+class _signupState extends State<signup> {
   final _idTextEditController = TextEditingController();
+
   final _passwordTextEditController = TextEditingController();
+
+  final _passwordTextEditController_check = TextEditingController();
+
+  var signupList = [];
 
   @override
   void dispose() {
     _idTextEditController.dispose();
     _passwordTextEditController.dispose();
+    _passwordTextEditController_check.dispose();
   }
-
-  signup({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -85,12 +95,6 @@ class signup extends StatelessWidget {
                         ),
                         keyboardType: TextInputType.emailAddress,
 
-
-                        onChanged: (id) {
-                          print('아이디 텍스트 필드 : $id');
-                        },
-
-
                       ),
                     ),
 
@@ -100,6 +104,7 @@ class signup extends StatelessWidget {
                       width: (MediaQuery.of(context).size.width) -
                           (MediaQuery.of(context).size.width) * 0.35,
                       child: TextField(
+                        controller: _passwordTextEditController,
                         decoration: InputDecoration(
                           // filled: true,
                           labelText: 'Password',
@@ -128,6 +133,7 @@ class signup extends StatelessWidget {
                       width: (MediaQuery.of(context).size.width) -
                           (MediaQuery.of(context).size.width) * 0.35,
                       child: TextField(
+                        controller: _passwordTextEditController_check,
                         decoration: InputDecoration(
                           // filled: true,
                           labelText: 'Password check',
@@ -157,7 +163,14 @@ class signup extends StatelessWidget {
                           (MediaQuery.of(context).size.width) * 0.40,
                       child: ElevatedButton(
                         onPressed: () {
+                          signupList.add(_idTextEditController.text);
+                          signupList.add(_passwordTextEditController.text);
+                          signupList.add(_passwordTextEditController_check.text);
+                          // print(_idTextEditController.text);
+                          // print(_passwordTextEditController.text);
+                          // print(_passwordTextEditController_check.text);
 
+                          print(signupList);
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => genderpage()),

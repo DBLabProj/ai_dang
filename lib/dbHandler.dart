@@ -24,3 +24,12 @@ Future printPreds(conn) async {
                                 ['P20220524-001', null, null, null, null]);
   return result;
 }
+
+  Future selectUsers(conn) async {
+  var result = await conn.query('select * from user');
+  return result;
+}
+
+  // Future insertUsers(conn) async {
+  // var result = await conn.query('INSERT INTO user VALUES(?,?,?,?,?,?,?,?)',)
+  // }
