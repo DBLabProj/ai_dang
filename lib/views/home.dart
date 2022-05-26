@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/dbHandler.dart';
 import 'package:ai_dang/request.dart';
-import 'package:ai_dang/views/predResult.dart';
 
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -258,6 +257,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.max,
                           children: [
                             // 식단 컴포넌트
                             Container(
@@ -500,7 +501,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ),
       ),
       floatingActionButton: SpeedDial(
-        tooltip: 'Increment Counter',
         icon: Icons.add,
         activeIcon: Icons.close,
         iconTheme: const IconThemeData(size: 32),

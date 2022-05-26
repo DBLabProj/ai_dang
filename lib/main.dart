@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
         onTap: _onItemTapped,
         currentIndex: selectedindex,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             label: 'Home',
             icon: Icon(Icons.home),
