@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 var lightGray = const Color(0xffF3F3F3);
 var black = const Color(0xff393939);
@@ -39,9 +38,12 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  bool _expanded = false;
+  final Icon _arrowDown = Icon(Icons.keyboard_arrow_down);
+  final Icon _arrowUp = Icon(Icons.keyboard_arrow_up);
+
   @override
   Widget build(BuildContext context) {
-    print(widget.predResult);
     return Scaffold(
         body: Container(
             color: lightGray,
@@ -57,62 +59,91 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       fit: BoxFit.fitWidth,
                     ),
                   ),
-                  // 측정결과 가져오기
-                  Container(
-                    color: Colors.white,
-                    width: MediaQuery.of(context).size.width,
-                    height: 135,
-                    child: Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('측정 결과,',
-                                  style: TextStyle(
-                                      color: black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500)),
-                              Row(
+                  ExpansionPanelList(
+                    animationDuration: const Duration(milliseconds: 300),
+                    children: [
+                      ExpansionPanel(
+                        headerBuilder: (context, isExpanded) {
+                          return Container(
+                            color: Colors.white,
+                            width: MediaQuery.of(context).size.width,
+                            height: 135,
+                            child: Padding(
+                              padding: const EdgeInsets.all(30.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('${widget.predResult['class_name']}',
-                                      style: TextStyle(
-                                          color: red,
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.w900)),
-                                  Text(' 입니다.',
-                                      style: TextStyle(
-                                          color: black,
-                                          fontSize: 32,
-                                          fontWeight: FontWeight.w900))
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('측정 결과,',
+                                          textScaleFactor: 1.2,
+                                          style: TextStyle(
+                                              color: black,
+                                              fontWeight: FontWeight.w500)),
+                                      Row(
+                                        children: [
+                                          Text(
+                                              '${widget.predResult['class_name']}',
+                                              textScaleFactor: 2.0,
+                                              style: TextStyle(
+                                                  color: red,
+                                                  fontWeight: FontWeight.w900)),
+                                          Text(' 입니다.',
+                                              textScaleFactor: 2.0,
+                                              style: TextStyle(
+                                                  color: black,
+                                                  fontWeight: FontWeight.w900))
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        // 영양정보 펼치기 버튼
+                                        IconButton(
+                                          iconSize: 36,
+                                          padding: EdgeInsets.zero, // 패딩 설정
+                                          constraints:
+                                              const BoxConstraints(), // constraints
+                                          icon: (_expanded)
+                                              ? _arrowUp
+                                              : _arrowDown,
+                                          onPressed: () {
+                                            setState(() {
+                                              _expanded = !_expanded;
+                                            });
+                                          },
+                                        ),
+                                        Text(
+                                            (_expanded)
+                                                ? '영양정보 접기'
+                                                : '영양정보 펼치기',
+                                            textScaleFactor: 1.0,
+                                            style: TextStyle(
+                                                color: black,
+                                                fontWeight: FontWeight.w500)),
+                                      ]),
                                 ],
                               ),
-                            ],
-                          ),
-                          Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                  IconButton(
-                                    iconSize: 48,
-                                    padding: EdgeInsets.zero, // 패딩 설정
-                                    constraints: BoxConstraints(), // constraints
-                                    icon: Icon(
-                                      Icons.keyboard_arrow_down,
-                                    ), onPressed: () {  },
-
-                                  ),
-                                  Text('영양정보 펼치기',
-                                      style: TextStyle(
-                                          color: black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500)),
-                              ]),
-                        ],
+                            ),
+                          );
+                        },
+                        body: Text('gg'),
+                        hasIcon: false,
+                        isExpanded: _expanded,
                       ),
-                    ),
-                  )
+                    ],
+                    expandedHeaderPadding: EdgeInsets.all(0),
+                    expansionCallback: (panelIndex, isExpanded) {
+                      _expanded = !_expanded;
+                      setState(() {});
+                    },
+                  ),
                 ]),
               ),
             )));
