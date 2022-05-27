@@ -173,7 +173,7 @@ class _signupState extends State<signup> {
                           print(signupList);
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => genderpage()),
+                            MaterialPageRoute(builder: (context) => genderpage(signUpList: signupList)),
                           );
                         },
                         child: Text('가입하기', style: TextStyle(

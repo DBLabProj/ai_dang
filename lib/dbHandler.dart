@@ -30,6 +30,7 @@ Future printPreds(conn) async {
   return result;
 }
 
-  // Future insertUsers(conn) async {
-  // var result = await conn.query('INSERT INTO user VALUES(?,?,?,?,?,?,?,?)',)
-  // }
+  Future insertUsers(conn, email, gender) async {
+  var result = await conn.query('INSERT INTO user VALUES(?,?,?,?,?,?,?,?)',
+                                [email, gender]);
+  }

@@ -5,7 +5,8 @@ import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 
 class genderpage extends StatefulWidget {
-  const genderpage({Key? key}) : super(key: key);
+  final signUpList;
+  const genderpage({Key? key, @required this.signUpList}) : super(key: key);
 
   @override
   _genderpageState createState() => _genderpageState();
@@ -17,6 +18,7 @@ class _genderpageState extends State<genderpage> {
   var btnTwoStyle;
   @override
   Widget build(BuildContext context) {
+    print(widget.signUpList);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
