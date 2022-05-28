@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ai_dang/my_expansion_panel.dart';
 
 var lightGray = const Color(0xffF3F3F3);
 var black = const Color(0xff393939);
@@ -59,10 +60,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       fit: BoxFit.fitWidth,
                     ),
                   ),
-                  ExpansionPanelList(
+                  MyExpansionPanelList(
                     animationDuration: const Duration(milliseconds: 300),
                     children: [
-                      ExpansionPanel(
+                      MyExpansionPanel(
                         headerBuilder: (context, isExpanded) {
                           return Container(
                             color: Colors.white,
@@ -72,11 +73,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               padding: const EdgeInsets.all(30.0),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text('측정 결과,',
                                           textScaleFactor: 1.2,
@@ -102,14 +103,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                   ),
                                   Column(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      MainAxisAlignment.center,
                                       children: [
                                         // 영양정보 펼치기 버튼
                                         IconButton(
                                           iconSize: 36,
                                           padding: EdgeInsets.zero, // 패딩 설정
                                           constraints:
-                                              const BoxConstraints(), // constraints
+                                          const BoxConstraints(), // constraints
                                           icon: (_expanded)
                                               ? _arrowUp
                                               : _arrowDown,
