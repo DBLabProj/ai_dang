@@ -54,14 +54,13 @@ class _diseasetypeState extends State<diseasetype> {
 
                           onPressed: (){
                             setState(() {
-                              diseasetype = "2";
-                              if(diseasetype == "2") {
+                              diseasetype = "제2형";
+                              if(diseasetype == "제2형") {
                                 btnOneStyle = BorderSide(color: Colors.red);
                                 btnTwoStyle = null;
                                 btnThrStyle = null;
                               }
                             });
-                            print("2");
                           },
                           child: Text(
                             '제2형',style: TextStyle(
@@ -94,14 +93,13 @@ class _diseasetypeState extends State<diseasetype> {
 
                           onPressed: (){
                             setState(() {
-                              diseasetype = "1";
-                              if(diseasetype == "1") {
+                              diseasetype = "제1형";
+                              if(diseasetype == "제1형") {
                                 btnOneStyle = null;
                                 btnTwoStyle = BorderSide(color: Colors.red);
                                 btnThrStyle = null;
                               }
                             });
-                            print("1");
                           },
                           child: Text(
                             '제1형',style: TextStyle(
@@ -131,14 +129,13 @@ class _diseasetypeState extends State<diseasetype> {
 
                           onPressed: (){
                             setState(() {
-                              diseasetype = "3";
-                              if(diseasetype == "3" ) {
+                              diseasetype = "임신성";
+                              if(diseasetype == "임신성" ) {
                                 btnOneStyle = null;
                                 btnTwoStyle = null;
                                 btnThrStyle = BorderSide(color: Colors.red);
                               }
                             });
-                            print("3");
                           },
                           child: Text(
                             '임신성',style: TextStyle(
