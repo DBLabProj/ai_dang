@@ -63,7 +63,6 @@ class _genderpageState extends State<genderpage> {
                       }
 
                     });
-                    print("male");
                   },
                   child: Image(
                     image: AssetImage("assets/image/male.png"),
@@ -106,7 +105,6 @@ class _genderpageState extends State<genderpage> {
                       }
 
                     });
-                    print("female");
                   },
                   child: Image(
                     image: AssetImage("assets/image/female.png"),
@@ -134,9 +132,15 @@ class _genderpageState extends State<genderpage> {
                     (MediaQuery.of(context).size.width) * 0.4,
                 child: ElevatedButton(
                   onPressed: () {
+
+                    final signUpList_data = widget.signUpList.add(sex);
+
+                    print(widget.signUpList);
+                    print(signUpList_data);
+
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => agepage()),
+                      MaterialPageRoute(builder: (context) => agepage(signUpList:widget.signUpList)),
                     );
                   },
                   child: Text('다음 단계로', style: TextStyle(
