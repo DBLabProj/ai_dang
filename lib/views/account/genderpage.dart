@@ -16,6 +16,8 @@ class _genderpageState extends State<genderpage> {
   var sex;
   var btnOneStyle;
   var btnTwoStyle;
+  var signUpList_data = [];
+
   @override
   Widget build(BuildContext context) {
     print(widget.signUpList);
@@ -133,9 +135,9 @@ class _genderpageState extends State<genderpage> {
                 child: ElevatedButton(
                   onPressed: () {
 
-                    final signUpList_data = widget.signUpList.add(sex);
 
-                    print(widget.signUpList);
+                    // print(widget.signUpList);
+                    print(12345);
                     print(signUpList_data);
 
                     Navigator.push(
