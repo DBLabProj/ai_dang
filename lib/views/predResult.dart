@@ -5,6 +5,8 @@ import 'package:ai_dang/my_expansion_panel.dart';
 var lightGray = const Color(0xffF3F3F3);
 var black = const Color(0xff393939);
 var red = const Color(0xffCF2525);
+var gray = const Color(0xffDADADA);
+var deepGray = const Color(0xff535353);
 
 class PredResultPage extends StatelessWidget {
   final image;
@@ -64,6 +66,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     animationDuration: const Duration(milliseconds: 300),
                     children: [
                       MyExpansionPanel(
+                        hasIcon: false,
+                        isExpanded: _expanded,
                         headerBuilder: (context, isExpanded) {
                           return Container(
                             color: Colors.white,
@@ -73,11 +77,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               padding: const EdgeInsets.all(30.0),
                               child: Row(
                                 mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Column(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text('측정 결과,',
                                           textScaleFactor: 1.2,
@@ -103,14 +107,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                   ),
                                   Column(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.center,
+                                          MainAxisAlignment.center,
                                       children: [
                                         // 영양정보 펼치기 버튼
                                         IconButton(
                                           iconSize: 36,
                                           padding: EdgeInsets.zero, // 패딩 설정
                                           constraints:
-                                          const BoxConstraints(), // constraints
+                                              const BoxConstraints(), // constraints
                                           icon: (_expanded)
                                               ? _arrowUp
                                               : _arrowDown,
@@ -134,9 +138,67 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             ),
                           );
                         },
-                        body: Text('gg'),
-                        hasIcon: false,
-                        isExpanded: _expanded,
+                        // 영양정보 영역 (펼쳐질때)
+                        body: Column(
+                          children: [
+                            // 구분선, 1회제공량
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  20.0, 0.0, 20.0, 0.0),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    '1회제공량(300g) 기준',
+                                    style: TextStyle(color: deepGray),
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(width: 1.5, color: gray),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            ListView(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 30.0),
+                              children: <Widget>[
+                                Container(
+                                  height: 50,
+                                  child: const Center(child: Text('Entry A')),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom:
+                                          BorderSide(width: 1.5, color: gray),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 50,
+                                  child: const Center(child: Text('Entry A')),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom:
+                                          BorderSide(width: 1.5, color: gray),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  height: 50,
+                                  child: const Center(child: Text('Entry A')),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom:
+                                          BorderSide(width: 1.5, color: gray),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                     expandedHeaderPadding: EdgeInsets.all(0),
