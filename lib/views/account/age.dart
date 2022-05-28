@@ -113,7 +113,7 @@ class _agepageState extends State<agepage> {
                               print(widget.signUpList);
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => heightpage()),
+                                MaterialPageRoute(builder: (context) => heightpage(signUpList : widget.signUpList)),
                               );
                             },
                             child: Text('다음 단계로', style: TextStyle(
@@ -134,9 +134,10 @@ class _agepageState extends State<agepage> {
                               (MediaQuery.of(context).size.width) * 0.4,
                           child: ElevatedButton(
                             onPressed: () {
+                              widget.signUpList.removeLast();
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => genderpage()),
+                                MaterialPageRoute(builder: (context) => genderpage(signUpList: widget.signUpList)),
                               );
                             },
                             child: Text('이전 단계로', style: TextStyle(

@@ -6,7 +6,8 @@ import 'package:flutter/rendering.dart';
 import '../loginPage.dart';
 
 class diseasetype extends StatefulWidget {
-  const diseasetype({Key? key}) : super(key: key);
+  final signUpList;
+  const diseasetype({Key? key, @required this.signUpList}) : super(key: key);
 
   @override
   _diseasetypeState createState() => _diseasetypeState();
@@ -166,6 +167,9 @@ class _diseasetypeState extends State<diseasetype> {
                             (MediaQuery.of(context).size.width) * 0.4,
                         child: ElevatedButton(
                           onPressed: () {
+
+                            widget.signUpList.add(diseasetype);
+                            print(widget.signUpList);
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => loginPage()),
@@ -189,9 +193,10 @@ class _diseasetypeState extends State<diseasetype> {
                             (MediaQuery.of(context).size.width) * 0.4,
                         child: ElevatedButton(
                           onPressed: () {
+                            widget.signUpList.removeLast();
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => weightpage()),
+                              MaterialPageRoute(builder: (context) => weightpage(signUpList:widget.signUpList)),
                             );
                           },
                           child: Text('이전 단계로', style: TextStyle(

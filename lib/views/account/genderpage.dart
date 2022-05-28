@@ -16,7 +16,6 @@ class _genderpageState extends State<genderpage> {
   var sex;
   var btnOneStyle;
   var btnTwoStyle;
-  var signUpList_data = [];
 
   @override
   Widget build(BuildContext context) {
@@ -136,9 +135,8 @@ class _genderpageState extends State<genderpage> {
                   onPressed: () {
 
 
-                    // print(widget.signUpList);
-                    print(12345);
-                    print(signUpList_data);
+                    widget.signUpList.add(sex);
+                    print(widget.signUpList);
 
                     Navigator.push(
                       context,
@@ -163,9 +161,13 @@ class _genderpageState extends State<genderpage> {
                     (MediaQuery.of(context).size.width) * 0.4,
                 child: ElevatedButton(
                   onPressed: () {
+
+                    print(widget.signUpList);
+
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => signup()),
+                      MaterialPageRoute(builder: (context) => signup(
+                      )),
                     );
                   },
                   child: Text('이전 단계로', style: TextStyle(

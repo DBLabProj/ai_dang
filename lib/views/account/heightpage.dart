@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 class heightpage extends StatefulWidget {
-  const heightpage({Key? key}) : super(key: key);
+  final signUpList;
+  const heightpage({Key? key, @required this.signUpList}) : super(key: key);
 
   @override
   _heightpageState createState() => _heightpageState();
@@ -101,9 +102,12 @@ class _heightpageState extends State<heightpage> {
                               (MediaQuery.of(context).size.width) * 0.4,
                           child: ElevatedButton(
                             onPressed: () {
+
+                              widget.signUpList.add(_currentIntValue);
+                              print(widget.signUpList);
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => weightpage()),
+                                MaterialPageRoute(builder: (context) => weightpage(signUpList:widget.signUpList)),
                               );
                             },
                             child: Text('다음 단계로', style: TextStyle(
@@ -124,9 +128,12 @@ class _heightpageState extends State<heightpage> {
                               (MediaQuery.of(context).size.width) * 0.4,
                           child: ElevatedButton(
                             onPressed: () {
+
+                              widget.signUpList.removeLast();
+
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => agepage()),
+                                MaterialPageRoute(builder: (context) => agepage(signUpList: widget.signUpList)),
                               );
                             },
                             child: Text('이전 단계로', style: TextStyle(

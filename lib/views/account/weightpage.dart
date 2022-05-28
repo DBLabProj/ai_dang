@@ -7,7 +7,8 @@ import 'heightpage.dart';
 
 
 class weightpage extends StatefulWidget {
-  const weightpage({Key? key}) : super(key: key);
+  final signUpList;
+  const weightpage({Key? key, @required this.signUpList}) : super(key: key);
 
   @override
   _weightpageState createState() => _weightpageState();
@@ -103,9 +104,13 @@ class _weightpageState extends State<weightpage> {
                               (MediaQuery.of(context).size.width) * 0.4,
                           child: ElevatedButton(
                             onPressed: () {
+
+                              widget.signUpList.add(_currentIntValue);
+                              print(widget.signUpList);
+
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => diseasetype()),
+                                MaterialPageRoute(builder: (context) => diseasetype(signUpList:widget.signUpList)),
                               );
                             },
                             child: Text('다음 단계로', style: TextStyle(
@@ -126,9 +131,11 @@ class _weightpageState extends State<weightpage> {
                               (MediaQuery.of(context).size.width) * 0.4,
                           child: ElevatedButton(
                             onPressed: () {
+
+                              widget.signUpList.removeLast();
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => heightpage()),
+                                MaterialPageRoute(builder: (context) => heightpage(signUpList:widget.signUpList)),
                               );
                             },
                             child: Text('이전 단계로', style: TextStyle(
