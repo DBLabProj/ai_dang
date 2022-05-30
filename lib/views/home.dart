@@ -51,10 +51,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   void printData() {
     connect().then((conn) {
       printPreds(conn).then((preds) {
-        // for(var row in preds) {
-        //   print('no: ${row[0]}');
-        // }
-        insertPreds(conn);
+        for(var row in preds) {
+          print('no: ${row[0]}');
+        }
       });
     });
   }

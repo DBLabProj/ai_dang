@@ -9,8 +9,8 @@ Future connect() async {
       password: 'dblab6100!@#',
       db: 'ai_dang'
   );
-  var conn = MySqlConnection.connect(settings);
-  await Future.delayed(const Duration(milliseconds: 300));
+  var conn = await MySqlConnection.connect(settings);
+  await Future.delayed(const Duration(milliseconds: 500));
   return conn;
 }
 
