@@ -517,6 +517,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               foregroundColor: colorBlack,
               label: '카메라로 추가하기',
               onTap: () {
+                setState(() {
+                
+                });
                 predict(context, ImageSource.gallery, _picker);
               },
             ),

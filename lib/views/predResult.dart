@@ -437,7 +437,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                     borderRadius: BorderRadius.circular(10),
                                     boxShadow: [
                                       (_amount == 2)
-                                          ? BoxShadow()
+                                          ? const BoxShadow()
                                           : BoxShadow(
                                           color: Colors.grey.withOpacity(0.4),
                                           blurRadius: 0.8,
