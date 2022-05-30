@@ -9,8 +9,8 @@ Future connect() async {
       password: 'dblab6100!@#',
       db: 'ai_dang'
   );
-  var conn = await MySqlConnection.connect(settings);
-  await Future.delayed(const Duration(milliseconds: 500));
+  var conn = MySqlConnection.connect(settings);
+  await Future.delayed(const Duration(milliseconds: 1000));
   return conn;
 }
 
@@ -30,7 +30,10 @@ Future printPreds(conn) async {
   return result;
 }
 
-  Future insertUsers(conn, email, gender) async {
-  var result = await conn.query('INSERT INTO user VALUES(?,?,?,?,?,?,?,?)',
-                                [email, gender]);
+  Future insertUsers(conn, signUpList) async {
+  var result = await conn.query(
+          'INSERT INTO user VALUES(?,?,?,?,?,?,?,?,?)',
+      [null, null, signUpList[0], signUpList[4], signUpList[1], signUpList[3], signUpList[5], signUpList[6], signUpList[7]]
+  );
+  return result;
   }

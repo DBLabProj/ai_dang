@@ -2,6 +2,8 @@ import 'package:ai_dang/views/account/weightpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:ai_dang/dbHandler.dart';
+
 
 import '../loginPage.dart';
 
@@ -18,6 +20,13 @@ class _diseasetypeState extends State<diseasetype> {
   var btnOneStyle;
   var btnTwoStyle;
   var btnThrStyle;
+
+  void signUp(signUpList){
+    connect().then((conn) {
+      insertUsers(conn, signUpList);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -167,6 +176,9 @@ class _diseasetypeState extends State<diseasetype> {
 
                             widget.signUpList.add(diseasetype);
                             print(widget.signUpList);
+
+                            signUp(widget.signUpList);
+
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => loginPage()),
