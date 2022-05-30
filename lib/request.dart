@@ -3,22 +3,8 @@ import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
-import 'dart:io';
 
-Future predict(BuildContext context,
-               ImageSource imageSource, ImagePicker picker) async {
-  XFile? image = await picker.pickImage(source: imageSource);
 
-  transImage(image).then((sendData) {
-    sendImage(sendData).then((predData) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) =>
-            PredResultPage(predResult: predData, image: File(image!.path))),
-      );
-    });
-  });
-}
 
 Future transImage(XFile? image) async {
   if (image != null) {
