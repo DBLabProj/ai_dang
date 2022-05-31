@@ -16,8 +16,12 @@ Future connect() async {
   return conn;
 }
 
-Future selectMeal(conn) async {
-  var result = await conn.query('SELECT * FROM meal');
+Future selectTodayMeal(conn) async {
+  String sql = '''
+    SELECT * FROM meal
+    WHERE date_format(datetime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+  ''';
+  var result = await conn.query(sql);
   return result;
 }
 
