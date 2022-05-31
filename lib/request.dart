@@ -1,10 +1,19 @@
 // 비동기 처리를
-import 'package:ai_dang/views/predResult.dart';
-import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
 
+Future insertMeal(user, amount, predictNo, desc)  async{
+  http.Response response = await http.post(
+    Uri.parse('http://203.252.240.74:5000/add_meal'),
+    body: {
+      'user': user, 'amount': amount, 'pred_no': predictNo, 'desc': desc
+    }
+  );
 
+  return response;
+}
 
 Future transImage(XFile? image) async {
   if (image != null) {

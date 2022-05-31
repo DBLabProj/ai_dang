@@ -1,6 +1,5 @@
 import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/material.dart';
-import 'package:ai_dang/dbHandler.dart';
 import 'package:ai_dang/request.dart';
 import 'dart:io';
 import 'package:intl/intl.dart';
@@ -47,16 +46,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   var _calendarFormat = CalendarFormat.week;
   final _picker = ImagePicker();
   bool _isLoading = false;
-
-  void printData() {
-    connect().then((conn) {
-      printPreds(conn).then((preds) {
-        for(var row in preds) {
-          print('no: ${row[0]}');
-        }
-      });
-    });
-  }
 
   Future predict(
       BuildContext context, ImageSource imageSource, ImagePicker picker) async {
