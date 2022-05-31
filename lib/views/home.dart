@@ -286,7 +286,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     height: 220,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        color: Colors.white),
+                        color: Colors.black),
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
                       // 식단 컴포넌트 내용 시작

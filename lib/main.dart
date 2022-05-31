@@ -1,3 +1,4 @@
+import 'package:ai_dang/views/mypage/mypage.dart';
 import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 import 'dbHandler.dart';
@@ -49,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   int selectedindex=0;
-  List _pages=[MyStatefulWidget(),loginPage(),Text('page3'), setting()
+  List _pages=[MyStatefulWidget(),loginPage(),mypage(), setting()
   ];
 
   @override
@@ -160,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => testpage()
+              builder: (context) => mypage()
           ),
         );
         break;

@@ -224,7 +224,7 @@ class _settingState extends State<setting> {
                                   SizedBox(
                                     width: (MediaQuery.of(context).size.width)*0.05,
                                   ),
-                                  Text('마메팅 동의 설정', style: TextStyle(
+                                  Text('마케팅 동의 설정', style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: (MediaQuery.of(context).size.width)*0.035,
                                       color: Colors.black
