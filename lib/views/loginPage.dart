@@ -23,14 +23,65 @@ class _loginPageState extends State<loginPage> {
   final _idTextEditController = TextEditingController();
   final _passwordTextEditController = TextEditingController();
 
-  // Future conn = DbHandler().connect();
-  // Future select = DbHandler().printData(DbHandler().connect());
+  bool Login_check = false;
 
-  // @override
-  // void dispose() {
-  //   _idTextEditController.dispose();
-  //   _passwordTextEditController.dispose();
-  // }
+  void user_check(Email, Password) async {
+    var conn = await ConnHandler.instance.conn;
+
+    var result = await conn.query('select * from user where Email = "$Email" and Password = "$Password"');
+    // 비어있으면 true
+    if (result.isEmpty == false) {
+      Login_check = true;
+      return login_button();
+    }else {
+      Login_check = false;
+      return showDialogPop_Login();
+    }
+    return print(Login_check);
+  }
+
+  void login_button() async{
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MyHomePage()),
+    );
+  }
+
+  void showDialogPop_Login() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            //제목 정의
+            '계정 정보가 다릅니다.',
+          ),
+          content: SingleChildScrollView(
+            //내용 정의
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  'Email과 Password를 확인을 해주세요!',
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
+              },
+              child: Text(
+                '닫기',
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
 
@@ -141,10 +192,8 @@ class _loginPageState extends State<loginPage> {
                       child: ElevatedButton(
                         onPressed: () {
 
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MyHomePage()),
-                          );
+                          user_check(_idTextEditController.text, _passwordTextEditController.text);
+
                         },
                           child: Text('지금 시작하기', style: TextStyle(
                             fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26
