@@ -30,6 +30,51 @@ class _signupState extends State<signup> {
     _passwordTextEditController_check.dispose();
   }
 
+  void showDialogPop() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            //제목 정의
+            '비밀번호가 다릅니다!',
+          ),
+          content: SingleChildScrollView(
+            //내용 정의
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  '비밀번호를 다시 확인해주세요!',
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            //버튼 정의
+            // TextButton(
+            //   onPressed: () {
+            //     Navigator.of(context).pop();
+            //   },
+            //   child: Text(
+            //     '확인',
+            //   ),
+            // ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
+              },
+              child: Text(
+                '닫기',
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -163,18 +208,21 @@ class _signupState extends State<signup> {
                           (MediaQuery.of(context).size.width) * 0.40,
                       child: ElevatedButton(
                         onPressed: () {
-                          signupList.add(_idTextEditController.text);
-                          signupList.add(_passwordTextEditController.text);
-                          signupList.add(_passwordTextEditController_check.text);
-                          // print(_idTextEditController.text);
-                          // print(_passwordTextEditController.text);
-                          // print(_passwordTextEditController_check.text);
 
+                          if (_passwordTextEditController.text == _passwordTextEditController_check.text) {
+                            signupList.add(_idTextEditController.text);
+                            signupList.add(_passwordTextEditController.text);
+                            signupList.add(_passwordTextEditController_check.text);
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => genderpage(signUpList: signupList)),
+                            );
+                          } else {
+                            showDialogPop();
+                          }
                           print(signupList);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => genderpage(signUpList: signupList)),
-                          );
+
                         },
                         child: Text('가입하기', style: TextStyle(
                             fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26
