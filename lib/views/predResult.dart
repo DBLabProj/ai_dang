@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ntp/ntp.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import 'package:ai_dang/my_expansion_panel.dart';
-import 'package:ai_dang/dbHandler.dart';
 
 import '../request.dart';
-import 'home.dart';
 
 var lightGray = const Color(0xffF3F3F3);
 var black = const Color(0xff393939);
@@ -23,8 +20,6 @@ class PredResultPage extends StatelessWidget {
   const PredResultPage(
       {Key? key, @required this.image, @required this.predResult})
       : super(key: key);
-
-  static const String _title = 'Flutter Code Sample';
 
   @override
   Widget build(BuildContext context) {

@@ -13,9 +13,9 @@ var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
 
-Future getMealList() async {
-  List<Widget> list = [];
-  await selectTodayMeal().then((sqlRs) {
+Future getMealList(selectedDay) async {
+  List<Widget> list = [const SizedBox(height: 20)];
+  await selectDayMeal(selectedDay).then((sqlRs) {
     for (var row in sqlRs) {
       String mealName = row[0];
       String datetime = DateFormat.jm('ko_KR').format(row[1]);
@@ -25,6 +25,7 @@ Future getMealList() async {
 
       list.add(
           getMealComponent(mealName, datetime, amount, desc, imageName));
+      list.add(const SizedBox(height: 20));
     }
   });
   return list;
