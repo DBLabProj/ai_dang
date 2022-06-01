@@ -279,7 +279,7 @@ class _signupState extends State<signup> {
                           SizedBox(
                             width: (MediaQuery.of(context).size.width) -
                                 (MediaQuery.of(context).size.width) * 0.85,
-                              height: (MediaQuery.of(context).size.height) * 0.065,
+                            height: (MediaQuery.of(context).size.height) * 0.065,
                             child: ElevatedButton(
                               onPressed: () {
                                 test(_idTextEditController.text);
@@ -361,20 +361,11 @@ class _signupState extends State<signup> {
                           (MediaQuery.of(context).size.width) * 0.40,
                       child: ElevatedButton(
                         onPressed: () {
-
                           if (Email_check==false) {
                             showDialogPop_Email();
                           }
-
                           else if (_passwordTextEditController.text == _passwordTextEditController_check.text) {
                             Password_check = true;
-                            // signupList.add(_idTextEditController.text);
-                            // signupList.add(_passwordTextEditController.text);
-                            // signupList.add(_passwordTextEditController_check.text);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => genderpage(signUpList: signupList)),
-                            // );
                           } else {
                             showDialogPop();
                           }
