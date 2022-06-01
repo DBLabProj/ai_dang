@@ -22,13 +22,13 @@ class _diseasetypeState extends State<diseasetype> {
   var btnThrStyle;
 
   void signUp(signUpList){
-    connect().then((conn) {
-      insertUsers(conn, signUpList);
-    });
+    var conn = ConnHandler.instance.conn;
+    insertUsers(conn, signUpList);
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

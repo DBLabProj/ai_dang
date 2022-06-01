@@ -21,6 +21,7 @@ dependencies:
   ntp: ^2.0.0
   step_progress_indicator: ^1.0.2
   loading_overlay: ^0.3.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
