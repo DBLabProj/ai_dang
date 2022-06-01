@@ -1,8 +1,6 @@
 import 'package:mysql1/mysql1.dart';
 import 'dart:async';
 
-import 'package:ntp/ntp.dart';
-
 class ConnHandler {
   static final ConnHandler _connHandler = ConnHandler._internal();
   ConnHandler._internal();
@@ -32,16 +30,16 @@ class ConnHandler {
   }
 }
 
-Future selectTodayMeal() async {
+Future selectDayMeal(selectedDay) async {
   var conn = await ConnHandler.instance.conn;
 
   String sql = '''
     SELECT  P.result, M.datetime, M.amount, M.description, P.image_name
     FROM    meal M LEFT JOIN predict P
     ON      M.predict_no = P.no
-    WHERE   date_format(M.datetime, '%Y%m%d') = date_format(now(), '%Y%m%d')
+    WHERE   date_format(M.datetime, '%Y%m%d') = date_format(?, '%Y%m%d')
   ''';
-  var result = await conn.query(sql);
+  var result = await conn.query(sql, [selectedDay]);
   return result;
 }
 

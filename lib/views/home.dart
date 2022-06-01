@@ -65,11 +65,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
   @override
   Widget build(BuildContext context) {
-    getMealList().then((mealList) {
-      setState(() {
-        _mealList = mealList;
+    if (mounted) {
+      getMealList(_selectedDay).then((mealList) {
+        setState(() {
+          _mealList = mealList;
+        });
       });
-    });
+    }
+
     return LoadingOverlay(
       isLoading: _isLoading,
       opacity: 0.7,
