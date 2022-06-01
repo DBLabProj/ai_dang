@@ -117,29 +117,58 @@ class _signupState extends State<signup> {
                     SizedBox(height: (MediaQuery.of(context).size.height) * 0.16,
                     ),
 
-                    SizedBox(
+                    Container(
+
                       width: (MediaQuery.of(context).size.width) -
                           (MediaQuery.of(context).size.width) * 0.35,
-                      child: TextField(
-                        controller: _idTextEditController,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          hintText: 'Enter your email',
-                          labelStyle: TextStyle(color: Color(0xffCF2525)),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: (MediaQuery.of(context).size.width) -
+                                (MediaQuery.of(context).size.width) * 0.52,
+                            child: TextField(
+                              controller: _idTextEditController,
+                              decoration: InputDecoration(
+                                labelText: 'Email',
+                                hintText: 'Enter your email',
+                                labelStyle: TextStyle(color: Color(0xffCF2525)),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                  borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                ),
+                              ),
+                              keyboardType: TextInputType.emailAddress,
+                            ),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
 
+                          // SizedBox(
+                          //   width: (MediaQuery.of(context).size.width)*0.01,
+                          // ),
+                          SizedBox(
+                            width: (MediaQuery.of(context).size.width) -
+                                (MediaQuery.of(context).size.width) * 0.85,
+                              height: (MediaQuery.of(context).size.height) * 0.065,
+                            child: ElevatedButton(
+                              onPressed: () {
+
+                              },
+                              child: Text('중복 확인', style: TextStyle(
+                                  fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.15
+                              ),),
+                              style: ElevatedButton.styleFrom(shape:  RoundedRectangleBorder(
+                                  borderRadius:  BorderRadius.circular(10.0)),
+                                primary : Color(0xffCF2525),),
+                            ),
+                          )
+                        ],
                       ),
                     ),
 
