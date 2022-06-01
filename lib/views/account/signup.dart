@@ -1,3 +1,4 @@
+import 'package:ai_dang/dbHandler.dart';
 import 'package:ai_dang/views/account/genderpage.dart';
 import 'package:ai_dang/views/loginPage.dart';
 import 'package:ai_dang/views/test.dart';
@@ -30,6 +31,7 @@ class _signupState extends State<signup> {
     _passwordTextEditController_check.dispose();
   }
 
+
   void showDialogPop() {
     showDialog(
       context: context,
@@ -52,15 +54,6 @@ class _signupState extends State<signup> {
             ),
           ),
           actions: <Widget>[
-            //버튼 정의
-            // TextButton(
-            //   onPressed: () {
-            //     Navigator.of(context).pop();
-            //   },
-            //   child: Text(
-            //     '확인',
-            //   ),
-            // ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
@@ -73,6 +66,137 @@ class _signupState extends State<signup> {
         );
       },
     );
+  }
+
+  void showDialogPop_Email() {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            //제목 정의
+            'Email 중복 확인',
+          ),
+          content: SingleChildScrollView(
+            //내용 정의
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                  'Email 중복 확인을 해주세요!',
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
+              },
+              child: Text(
+                '닫기',
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
+  void showDialogPop_Email_check(Email_check) {
+    if (Email_check == false){
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+        builder: (BuildContext context) {
+          return
+            AlertDialog(
+              title: Text(
+                //제목 정의
+                '이미 사용중인 계정!',
+              ),
+              content: SingleChildScrollView(
+                //내용 정의
+                child: ListBody(
+                  children: <Widget>[
+                    Text(
+                      '이미 사용중인 Email입니다. 다시 입력해주세요.',
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
+                  },
+                  child: Text(
+                    '닫기',
+                  ),
+                ),
+              ],
+            );
+        },
+      );
+    }
+    else {
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+        builder: (BuildContext context) {
+          return
+            AlertDialog(
+              title: Text(
+                //제목 정의
+                '사용 가능한 계정입니다!',
+              ),
+              content: SingleChildScrollView(
+                //내용 정의
+                child: ListBody(
+                  children: <Widget>[
+                    Text(
+                      '이 Email을 사용하시겠습니까?',
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
+                  },
+                  child: Text(
+                    '확인',
+                  ),
+                ),
+              ],
+            );
+        },
+      );
+
+    }
+
+  }
+
+  bool Email_check = false;
+  bool Password_check = false;
+
+  void test(Email) async{
+    var conn = await ConnHandler.instance.conn;
+
+    var result = await conn.query('select * from user where Email = "$Email"');
+    if (result.isEmpty == true){
+      Email_check = true; // 이메일 사용 가능일때
+    }
+    else {
+      Email_check = false; // 이메일 중복일때
+    }
+    return showDialogPop_Email_check(Email_check);
   }
 
   @override
@@ -158,7 +282,7 @@ class _signupState extends State<signup> {
                               height: (MediaQuery.of(context).size.height) * 0.065,
                             child: ElevatedButton(
                               onPressed: () {
-
+                                test(_idTextEditController.text);
                               },
                               child: Text('중복 확인', style: TextStyle(
                                   fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.15
@@ -238,7 +362,24 @@ class _signupState extends State<signup> {
                       child: ElevatedButton(
                         onPressed: () {
 
-                          if (_passwordTextEditController.text == _passwordTextEditController_check.text) {
+                          if (Email_check==false) {
+                            showDialogPop_Email();
+                          }
+
+                          else if (_passwordTextEditController.text == _passwordTextEditController_check.text) {
+                            Password_check = true;
+                            // signupList.add(_idTextEditController.text);
+                            // signupList.add(_passwordTextEditController.text);
+                            // signupList.add(_passwordTextEditController_check.text);
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => genderpage(signUpList: signupList)),
+                            // );
+                          } else {
+                            showDialogPop();
+                          }
+
+                          if (Password_check == true && Email_check == true) {
                             signupList.add(_idTextEditController.text);
                             signupList.add(_passwordTextEditController.text);
                             signupList.add(_passwordTextEditController_check.text);
@@ -247,8 +388,6 @@ class _signupState extends State<signup> {
                               context,
                               MaterialPageRoute(builder: (context) => genderpage(signUpList: signupList)),
                             );
-                          } else {
-                            showDialogPop();
                           }
                           print(signupList);
 
