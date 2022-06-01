@@ -44,7 +44,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final _picker = ImagePicker();
   bool _isLoading = false;
   List<Widget> _mealList = [];
-  var conn = ConnHandler.instance.conn;
 
   Future predict(
       BuildContext context, ImageSource imageSource, ImagePicker picker) async {
@@ -64,22 +63,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       });
     });
   }
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance?.addPostFrameCallback((_) async {
-  //
-  //     var conn = await ConnHandler.instance.conn;
-  //     getMealList(conn).then((mealList) {
-  //       setState(() {
-  //         _mealList = mealList;
-  //       });
-  //     });
-  //   });
-  // }
   @override
   Widget build(BuildContext context) {
-    getMealList(conn).then((mealList) {
+    getMealList().then((mealList) {
       setState(() {
         _mealList = mealList;
       });

@@ -13,11 +13,9 @@ var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
 
-Future getMealList(conn) async {
+Future getMealList() async {
   List<Widget> list = [];
-  var conn = await ConnHandler.instance.conn;
-
-  await selectTodayMeal(conn).then((sqlRs) {
+  await selectTodayMeal().then((sqlRs) {
     for (var row in sqlRs) {
       String mealName = row[0];
       String datetime = DateFormat.jm('ko_KR').format(row[1]);

@@ -23,7 +23,7 @@ class _diseasetypeState extends State<diseasetype> {
 
   void signUp(signUpList){
     var conn = ConnHandler.instance.conn;
-    insertUsers(conn, signUpList);
+    insertUsers(signUpList);
   }
 
   @override

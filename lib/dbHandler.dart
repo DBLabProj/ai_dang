@@ -32,7 +32,9 @@ class ConnHandler {
   }
 }
 
-Future selectTodayMeal(conn) async {
+Future selectTodayMeal() async {
+  var conn = await ConnHandler.instance.conn;
+
   String sql = '''
     SELECT  P.result, M.datetime, M.amount, M.description, P.image_name
     FROM    meal M LEFT JOIN predict P
@@ -43,12 +45,15 @@ Future selectTodayMeal(conn) async {
   return result;
 }
 
-Future selectUsers(conn) async {
+Future selectUsers() async {
+  var conn = await ConnHandler.instance.conn;
+
   var result = await conn.query('select * from user');
   return result;
 }
 
-Future insertUsers(conn, signUpList) async {
+Future insertUsers(signUpList) async {
+  var conn = await ConnHandler.instance.conn;
   var result = await conn.query(
           'INSERT INTO user VALUES(?,?,?,?,?,?,?,?,?)',
       [null, null, signUpList[0], signUpList[4], signUpList[1], signUpList[3], signUpList[5], signUpList[6], signUpList[7]]
