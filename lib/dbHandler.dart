@@ -49,7 +49,7 @@ Future selectUsers() async {
   var conn = await ConnHandler.instance.conn;
 
   var result = await conn.query('select * from user');
-  return result;
+  return print(result);
 }
 
 Future insertUsers(signUpList) async {
