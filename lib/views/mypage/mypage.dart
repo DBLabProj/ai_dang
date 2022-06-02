@@ -21,7 +21,6 @@ class mypage extends StatefulWidget {
 class _mypageState extends State<mypage> {
   bool _isChecked = false;
   bool _isLoading = false;
-
   @override
   Widget build(BuildContext context) {
 
