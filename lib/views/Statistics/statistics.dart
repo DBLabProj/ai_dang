@@ -1,3 +1,5 @@
+import 'package:ai_dang/views/home.dart';
+import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -19,86 +21,706 @@ class statistics extends StatefulWidget {
   State<statistics> createState() => _statisticsState();
 }
 
-class ChartData {
-  ChartData(this.x, this.y);
-  final int x;
-  final double y;
+  class ChartData {
+    ChartData(this.x, this.y);
+    final int x;
+    final int y;
+  }
+//
+// class ChartUserData {
+//
+// }
+
+class EatChartData {
+  EatChartData(this.x, this.y, this.y_user);
+  final String x;
+  final double? y;
+  final double? y_user;
+}
+
+class BloodData {
+  BloodData(this.x, this.y);
+  final String x;
+  final double? y;
 }
 
 class _statisticsState extends State<statistics> {
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
 
 
-      //Column Chart
-      final List<ChartData> chartData = [
-        ChartData(11, 35),
-        ChartData(12, 23),
-        ChartData(13, 34),
-        ChartData(14, 25),
-        ChartData(15, 40)
-      ];
+    // Widget _nutritionInfo() {
+    //   //Column Chart
+    //   final List<ChartData> chartData = [
+    //     ChartData(11, 35),
+    //     ChartData(12, 23),
+    //     ChartData(13, 34),
+    //     ChartData(14, 25),
+    //     ChartData(15, 40)
+    //   ];
+    //   return Scaffold(
+    //       body: Center(
+    //           child: SingleChildScrollView(
+    //             child: Column(
+    //               children: [
+    //                 Container(
+    //                   width: (MediaQuery
+    //                       .of(context)
+    //                       .size
+    //                       .width),
+    //                   height: (MediaQuery
+    //                       .of(context)
+    //                       .size
+    //                       .height) * 0.214,
+    //                   color: Colors.black,
+    //                   child: Column(
+    //                     children: [
+    //                       SizedBox(
+    //                         height: (MediaQuery
+    //                             .of(context)
+    //                             .size
+    //                             .height) * 0.08,
+    //                       ),
+    //                       Text(
+    //                         '날짜 section',
+    //                         style: TextStyle(
+    //                             color: Colors.white,
+    //                             fontWeight: FontWeight.w700,
+    //                             fontSize: (MediaQuery
+    //                                 .of(context)
+    //                                 .size
+    //                                 .width) * 0.04
+    //                         ),
+    //                       ),
+    //                       SizedBox(
+    //                         height: (MediaQuery
+    //                             .of(context)
+    //                             .size
+    //                             .height) * 0.04,
+    //                       ),
+    //                       Container(
+    //                         color: Colors.white,
+    //                         child: Row(
+    //                           children: [
+    //                             TextButton(
+    //                                 onPressed: () {},
+    //                                 child: Row(
+    //                                   mainAxisAlignment: MainAxisAlignment
+    //                                       .spaceBetween,
+    //                                   children: [
+    //                                     Text(
+    //                                       '혈당 정보',
+    //                                       style: TextStyle(
+    //                                           fontWeight: FontWeight.w600,
+    //                                           fontSize: (MediaQuery
+    //                                               .of(context)
+    //                                               .size
+    //                                               .width) * 0.035,
+    //                                           color: Colors.black
+    //                                       ),
+    //                                     ),
+    //                                   ],
+    //                                 )
+    //                             ),
+    //                             TextButton(
+    //                                 onPressed: () {},
+    //                                 child: Row(
+    //                                   mainAxisAlignment: MainAxisAlignment
+    //                                       .spaceBetween,
+    //                                   children: [
+    //                                     Container(
+    //                                       child: Row(
+    //                                         children: [
+    //                                           Text(
+    //                                             '영양 정보',
+    //                                             style: TextStyle(
+    //                                                 fontWeight: FontWeight.w600,
+    //                                                 fontSize: (MediaQuery
+    //                                                     .of(context)
+    //                                                     .size
+    //                                                     .width) * 0.035,
+    //                                                 color: Colors.black
+    //                                             ),
+    //                                           ),
+    //                                         ],
+    //                                       ),
+    //                                     ),
+    //                                   ],
+    //                                 )
+    //                             ),
+    //                           ],
+    //                         ),
+    //                       ),
+    //                     ],
+    //                   ),
+    //                 ),
+    //                 SizedBox(
+    //                   width: (MediaQuery
+    //                       .of(context)
+    //                       .size
+    //                       .width),
+    //                   height: (MediaQuery
+    //                       .of(context)
+    //                       .size
+    //                       .height) * 0.03,
+    //                   child: Container(
+    //                     color: colorLightGray,
+    //                   ),
+    //
+    //                 ),
+    //                 Container(
+    //                   width: (MediaQuery
+    //                       .of(context)
+    //                       .size
+    //                       .width),
+    //                   color: colorLightGray,
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.fromLTRB(
+    //                         20.0, 10.0, 20.0, 10.0),
+    //                     child: Column(
+    //                       children: [
+    //                         Container(
+    //                           width: (MediaQuery
+    //                               .of(context)
+    //                               .size
+    //                               .width) * 0.9,
+    //                           height: (MediaQuery
+    //                               .of(context)
+    //                               .size
+    //                               .height) * 0.75,
+    //                           color: Colors.white,
+    //                           child: Column(
+    //                             crossAxisAlignment: CrossAxisAlignment.start,
+    //                             children: [
+    //                               SizedBox(
+    //                                 width: (MediaQuery
+    //                                     .of(context)
+    //                                     .size
+    //                                     .width),
+    //                                 height: (MediaQuery
+    //                                     .of(context)
+    //                                     .size
+    //                                     .height) * 0.02,
+    //                               ),
+    //                               Container(
+    //                                 child: Row(
+    //                                   children: [
+    //                                     SizedBox(
+    //                                       width: (MediaQuery
+    //                                           .of(context)
+    //                                           .size
+    //                                           .width) * 0.05,
+    //                                     ),
+    //                                     Text(
+    //                                       '칼로리 섭취량 그래프',
+    //                                       style: TextStyle(
+    //                                         fontWeight: FontWeight.w700,
+    //                                         color: colorRed,
+    //                                         fontSize: (MediaQuery
+    //                                             .of(context)
+    //                                             .size
+    //                                             .width) * 0.04,
+    //                                       ),
+    //                                     ),
+    //                                   ],
+    //                                 ),
+    //                               ),
+    //                               SizedBox(
+    //                                 width: (MediaQuery
+    //                                     .of(context)
+    //                                     .size
+    //                                     .width),
+    //                                 height: (MediaQuery
+    //                                     .of(context)
+    //                                     .size
+    //                                     .height) * 0.02,
+    //                               ),
+    //                               Padding(
+    //                                 padding: const EdgeInsets.fromLTRB(
+    //                                     20.0, 10.0, 20.0, 10.0),
+    //                                 child: Column(
+    //                                   children: <Widget>[
+    //                                     SfCartesianChart(
+    //                                         enableSideBySideSeriesPlacement: false,
+    //                                         series: <
+    //                                             ChartSeries<ChartData, int>>[
+    //                                           // Renders column chart
+    //                                           ColumnSeries<ChartData, int>(
+    //                                             dataSource: chartData,
+    //                                             xValueMapper: (ChartData data,
+    //                                                 _) => data.x,
+    //                                             yValueMapper: (ChartData data,
+    //                                                 _) => data.y,
+    //                                             width: 0.5,
+    //                                             color: colorRed,
+    //                                           )
+    //                                         ]
+    //                                     ),
+    //                                     // 열량 정보  ------------------------------------
+    //                                     Container(
+    //                                       padding:
+    //                                       const EdgeInsets.fromLTRB(
+    //                                           15.0, 20.0, 15.0, 10.0),
+    //                                       child: Row(
+    //                                         mainAxisAlignment: MainAxisAlignment
+    //                                             .spaceBetween,
+    //                                         children: [
+    //                                           Text('평균 섭취량',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black)),
+    //                                           Text('1,702g',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black,
+    //                                                   fontWeight: FontWeight
+    //                                                       .w700))
+    //                                         ],
+    //                                       ),
+    //                                       decoration: BoxDecoration(
+    //                                         border: Border(
+    //                                           bottom: BorderSide(
+    //                                               width: 1.5, color: gray),
+    //                                         ),
+    //                                       ),
+    //                                     ),
+    //                                     // 탄수화물 정보 ----------------------------------
+    //                                     Container(
+    //                                       padding:
+    //                                       const EdgeInsets.fromLTRB(
+    //                                           15.0, 20.0, 15.0, 10.0),
+    //                                       child: Row(
+    //                                         mainAxisAlignment: MainAxisAlignment
+    //                                             .spaceBetween,
+    //                                         children: [
+    //                                           Text('최고 섭취량',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black)),
+    //                                           Text('1,890g',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black,
+    //                                                   fontWeight: FontWeight
+    //                                                       .w700))
+    //                                         ],
+    //                                       ),
+    //                                       decoration: BoxDecoration(
+    //                                         border: Border(
+    //                                           bottom: BorderSide(
+    //                                               width: 1.5, color: gray),
+    //                                         ),
+    //                                       ),
+    //                                     ),
+    //                                     // 단백질 정보 -----------------------------------
+    //                                     Container(
+    //                                       padding:
+    //                                       const EdgeInsets.fromLTRB(
+    //                                           15.0, 20.0, 15.0, 10.0),
+    //                                       child: Row(
+    //                                         mainAxisAlignment: MainAxisAlignment
+    //                                             .spaceBetween,
+    //                                         children: [
+    //                                           Text('최저 섭취량',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black)),
+    //                                           Text('1,414g',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black,
+    //                                                   fontWeight: FontWeight
+    //                                                       .w700))
+    //                                         ],
+    //                                       ),
+    //                                       decoration: BoxDecoration(
+    //                                         border: Border(
+    //                                           bottom: BorderSide(
+    //                                               width: 1.5, color: gray),
+    //                                         ),
+    //                                       ),
+    //                                     ),
+    //                                   ],
+    //                                 ),
+    //                               ),
+    //                             ],
+    //                           ),
+    //                         ),
+    //                       ],
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 // SizedBox(
+    //                 //   width: (MediaQuery.of(context).size.width),
+    //                 //   height: (MediaQuery.of(context).size.height) * 0.03,
+    //                 // ),
+    //                 Container(
+    //                   width: (MediaQuery
+    //                       .of(context)
+    //                       .size
+    //                       .width),
+    //                   color: colorLightGray,
+    //                   child: Padding(
+    //                     padding: const EdgeInsets.fromLTRB(
+    //                         20.0, 10.0, 20.0, 10.0),
+    //                     child: Column(
+    //                       children: [
+    //                         Container(
+    //                           width: (MediaQuery
+    //                               .of(context)
+    //                               .size
+    //                               .width) * 0.9,
+    //                           // height: (MediaQuery.of(context).size.height) * 0.75,
+    //                           color: Colors.white,
+    //                           child: Column(
+    //                             crossAxisAlignment: CrossAxisAlignment.start,
+    //                             children: [
+    //                               SizedBox(
+    //                                 width: (MediaQuery
+    //                                     .of(context)
+    //                                     .size
+    //                                     .width),
+    //                                 height: (MediaQuery
+    //                                     .of(context)
+    //                                     .size
+    //                                     .height) * 0.02,
+    //                               ),
+    //                               Container(
+    //                                 child: Row(
+    //                                   children: [
+    //                                     SizedBox(
+    //                                       width: (MediaQuery
+    //                                           .of(context)
+    //                                           .size
+    //                                           .width) * 0.05,
+    //                                     ),
+    //                                     Text(
+    //                                       '섭취 영양소 그래프',
+    //                                       style: TextStyle(
+    //                                         fontWeight: FontWeight.w700,
+    //                                         color: colorRed,
+    //                                         fontSize: (MediaQuery
+    //                                             .of(context)
+    //                                             .size
+    //                                             .width) * 0.04,
+    //                                       ),
+    //                                     ),
+    //                                   ],
+    //                                 ),
+    //                               ),
+    //                               SizedBox(
+    //                                 width: (MediaQuery
+    //                                     .of(context)
+    //                                     .size
+    //                                     .width),
+    //                                 height: (MediaQuery
+    //                                     .of(context)
+    //                                     .size
+    //                                     .height) * 0.02,
+    //                               ),
+    //                               Padding(
+    //                                 padding: const EdgeInsets.fromLTRB(
+    //                                     20.0, 10.0, 20.0, 10.0),
+    //                                 child: Column(
+    //                                   children: <Widget>[
+    //                                     SfCartesianChart(
+    //                                         enableSideBySideSeriesPlacement: false,
+    //                                         series: <
+    //                                             ChartSeries<ChartData, int>>[
+    //                                           // Renders column chart
+    //                                           ColumnSeries<ChartData, int>(
+    //                                             dataSource: chartData,
+    //                                             xValueMapper: (ChartData data,
+    //                                                 _) => data.x,
+    //                                             yValueMapper: (ChartData data,
+    //                                                 _) => data.y,
+    //                                             width: 0.5,
+    //                                             color: colorRed,
+    //                                           )
+    //                                         ]
+    //                                     ),
+    //                                     Container(
+    //                                       padding:
+    //                                       const EdgeInsets.fromLTRB(
+    //                                           15.0, 20.0, 15.0, 10.0),
+    //                                       child: Row(
+    //                                         mainAxisAlignment: MainAxisAlignment
+    //                                             .spaceBetween,
+    //                                         children: [
+    //                                           Text('나트륨을',
+    //                                               textScaleFactor: 1.2,
+    //                                               style: TextStyle(
+    //                                                   color: black)),
+    //                                           Text('너무 과도하게 섭취',
+    //                                               textScaleFactor: 1.2,
+    //                                               style: TextStyle(
+    //                                                   color: colorRed)),
+    //                                           Text('하고 있어요.',
+    //                                               textScaleFactor: 1.2,
+    //                                               style: TextStyle(
+    //                                                   color: black)),
+    //                                         ],
+    //                                       ),
+    //                                     ),
+    //                                     SizedBox(
+    //                                       width: (MediaQuery
+    //                                           .of(context)
+    //                                           .size
+    //                                           .width),
+    //                                       height: (MediaQuery
+    //                                           .of(context)
+    //                                           .size
+    //                                           .height) * 0.01,
+    //                                     ),
+    //                                     Container(
+    //                                       padding:
+    //                                       const EdgeInsets.fromLTRB(
+    //                                           15.0, 20.0, 15.0, 10.0),
+    //                                       child: Row(
+    //                                         mainAxisAlignment: MainAxisAlignment
+    //                                             .spaceBetween,
+    //                                         children: [
+    //                                           Text('탄수화물 섭취량',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black)),
+    //                                           Text('125%',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black,
+    //                                                   fontWeight: FontWeight
+    //                                                       .w700))
+    //                                         ],
+    //                                       ),
+    //                                       decoration: BoxDecoration(
+    //                                         border: Border(
+    //                                           bottom: BorderSide(
+    //                                               width: 1.5, color: gray),
+    //                                         ),
+    //                                       ),
+    //                                     ),
+    //                                     Container(
+    //                                       padding:
+    //                                       const EdgeInsets.fromLTRB(
+    //                                           15.0, 20.0, 15.0, 10.0),
+    //                                       child: Row(
+    //                                         mainAxisAlignment: MainAxisAlignment
+    //                                             .spaceBetween,
+    //                                         children: [
+    //                                           Text('단백질 섭취량',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black)),
+    //                                           Text('103%',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black,
+    //                                                   fontWeight: FontWeight
+    //                                                       .w700))
+    //                                         ],
+    //                                       ),
+    //                                       decoration: BoxDecoration(
+    //                                         border: Border(
+    //                                           bottom: BorderSide(
+    //                                               width: 1.5, color: gray),
+    //                                         ),
+    //                                       ),
+    //                                     ),
+    //                                     Container(
+    //                                       padding:
+    //                                       const EdgeInsets.fromLTRB(
+    //                                           15.0, 20.0, 15.0, 10.0),
+    //                                       child: Row(
+    //                                         mainAxisAlignment: MainAxisAlignment
+    //                                             .spaceBetween,
+    //                                         children: [
+    //                                           Text('지방 섭취량',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black)),
+    //                                           Text('89%',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black,
+    //                                                   fontWeight: FontWeight
+    //                                                       .w700))
+    //                                         ],
+    //                                       ),
+    //                                       decoration: BoxDecoration(
+    //                                         border: Border(
+    //                                           bottom: BorderSide(
+    //                                               width: 1.5, color: gray),
+    //                                         ),
+    //                                       ),
+    //                                     ),
+    //                                     Container(
+    //                                       padding:
+    //                                       const EdgeInsets.fromLTRB(
+    //                                           15.0, 20.0, 15.0, 10.0),
+    //                                       child: Row(
+    //                                         mainAxisAlignment: MainAxisAlignment
+    //                                             .spaceBetween,
+    //                                         children: [
+    //                                           Text('나트륨 섭취량',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black)),
+    //                                           Text('135%',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black,
+    //                                                   fontWeight: FontWeight
+    //                                                       .w700))
+    //                                         ],
+    //                                       ),
+    //                                       decoration: BoxDecoration(
+    //                                         border: Border(
+    //                                           bottom: BorderSide(
+    //                                               width: 1.5, color: gray),
+    //                                         ),
+    //                                       ),
+    //                                     ),
+    //                                     Container(
+    //                                       padding:
+    //                                       const EdgeInsets.fromLTRB(
+    //                                           15.0, 20.0, 15.0, 10.0),
+    //                                       child: Row(
+    //                                         mainAxisAlignment: MainAxisAlignment
+    //                                             .spaceBetween,
+    //                                         children: [
+    //                                           Text('콜레스테롤 섭취량',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black)),
+    //                                           Text('111%',
+    //                                               textScaleFactor: 1.1,
+    //                                               style: TextStyle(
+    //                                                   color: black,
+    //                                                   fontWeight: FontWeight
+    //                                                       .w700))
+    //                                         ],
+    //                                       ),
+    //                                       decoration: BoxDecoration(
+    //                                         border: Border(
+    //                                           bottom: BorderSide(
+    //                                               width: 1.5, color: gray),
+    //                                         ),
+    //                                       ),
+    //                                     ),
+    //                                   ],
+    //                                 ),
+    //                               ),
+    //                             ],
+    //                           ),
+    //
+    //                         ),
+    //                       ],
+    //                     ),
+    //                   ),
+    //                 ),
+    //               ],
+    //             ),
+    //           )
+    //       )
+    //   );
+    // }
+
+
+    //Column Chart
+    // final List<ChartData> chartData = [
+    //   //환자평균
+    //   ChartData(11, 35, 20),
+    //   ChartData(12, 23, 15),
+    //   ChartData(13, 34, 30),
+    // ];
+
+    final List<EatChartData> eatChartData = [
+      EatChartData('최저', 118, 120),
+      EatChartData('최고', 123, 115),
+      EatChartData('평균', 107, 109),
+    ];
+
+    final List<BloodData> bloodData = [
+      BloodData('5월 26일', 120),
+      BloodData('5월 27일', 110),
+      BloodData('5월 28일', 108),
+      BloodData('5월 29일', 125),
+      BloodData('5월 30일', 121),
+      BloodData('5월 31일', 105),
+      BloodData('6월 01일', 80),
+    ];
+
       return Scaffold(
           body: Center(
-              child: Column(
-                children: [
-                  Container(
-                    width: (MediaQuery.of(context).size.width),
-                    height: (MediaQuery.of(context).size.height) * 0.214,
-                    color: Colors.black,
-                    child: Column(
-                      children: [
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      width: (MediaQuery
+                          .of(context)
+                          .size
+                          .width),
+                      height: (MediaQuery
+                          .of(context)
+                          .size
+                          .height) * 0.214,
+                      color: Colors.black,
+                      child: Column(
+                        children: [
                           SizedBox(
-                            height: (MediaQuery.of(context).size.height) * 0.08,
+                            height: (MediaQuery
+                                .of(context)
+                                .size
+                                .height) * 0.08,
                           ),
                           Text(
                             '날짜 section',
                             style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w700,
-                              fontSize: (MediaQuery.of(context).size.width)*0.04
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontSize: (MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width) * 0.04
                             ),
                           ),
                           SizedBox(
-                            height: (MediaQuery.of(context).size.height) * 0.04,
+                            height: (MediaQuery
+                                .of(context)
+                                .size
+                                .height) * 0.04,
                           ),
                           Container(
                             color: Colors.white,
                             child: Row(
                               children: [
-                                SizedBox(
-                                  width: (MediaQuery.of(context).size.width)*0.08,
-                                ),
                                 TextButton(
                                     onPressed: () {},
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .spaceBetween,
                                       children: [
-                                        Container(
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                '혈당 정보',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: (MediaQuery.of(context).size.width)*0.035,
-                                                    color: Colors.black
-                                                ),
-                                              ),
-                                            ],
+                                        Text(
+                                          '혈당 정보',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: (MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .width) * 0.035,
+                                              color: Colors.black
                                           ),
                                         ),
                                       ],
                                     )
                                 ),
-                                SizedBox(
-                                  width: (MediaQuery.of(context).size.width)*0.08,
-                                ),
                                 TextButton(
                                     onPressed: () {},
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .spaceBetween,
                                       children: [
                                         Container(
                                           child: Row(
@@ -107,7 +729,10 @@ class _statisticsState extends State<statistics> {
                                                 '영양 정보',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w600,
-                                                    fontSize: (MediaQuery.of(context).size.width)*0.035,
+                                                    fontSize: (MediaQuery
+                                                        .of(context)
+                                                        .size
+                                                        .width) * 0.035,
                                                     color: Colors.black
                                                 ),
                                               ),
@@ -120,34 +745,331 @@ class _statisticsState extends State<statistics> {
                               ],
                             ),
                           ),
-                      ],
+                        ],
+                      ),
                     ),
+                    SizedBox(
+                      width: (MediaQuery
+                          .of(context)
+                          .size
+                          .width),
+                      height: (MediaQuery
+                          .of(context)
+                          .size
+                          .height) * 0.03,
+                      child: Container(
+                        color: colorLightGray,
+                      ),
 
-                  ),
-                  Container(
-                      width: (MediaQuery.of(context).size.width) * 0.9,
-                      height: (MediaQuery.of(context).size.height) * 0.5,
-                      color: Colors.white,
-                      child: SfCartesianChart(
-                          enableSideBySideSeriesPlacement: false,
-                          series: <ChartSeries<ChartData, int>>[
-                            // Renders column chart
-                            ColumnSeries<ChartData, int>(
-                              dataSource: chartData,
-                              xValueMapper: (ChartData data, _) => data.x,
-                              yValueMapper: (ChartData data, _) => data.y,
-                              width: 0.5,
-                              color: colorRed,
-                            )
-                          ]
-                      )
-                  )
-                ],
+                    ),
+                    Container(
+                      width: (MediaQuery
+                          .of(context)
+                          .size
+                          .width),
+                      color: colorLightGray,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                            20.0, 10.0, 20.0, 10.0),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: (MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width) * 0.9,
+                              height: (MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height) * 0.75,
+                              color: Colors.white,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width),
+                                    height: (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height) * 0.02,
+                                  ),
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: (MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width) * 0.05,
+                                        ),
+                                        Text(
+                                          '혈당 섭취량 그래프',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            color: colorRed,
+                                            fontSize: (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width) * 0.04,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width),
+                                    height: (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height) * 0.02,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20.0, 10.0, 20.0, 10.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        SfCartesianChart(
+                                            primaryXAxis: CategoryAxis(),
+                                            series: <CartesianSeries>[
+                                              LineSeries<BloodData, String>(
+                                                  dataSource: bloodData,
+                                                  xValueMapper: (BloodData data, _) => data.x,
+                                                  yValueMapper: (BloodData data, _) => data.y,
+                                                  color: colorRed,
+                                                  markerSettings: MarkerSettings(
+                                                      isVisible: true,
+                                                      color: colorRed
+                                                  ),
+                                              ),
+                                            ]
+                                        ),
+                                        // 열량 정보  ------------------------------------
+                                        Container(
+                                          padding:
+                                          const EdgeInsets.fromLTRB(
+                                              15.0, 20.0, 15.0, 10.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceBetween,
+                                            children: [
+                                              Text('평균 섭취량',
+                                                  textScaleFactor: 1.1,
+                                                  style: TextStyle(
+                                                      color: black)),
+                                              Text('1,702g',
+                                                  textScaleFactor: 1.1,
+                                                  style: TextStyle(
+                                                      color: black,
+                                                      fontWeight: FontWeight
+                                                          .w700))
+                                            ],
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                  width: 1.5, color: gray),
+                                            ),
+                                          ),
+                                        ),
+                                        // 탄수화물 정보 ----------------------------------
+                                        Container(
+                                          padding:
+                                          const EdgeInsets.fromLTRB(
+                                              15.0, 20.0, 15.0, 10.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceBetween,
+                                            children: [
+                                              Text('최고 섭취량',
+                                                  textScaleFactor: 1.1,
+                                                  style: TextStyle(
+                                                      color: black)),
+                                              Text('1,890g',
+                                                  textScaleFactor: 1.1,
+                                                  style: TextStyle(
+                                                      color: black,
+                                                      fontWeight: FontWeight
+                                                          .w700))
+                                            ],
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                  width: 1.5, color: gray),
+                                            ),
+                                          ),
+                                        ),
+                                        // 단백질 정보 -----------------------------------
+                                        Container(
+                                          padding:
+                                          const EdgeInsets.fromLTRB(
+                                              15.0, 20.0, 15.0, 10.0),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment
+                                                .spaceBetween,
+                                            children: [
+                                              Text('최저 섭취량',
+                                                  textScaleFactor: 1.1,
+                                                  style: TextStyle(
+                                                      color: black)),
+                                              Text('1,414g',
+                                                  textScaleFactor: 1.1,
+                                                  style: TextStyle(
+                                                      color: black,
+                                                      fontWeight: FontWeight
+                                                          .w700))
+                                            ],
+                                          ),
+                                          decoration: BoxDecoration(
+                                            border: Border(
+                                              bottom: BorderSide(
+                                                  width: 1.5, color: gray),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    // SizedBox(
+                    //   width: (MediaQuery.of(context).size.width),
+                    //   height: (MediaQuery.of(context).size.height) * 0.03,
+                    // ),
+                    Container(
+                      width: (MediaQuery
+                          .of(context)
+                          .size
+                          .width),
+                      color: colorLightGray,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(
+                            20.0, 10.0, 20.0, 10.0),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: (MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width) * 0.9,
+                              // height: (MediaQuery.of(context).size.height) * 0.75,
+                              color: Colors.white,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width),
+                                    height: (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height) * 0.02,
+                                  ),
+                                  Container(
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: (MediaQuery
+                                              .of(context)
+                                              .size
+                                              .width) * 0.05,
+                                        ),
+                                        Text(
+                                          '섭취량 비교 그래프',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            color: colorRed,
+                                            fontSize: (MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width) * 0.04,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width),
+                                    height: (MediaQuery
+                                        .of(context)
+                                        .size
+                                        .height) * 0.02,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20.0, 10.0, 20.0, 10.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        SfCartesianChart(
+                                            primaryXAxis: CategoryAxis(),
+                                            series: <CartesianSeries>[
+                                              BarSeries<EatChartData, String>(
+                                                dataSource: eatChartData,
+                                                xValueMapper: (EatChartData data, _) => data.x,
+                                                yValueMapper: (EatChartData data, _) => data.y,
+                                                color: colorRed
+                                              ),
+                                              BarSeries<EatChartData, String>(
+                                                dataSource: eatChartData,
+                                                xValueMapper: (EatChartData data, _) => data.x,
+                                                yValueMapper: (EatChartData data, _) => data.y_user,
+                                                color: colorBlack
+                                              )
+                                            ]
+                                        ),
+                                        Container(
+                                          padding:
+                                          const EdgeInsets.fromLTRB(
+                                              15.0, 20.0, 15.0, 10.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                                            mainAxisSize: MainAxisSize.max,
+                                            children: [
+                                              Text('당뇨병 환자 평균보다 혈당을 18% 더 섭취하고 있어요.',
+                                                  textScaleFactor: 1.2,
+                                                  style: TextStyle(
+                                                  color: black)),
+                                            ],
+                                          ),
+                                        ),
+
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               )
           )
       );
-    }
+  }
 
 
+}
+
+class ChartDataUser {
 }
 
