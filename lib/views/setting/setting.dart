@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../loginPage.dart';
+
 class setting extends StatefulWidget {
 
   const setting({Key? key}) : super(key: key);
@@ -15,7 +17,6 @@ class _settingState extends State<setting> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-
           child: Column(
             children: <Widget>[
               SizedBox(
@@ -62,7 +63,13 @@ class _settingState extends State<setting> {
                       ),
 
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => loginPage()),
+                            );
+                          },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
