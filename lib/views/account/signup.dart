@@ -218,7 +218,7 @@ class _signupState extends State<signup> {
               Container(
                 color: Colors.white,
                 height: (MediaQuery.of(context).size.height) -
-                    (MediaQuery.of(context).size.height) * 0.18,
+                    (MediaQuery.of(context).size.height) * 0.10,
                 width: (MediaQuery.of(context).size.width) -
                     (MediaQuery.of(context).size.width) * 0.3,
                 child: Column(
@@ -238,11 +238,10 @@ class _signupState extends State<signup> {
                               0.26,
                           color: Color(0xffCF2525)),
                     ),
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.16,
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.1,
                     ),
 
                     Container(
-
                       width: (MediaQuery.of(context).size.width) -
                           (MediaQuery.of(context).size.width) * 0.35,
                       child: Row(
@@ -272,7 +271,6 @@ class _signupState extends State<signup> {
                               keyboardType: TextInputType.emailAddress,
                             ),
                           ),
-
                           // SizedBox(
                           //   width: (MediaQuery.of(context).size.width)*0.01,
                           // ),
@@ -293,6 +291,34 @@ class _signupState extends State<signup> {
                             ),
                           )
                         ],
+                      ),
+                    ),
+
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.01,
+                    ),
+                    SizedBox(
+                      width: (MediaQuery.of(context).size.width) -
+                          (MediaQuery.of(context).size.width) * 0.35,
+                      child: TextField(
+                        controller: _passwordTextEditController,
+                        decoration: InputDecoration(
+                          // filled: true,
+                          labelText: 'Name',
+                          hintText: 'Enter your Name',
+                          labelStyle: TextStyle(color: Color(0xffCF2525)),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                        ),
+                        obscureText: true,
                       ),
                     ),
 
@@ -353,7 +379,7 @@ class _signupState extends State<signup> {
                       ),
                     ),
 
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.10,
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.060,
                     ),
                     SizedBox(
                       height: (MediaQuery.of(context).size.height) * 0.065,
