@@ -54,7 +54,7 @@ Future insertUsers(signUpList) async {
   var conn = await ConnHandler.instance.conn;
   var result = await conn.query(
           'INSERT INTO user VALUES(?,?,?,?,?,?,?,?,?)',
-      [null, null, signUpList[0], signUpList[4], signUpList[1], signUpList[3], signUpList[5], signUpList[6], signUpList[7]]
+      [null, signUpList[2], signUpList[0], signUpList[4], signUpList[1], signUpList[3], signUpList[5], signUpList[6], signUpList[7]]
   );
   return result;
 }

@@ -22,6 +22,8 @@ class _signupState extends State<signup> {
 
   final _passwordTextEditController_check = TextEditingController();
 
+  final _nameTextEditController = TextEditingController();
+
   var signupList = [];
 
   @override
@@ -300,7 +302,7 @@ class _signupState extends State<signup> {
                       width: (MediaQuery.of(context).size.width) -
                           (MediaQuery.of(context).size.width) * 0.35,
                       child: TextField(
-                        controller: _passwordTextEditController,
+                        controller: _nameTextEditController,
                         decoration: InputDecoration(
                           // filled: true,
                           labelText: 'Name',
@@ -318,7 +320,6 @@ class _signupState extends State<signup> {
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
                         ),
-                        obscureText: true,
                       ),
                     ),
 
@@ -399,7 +400,8 @@ class _signupState extends State<signup> {
                           if (Password_check == true && Email_check == true) {
                             signupList.add(_idTextEditController.text);
                             signupList.add(_passwordTextEditController.text);
-                            signupList.add(_passwordTextEditController_check.text);
+                            // signupList.add(_passwordTextEditController_check.text);
+                            signupList.add(_nameTextEditController.text);
 
                             Navigator.push(
                               context,
