@@ -37,8 +37,28 @@ class _loginPageState extends State<loginPage> {
     return print(Login_check);
   }
 
+  void user_info(Email) async {
+    var conn = await ConnHandler.instance.conn;
+
+    var User_info_list = [];
+    var result = await conn.query(
+      'select name, email, age, sex, height, weight, dt from user where email = "$Email"');
+    for (var row in result) {
+      Session.instance.setInfo({
+        'name': row[0],
+        'Email' : row[1],
+        'age' : row[2],
+        'sex' : row[3],
+        'height' : row[4],
+        'weight' : row[5],
+        'dt' : row[6],
+      });
+    }
+    return print(Session.instance.userInfo.values);
+  }
+
   void login_button() async {
-    Session.instance.setInfo({'id': '1234'});
+    user_info(_idTextEditController.text);
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => MyHomePage()),
