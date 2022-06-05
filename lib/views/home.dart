@@ -1,4 +1,5 @@
 
+import 'package:ai_dang/session.dart';
 import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/request.dart';
@@ -43,6 +44,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   var _calendarFormat = CalendarFormat.week;
   final _picker = ImagePicker();
   bool _isLoading = false;
+  Map _eatInfo = {};
   List<Widget> _mealList = [];
 
   Future predict(
@@ -66,9 +68,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     if (mounted) {
-      getMealList(_selectedDay).then((mealList) {
+      getMealList(context, _selectedDay).then((result) {
         setState(() {
-          _mealList = mealList;
+          _mealList = result['meal_list'];
+          _eatInfo = result['eat_info'];
         });
       });
     }
@@ -230,9 +233,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             padding: const EdgeInsets.fromLTRB(5, 10, 5, 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
+              children: [
                 Text('하루 섭취량', textScaleFactor: 1.2),
-                Text('694 / 1,428 kcal', textScaleFactor: 1.3)
+                Text('${_eatInfo['cal']} / ${Session.instance.dietInfo['recom_cal'].toInt()} kcal', textScaleFactor: 1.3)
               ],
             ),
           ),
@@ -249,16 +252,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 13, 0, 13),
                       child: SizedBox(
-                        width: 110,
+                        width: MediaQuery.of(context).size.width * 0.25,
                         height: 5,
-                        child: LinearProgressIndicator(
-                          backgroundColor: colorGray,
-                          valueColor: AlwaysStoppedAnimation(colorRed),
-                          value: 0.40,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: LinearProgressIndicator(
+                            backgroundColor: colorGray,
+                            valueColor: AlwaysStoppedAnimation(colorRed),
+                            value: _eatInfo['cbHydra_per'],
+                          ),
                         ),
                       ),
                     ),
-                    const Text('78 / 196 g', textScaleFactor: 1.2),
+                    Text('${_eatInfo['cbHydra']} / ${Session.instance.dietInfo['recom_hydrate'].toInt()} g', textScaleFactor: 1.2),
                   ],
                 ),
                 // 단백질 섭취정보
@@ -266,18 +272,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   children: [
                     const Text('단백질', textScaleFactor: 1.2),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 13, 5, 13),
+                      padding: const EdgeInsets.fromLTRB(0, 13, 0, 13),
                       child: SizedBox(
-                        width: 110,
+                        width: MediaQuery.of(context).size.width * 0.25,
                         height: 5,
-                        child: LinearProgressIndicator(
-                          backgroundColor: colorGray,
-                          valueColor: AlwaysStoppedAnimation(colorRed),
-                          value: 0.50,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: LinearProgressIndicator(
+                            backgroundColor: colorGray,
+                            valueColor: AlwaysStoppedAnimation(colorRed),
+                            value: _eatInfo['protein_per'],
+                          ),
                         ),
                       ),
                     ),
-                    const Text('39 / 71 g', textScaleFactor: 1.2),
+                    Text('${_eatInfo['protein']} / ${Session.instance.dietInfo['recom_protein'].toInt()} g', textScaleFactor: 1.2),
                   ],
                 ),
                 // 지방 섭취정보
@@ -285,18 +294,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   children: [
                     const Text('지방', textScaleFactor: 1.2),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(5, 13, 5, 13),
+                      padding: const EdgeInsets.fromLTRB(0, 13, 0, 13),
                       child: SizedBox(
-                        width: 110,
+                        width: MediaQuery.of(context).size.width * 0.25,
                         height: 5,
-                        child: LinearProgressIndicator(
-                          backgroundColor: colorGray,
-                          valueColor: AlwaysStoppedAnimation(colorRed),
-                          value: 0.35,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: LinearProgressIndicator(
+                            backgroundColor: colorGray,
+                            valueColor: AlwaysStoppedAnimation(colorRed),
+                            value: _eatInfo['fat_per'],
+                          ),
                         ),
                       ),
                     ),
-                    const Text('15 / 40 g', textScaleFactor: 1.2),
+                    Text('${_eatInfo['fat']} / ${Session.instance.dietInfo['recom_fat'].toInt()} g', textScaleFactor: 1.2),
                   ],
                 ),
               ],

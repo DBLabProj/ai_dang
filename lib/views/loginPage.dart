@@ -46,7 +46,7 @@ class _loginPageState extends State<loginPage> {
     for (var row in result) {
       Session.instance.setInfo({
         'name': row[0],
-        'Email' : row[1], 
+        'email' : row[1],
         'age' : row[2],
         'sex' : row[3],
         'height' : row[4],
@@ -54,7 +54,7 @@ class _loginPageState extends State<loginPage> {
         'dt' : row[6],
       });
     }
-    return print(Session.instance.userInfo.values);
+    return print(Session.instance.userInfo);
   }
 
   void login_button() async {

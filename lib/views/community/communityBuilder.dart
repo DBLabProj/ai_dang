@@ -44,7 +44,7 @@ Future getTotalCnt() async {
 
   for(int i = 1; i < (cnt/10)+1; i ++) {
     list.add(
-      getPagingBtn(i);
+      getPagingBtn()
     );
   }
   list.add(const SizedBox(height: 20));

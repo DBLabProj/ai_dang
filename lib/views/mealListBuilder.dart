@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../dbHandler.dart';
+import '../session.dart';
 
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);
@@ -13,28 +14,60 @@ var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
 
-Future getMealList(selectedDay) async {
+Future getMealList(context, selectedDay) async {
   List<Widget> list = [const SizedBox(height: 20)];
+  Map eatInfo = {'cal': 0, 'protein': 0, 'fat': 0, 'cbHydra': 0};
+
   await selectDayMeal(selectedDay).then((sqlRs) {
     for (var row in sqlRs) {
       String mealName = row[0];
       String datetime = DateFormat.jm('ko_KR').format(row[1]);
-      String amount = row[2].toString();
+      int amount = row[2];
       String desc = row[3];
       String imageName = row[4];
 
+      double totalSugar = row[5];
+      double cal = row[6];
+      double protein = row[7];
+      double fat = row[8];
+      double cbHydra = row[9];
+
+      eatInfo['cal'] += (cal * (amount / 2)).toInt();
+      eatInfo['cbHydra'] += (cbHydra * (amount / 2)).toInt();
+      eatInfo['protein'] += (protein * (amount / 2)).toInt();
+      eatInfo['fat'] += (fat * (amount / 2)).toInt();
+
+      eatInfo['cbHydra_per'] = (eatInfo['cbHydra'] / Session.instance.dietInfo['recom_hydrate']);
+      eatInfo['protein_per'] = (eatInfo['protein'] / Session.instance.dietInfo['recom_protein']);
+      eatInfo['fat_per'] = (eatInfo['fat'] / Session.instance.dietInfo['recom_fat']);
+
       list.add(
-          getMealComponent(mealName, datetime, amount, desc, imageName));
+          getMealComponent(context, mealName, datetime, amount.toString(), desc, imageName, totalSugar));
       list.add(const SizedBox(height: 20));
     }
   });
-  return list;
+  return {'meal_list': list, 'eat_info': eatInfo};
 }
 
 
-Widget getMealComponent(mealName, datetime, amount, desc, imageName) {
+Widget getMealComponent(context, mealName, datetime, amount, desc, imageName, totalSugar) {
+  Color dangerColor;
+  // 당류 먹은 비율 (0 ~ 1) ------------------------------------
+  double eatSugarPercent =
+  (totalSugar / Session.instance.dietInfo['recom_sugar']);
+
+  // 위험도 컴포넌트 -------------------------------------------
+  if (eatSugarPercent < 0.1) {
+    dangerColor = const Color(0xff8AD03C);
+  } else if(eatSugarPercent < 0.3) {
+    dangerColor = const Color(0xffFCE403);
+  } else if(eatSugarPercent < 0.5) {
+    dangerColor = const Color(0xffFBAA47);
+  } else {
+    dangerColor = colorRed;
+  }
+
   return Container(
-    height: 220,
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10), color: Colors.white),
     child: Padding(
@@ -49,8 +82,8 @@ Widget getMealComponent(mealName, datetime, amount, desc, imageName) {
             child: Image.network(
               "http://203.252.240.74:5000/static/images/$imageName",
               fit: BoxFit.fitHeight,
-              width: 170,
-              height: 180,
+              width: MediaQuery.of(context).size.width * 0.35,
+              height: MediaQuery.of(context).size.width * 0.35,
             ),
           ),
           // 식단 정보
@@ -96,7 +129,7 @@ Widget getMealComponent(mealName, datetime, amount, desc, imageName) {
               width: 20,
               height: 20,
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4), color: colorOrange),
+                  borderRadius: BorderRadius.circular(4), color: dangerColor),
             ),
           ),
         ],

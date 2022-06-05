@@ -1,3 +1,4 @@
+import 'package:ai_dang/session.dart';
 import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -45,94 +46,98 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   int _amount = 1;
   String _desc = '';
-  Map nut = {};
   final Icon _arrowDown = const Icon(Icons.keyboard_arrow_down);
   final Icon _arrowUp = const Icon(Icons.keyboard_arrow_up);
 
   final _descTextCon = TextEditingController();
+  Map nut = {};
+
+  Future<Map> get() async {
+    var sqlRs = await getNutrient(widget.predResult['class_name']);
+
+    for (var row in sqlRs) {
+      nut['serving_size'] = row[1];
+      nut['energy'] = row[3];
+      nut['protein'] = row[5];
+      nut['fat'] = row[6];
+      nut['hydrate'] = row[7];
+      nut['total_sugar'] = row[8];
+    }
+    return nut;
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (mounted) {
-      getNutrient(widget.predResult['class_name']).then((sqlRs) {
-
-        for(var row in sqlRs) {
-          nut['serving_size'] = row[1];
-          nut['energy'] = row[3];
-          nut['protein'] = row[5];
-          nut['fat'] = row[6];
-          nut['hydrate'] = row[7];
-          nut['total_sugar'] = row[8];
+    return FutureBuilder(
+      future: get(),
+      builder: (context, AsyncSnapshot<Map> snapshot) {
+        if (!snapshot.hasData) {
+          return CircularProgressIndicator();
         }
-        print(nut);
-      });
-    }
-
-    return LoadingOverlay(
-      isLoading: _loading,
-      child: Scaffold(
-        body: SafeArea(
-          child: CustomScrollView(
-            physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics()),
-            slivers: <Widget>[
-              foodImage(),
-              SliverFillRemaining(
-                child: Column(
-                  children: [
-                    // 측정 결과, 영양정보 영역 --------------------------------------
-                    predictResult(),
-                    // 하단 스크롤 영역 ---------------------------------------------
-                    Expanded(
-                      child: Container(
-                        color: lightGray,
-                        padding: const EdgeInsets.fromLTRB(25, 2, 25, 0),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 25),
-                              // 총 당류 인디케이터 영역 -----------------------------
-                              sugarInfo(),
-                              // 제공량 선택 라벨 영역 -------------------------------
-                              Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 40, 20, 20),
-                                  child: const Text(
-                                    '얼마나 드셨나요? (제공량 선택)',
-                                    textScaleFactor: 1.2,
-                                  )),
-                              // 제공량 선택 영역 -----------------------------------
-                              selectAmount(),
-                              // 설명 라벨 영역 -------------------------------------
-                              Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(20, 40, 20, 20),
-                                  child: const Text(
-                                    '음식에 관한 설명을 적어주세요.',
-                                    textScaleFactor: 1.2,
-                                  )),
-                              // 설명 텍스트 입력 영역 -------------------------------
-                              inputDesc(),
-                              const SizedBox(
-                                height: 40,
-                              ),
-                            ],
+        return Scaffold(
+          body: SafeArea(
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              slivers: <Widget>[
+                foodImage(),
+                SliverFillRemaining(
+                  child: Column(
+                    children: [
+                      // 측정 결과, 영양정보 영역 --------------------------------------
+                      predictResult(),
+                      // 하단 스크롤 영역 ---------------------------------------------
+                      Expanded(
+                        child: Container(
+                          color: lightGray,
+                          padding: const EdgeInsets.fromLTRB(25, 2, 25, 0),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 25),
+                                // 총 당류 인디케이터 영역 -----------------------------
+                                sugarInfo(),
+                                // 제공량 선택 라벨 영역 -------------------------------
+                                Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 40, 20, 20),
+                                    child: const Text(
+                                      '얼마나 드셨나요? (제공량 선택)',
+                                      textScaleFactor: 1.2,
+                                    )),
+                                // 제공량 선택 영역 -----------------------------------
+                                selectAmount(),
+                                // 설명 라벨 영역 -------------------------------------
+                                Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 40, 20, 20),
+                                    child: const Text(
+                                      '음식에 관한 설명을 적어주세요.',
+                                      textScaleFactor: 1.2,
+                                    )),
+                                // 설명 텍스트 입력 영역 -------------------------------
+                                inputDesc(),
+                                const SizedBox(
+                                  height: 40,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
-        ),
-        // 입력완료 버튼 앱 바 -------------------------------------------------------
-        bottomNavigationBar: confirmButtonBar(),
-      ),
+          // 입력완료 버튼 앱 바 -------------------------------------------------------
+          bottomNavigationBar: confirmButtonBar(),
+        );
+      },
     );
   }
 
@@ -174,7 +179,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         setState(() {});
       },
       children: [
-
         MyExpansionPanel(
           hasIcon: false,
           isExpanded: _expanded,
@@ -183,70 +187,74 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               color: Colors.white,
               width: MediaQuery.of(context).size.width,
               child: Padding(
-                padding: const EdgeInsets.all(25.0),
-                child: Column(
-                  children: [
-                    // 인디게이터바 ----------------------------------------------
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                      child: Container(
-                        width: 80,
-                        height: 5,
-                        decoration: BoxDecoration(
-                            color: lightGray,
-                            borderRadius: BorderRadius.circular(10)),
-                      ),
-                    ),
-                    // 측정결과 역역 ----------------------------------------------
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('측정 결과,',
-                                textScaleFactor: 1.2,
-                                style: TextStyle(
-                                    color: black, fontWeight: FontWeight.w500)),
-                            Row(
-                              children: [
-                                Text('${widget.predResult['class_name']}',
-                                    textScaleFactor: 2,
-                                    style: TextStyle(
-                                        color: red, fontWeight: FontWeight.w900)),
-                                Text(' 입니다.',
-                                    textScaleFactor: 2,
-                                    style: TextStyle(
-                                        color: black, fontWeight: FontWeight.w900))
-                              ],
-                            ),
-                          ],
+                  padding: const EdgeInsets.all(25.0),
+                  child: Column(
+                    children: [
+                      // 인디게이터바 ----------------------------------------------
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                        child: Container(
+                          width: 80,
+                          height: 5,
+                          decoration: BoxDecoration(
+                              color: lightGray,
+                              borderRadius: BorderRadius.circular(10)),
                         ),
-                        Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                      ),
+                      // 측정결과 역역 ----------------------------------------------
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // 영양정보 펼치기 버튼
-                              IconButton(
-                                iconSize: 36,
-                                padding: EdgeInsets.zero, // 패딩 설정
-                                constraints: const BoxConstraints(), // constraints
-                                icon: (_expanded) ? _arrowUp : _arrowDown,
-                                onPressed: () {
-                                  setState(() {
-                                    _expanded = !_expanded;
-                                  });
-                                },
-                              ),
-                              Text((_expanded) ? '영양정보 접기' : '영양정보 펼치기',
-                                  textScaleFactor: 1,
+                              Text('측정 결과,',
+                                  textScaleFactor: 1.2,
                                   style: TextStyle(
-                                      color: black, fontWeight: FontWeight.w500)),
-                            ]),
-                      ],
-                    ),
-                  ],
-                )
-              ),
+                                      color: black,
+                                      fontWeight: FontWeight.w500)),
+                              Row(
+                                children: [
+                                  Text('${widget.predResult['class_name']}',
+                                      textScaleFactor: 2,
+                                      style: TextStyle(
+                                          color: red,
+                                          fontWeight: FontWeight.w900)),
+                                  Text(' 입니다.',
+                                      textScaleFactor: 2,
+                                      style: TextStyle(
+                                          color: black,
+                                          fontWeight: FontWeight.w900))
+                                ],
+                              ),
+                            ],
+                          ),
+                          Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                // 영양정보 펼치기 버튼
+                                IconButton(
+                                  iconSize: 36,
+                                  padding: EdgeInsets.zero, // 패딩 설정
+                                  constraints:
+                                      const BoxConstraints(), // constraints
+                                  icon: (_expanded) ? _arrowUp : _arrowDown,
+                                  onPressed: () {
+                                    setState(() {
+                                      _expanded = !_expanded;
+                                    });
+                                  },
+                                ),
+                                Text((_expanded) ? '영양정보 접기' : '영양정보 펼치기',
+                                    textScaleFactor: 1,
+                                    style: TextStyle(
+                                        color: black,
+                                        fontWeight: FontWeight.w500)),
+                              ]),
+                        ],
+                      ),
+                    ],
+                  )),
             );
           },
           // 영양정보 영역 (펼쳐질때)
@@ -375,6 +383,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   Widget sugarInfo() {
+    // 당류 먹은 비율 (0 ~ 1) ------------------------------------
+    double eatSugarPercent =
+        (nut['total_sugar'] / Session.instance.dietInfo['recom_sugar']);
+    // 위험정보 메세지 (<0.1: 안전 / <0.3: 위험 / <0.5: 매우 위험)
+    String dangerText = '';
+    if (eatSugarPercent < 0.1) {
+      dangerText = '안전';
+    } else if(eatSugarPercent < 0.3) {
+      dangerText = '약간 위험';
+    } else if(eatSugarPercent < 0.5) {
+      dangerText = '위험';
+    } else {
+      dangerText = '매우 위험';
+    }
+
     return Container(
       padding: const EdgeInsets.all(20.0),
       width: MediaQuery.of(context).size.width,
@@ -389,7 +412,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text('당뇨병에 ', textScaleFactor: 1.4),
-              Text('매우 위험',
+              Text(dangerText,
                   textScaleFactor: 1.4,
                   style: TextStyle(color: red, fontWeight: FontWeight.w700)),
               const Text('한 음식입니다.', textScaleFactor: 1.4),
@@ -402,7 +425,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             borderRadius: BorderRadius.circular(25),
             child: StepProgressIndicator(
               totalSteps: 100,
-              currentStep: 100,
+              currentStep: (eatSugarPercent * 100).toInt(),
               size: 25,
               padding: 0,
               selectedColor: Colors.yellow,
@@ -419,20 +442,62 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               ),
             ),
           ),
-          // 공백 -----------------------------------------------
-          const SizedBox(height: 20),
+          // 인디케이터 밑 퍼센트 라벨 ------------------------------
+          const SizedBox(height: 6),
+          Stack(children: [
+            (eatSugarPercent > 0.1) ?
+              Align(
+                alignment:
+                Alignment.lerp(Alignment.topLeft, Alignment.topRight, 0.02)!,
+                child: Text(
+                  '0%',
+                  textScaleFactor: 1.2,
+                  style: TextStyle(color: black, fontWeight: FontWeight.w700),
+                ),
+              ) : const Align(),
+
+            Align(
+              alignment: Alignment.lerp(
+                  Alignment.topLeft, Alignment.topRight, eatSugarPercent)!,
+              child: Text(
+                '${(eatSugarPercent * 100).toInt().toString()}%',
+                textScaleFactor: 1.2,
+                style: TextStyle(color: redAccent, fontWeight: FontWeight.w700),
+              ),
+            ),
+            // 85% 밑에 나오면 100% 라벨 출력 ------------------------------------
+            (eatSugarPercent < 0.85) ?
+            Align(
+              alignment:
+                  Alignment.lerp(Alignment.topLeft, Alignment.topRight, 0.98)!,
+              child: Text(
+                '100%',
+                textScaleFactor: 1.2,
+                style: TextStyle(color: black, fontWeight: FontWeight.w700),
+              ),
+            ) : const Align(),
+          ]),
           // 총 당류 정보 ----------------------------------------
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('총 당류',
-                    textScaleFactor: 1.2, style: TextStyle(color: black)),
-                Text('${nut['total_sugar']}g',
-                    textScaleFactor: 1.4,
-                    style: TextStyle(color: black, fontWeight: FontWeight.w700))
-              ],
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            child: Container(
+              padding: const EdgeInsets.fromLTRB(0, 15, 0, 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('총 당류',
+                      textScaleFactor: 1.2, style: TextStyle(color: black)),
+                  Text('${nut['total_sugar']}g',
+                      textScaleFactor: 1.4,
+                      style:
+                          TextStyle(color: black, fontWeight: FontWeight.w700))
+                ],
+              ),
+              decoration: BoxDecoration(
+                border: Border(
+                  top: BorderSide(width: 1.5, color: gray),
+                ),
+              ),
             ),
           ),
         ],

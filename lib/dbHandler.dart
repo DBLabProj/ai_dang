@@ -34,9 +34,13 @@ Future selectDayMeal(selectedDay) async {
   var conn = await ConnHandler.instance.conn;
 
   String sql = '''
-    SELECT  P.result, M.datetime, M.amount, M.description, P.image_name
-    FROM    meal M LEFT JOIN predict P
-    ON      M.predict_no = P.no
+    SELECT  P.result, M.datetime, M.amount, M.description, P.image_name, 
+            F.total_sugar, F.energy, F.protein, F.fat, F.carbohydrate
+    FROM    meal M
+            INNER JOIN predict P
+            ON (M.predict_no = P.no)
+            INNER JOIN main_food_info F
+            ON (P.result = F.food_name)
     WHERE   date_format(M.datetime, '%Y%m%d') = date_format(?, '%Y%m%d')
   ''';
   var result = await conn.query(sql, [selectedDay]);
