@@ -83,3 +83,20 @@ Future boardList(pageStart) async {
   var result = await conn.query(sql, [pageStart]);
   return result;
 }
+Future getNutrient(foodName) async {
+  var conn = await ConnHandler.instance.conn;
+  // String sql = '''
+  //   SELECT DISTINCT	F.*
+  //   FROM    predict P JOIN main_food_info F
+  //           ON	(P.result = F.food_name)
+  //   WHERE	P.no = ?;
+  // ''';
+
+  String sql = '''
+    SELECT  * FROM main_food_info
+    WHERE   food_name = ?
+  ''';
+
+  var result = await conn.query(sql, [foodName]);
+  return result;
+}
