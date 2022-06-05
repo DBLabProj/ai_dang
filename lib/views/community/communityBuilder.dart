@@ -84,10 +84,16 @@ Widget getBoardComponent(boardUid, boardTitle, boardWriter) {
         borderRadius: BorderRadius.circular(10), color: Colors.white),
     child: Padding(
       padding: const EdgeInsets.all(20.0),
-      // 식단 컴포넌트 내용 시작
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // GestureDetector(
+          //   onTap: () {
+          //     // setState(() {
+          //     //
+          //     // });
+          //   }
+          // ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(15.0),

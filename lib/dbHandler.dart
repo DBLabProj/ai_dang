@@ -83,6 +83,23 @@ Future boardList(pageStart) async {
   var result = await conn.query(sql);
   return result;
 }
+
+Future insertBoard(_title, _content) async {
+  var conn = await ConnHandler.instance.conn;
+  var title = _title;
+  var content = _content;
+  var writer = "user1";
+  DateTime datetime = DateTime.now().toUtc().add(const Duration(hours: 9));
+  String sql = '''
+    INSERT INTO board (board_title, board_content, board_add, board_writer)
+    VALUES (?, ?, ?, ?)
+  ''';
+
+  var result = await conn.query(sql, [title, content, datetime, writer]);
+
+  return result;
+}
+
 Future getNutrient(foodName) async {
   var conn = await ConnHandler.instance.conn;
   // String sql = '''
