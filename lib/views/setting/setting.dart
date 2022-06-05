@@ -14,6 +14,12 @@ class setting extends StatefulWidget {
 class _settingState extends State<setting> {
   bool _isChecked = false;
 
+  var User_name = Session.instance.userInfo['name'];
+  var User_age = Session.instance.userInfo['age'];
+  var User_dt = Session.instance.userInfo['dt'];
+  var User_sex = Session.instance.userInfo['sex'];
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +54,7 @@ class _settingState extends State<setting> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  ' 양희범님',style: TextStyle(
+                                  " $User_name님",style: TextStyle(
                                     fontSize: (MediaQuery.of(context).size.width)*0.05,
                                   fontWeight: FontWeight.w800
                                 ),
@@ -101,7 +107,7 @@ class _settingState extends State<setting> {
                                 height: (MediaQuery.of(context).size.height)*0.01,
                               ),
                               Text(
-                                '남자', style: TextStyle(
+                                '$User_sex', style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: (MediaQuery.of(context).size.width)*0.045,
                                   color: Color(0xffCF2525)
@@ -130,7 +136,7 @@ class _settingState extends State<setting> {
                                 height: (MediaQuery.of(context).size.height)*0.01,
                               ),
                               Text(
-                                '25세', style: TextStyle(
+                                '$User_age세', style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: (MediaQuery.of(context).size.width)*0.045,
                                   color: Color(0xffCF2525)
@@ -159,7 +165,7 @@ class _settingState extends State<setting> {
                                 height: (MediaQuery.of(context).size.height)*0.01,
                               ),
                               Text(
-                                '제2형', style: TextStyle(
+                                '$User_dt', style: TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: (MediaQuery.of(context).size.width)*0.045,
                                   color: Color(0xffCF2525)
