@@ -39,7 +39,7 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   var rmicons = false;
-  var _selectedDay = DateTime.now();
+  var _selectedDay = DateTime.now().toUtc().add(const Duration(hours: 9));
   var _calendarFormat = CalendarFormat.week;
   final _picker = ImagePicker();
   bool _isLoading = false;

@@ -3,7 +3,7 @@ import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import 'package:ai_dang/my_expansion_panel.dart';
-
+import 'dart:io';
 import '../request.dart';
 
 var lightGray = const Color(0xffF3F3F3);
@@ -68,7 +68,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     predictResult(),
                     // 하단 스크롤 영역 ---------------------------------------------
                     Expanded(
-                      child: Padding(
+                      child: Container(
+                        color: lightGray,
                         padding: const EdgeInsets.fromLTRB(25, 2, 25, 0),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
@@ -126,7 +127,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         // Function callback for stretch
         return Future<void>.value();
       },
-      expandedHeight: 300.0,
+      backgroundColor: Colors.white,
+      expandedHeight: MediaQuery.of(context).size.height * 0.3,
       flexibleSpace: FlexibleSpaceBar(
         stretchModes: const <StretchMode>[
           StretchMode.zoomBackground,
@@ -156,6 +158,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         setState(() {});
       },
       children: [
+
         MyExpansionPanel(
           hasIcon: false,
           isExpanded: _expanded,
@@ -165,52 +168,68 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               width: MediaQuery.of(context).size.width,
               child: Padding(
                 padding: const EdgeInsets.all(25.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: Column(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    // 인디게이터바 ----------------------------------------------
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                      child: Container(
+                        width: 80,
+                        height: 5,
+                        decoration: BoxDecoration(
+                            color: lightGray,
+                            borderRadius: BorderRadius.circular(10)),
+                      ),
+                    ),
+                    // 측정결과 역역 ----------------------------------------------
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('측정 결과,',
-                            textScaleFactor: 1.3,
-                            style: TextStyle(
-                                color: black, fontWeight: FontWeight.w500)),
-                        Row(
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('${widget.predResult['class_name']}',
-                                textScaleFactor: 2.4,
+                            Text('측정 결과,',
+                                textScaleFactor: 1.2,
                                 style: TextStyle(
-                                    color: red, fontWeight: FontWeight.w900)),
-                            Text(' 입니다.',
-                                textScaleFactor: 2.4,
-                                style: TextStyle(
-                                    color: black, fontWeight: FontWeight.w900))
+                                    color: black, fontWeight: FontWeight.w500)),
+                            Row(
+                              children: [
+                                Text('${widget.predResult['class_name']}',
+                                    textScaleFactor: 2,
+                                    style: TextStyle(
+                                        color: red, fontWeight: FontWeight.w900)),
+                                Text(' 입니다.',
+                                    textScaleFactor: 2,
+                                    style: TextStyle(
+                                        color: black, fontWeight: FontWeight.w900))
+                              ],
+                            ),
                           ],
                         ),
+                        Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              // 영양정보 펼치기 버튼
+                              IconButton(
+                                iconSize: 36,
+                                padding: EdgeInsets.zero, // 패딩 설정
+                                constraints: const BoxConstraints(), // constraints
+                                icon: (_expanded) ? _arrowUp : _arrowDown,
+                                onPressed: () {
+                                  setState(() {
+                                    _expanded = !_expanded;
+                                  });
+                                },
+                              ),
+                              Text((_expanded) ? '영양정보 접기' : '영양정보 펼치기',
+                                  textScaleFactor: 1,
+                                  style: TextStyle(
+                                      color: black, fontWeight: FontWeight.w500)),
+                            ]),
                       ],
                     ),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          // 영양정보 펼치기 버튼
-                          IconButton(
-                            iconSize: 48,
-                            padding: EdgeInsets.zero, // 패딩 설정
-                            constraints: const BoxConstraints(), // constraints
-                            icon: (_expanded) ? _arrowUp : _arrowDown,
-                            onPressed: () {
-                              setState(() {
-                                _expanded = !_expanded;
-                              });
-                            },
-                          ),
-                          Text((_expanded) ? '영양정보 접기' : '영양정보 펼치기',
-                              textScaleFactor: 1.2,
-                              style: TextStyle(
-                                  color: black, fontWeight: FontWeight.w500)),
-                        ]),
                   ],
-                ),
+                )
               ),
             );
           },
@@ -252,7 +271,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               textScaleFactor: 1.2,
                               style: TextStyle(color: black)),
                           Text('307kcal',
-                              textScaleFactor: 1.4,
+                              textScaleFactor: 1.3,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
                         ],
@@ -274,7 +293,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               textScaleFactor: 1.2,
                               style: TextStyle(color: black)),
                           Text('23.46g',
-                              textScaleFactor: 1.4,
+                              textScaleFactor: 1.3,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
                         ],
@@ -296,7 +315,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               textScaleFactor: 1.2,
                               style: TextStyle(color: black)),
                           Text('27.58g',
-                              textScaleFactor: 1.4,
+                              textScaleFactor: 1.3,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
                         ],
@@ -318,7 +337,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               textScaleFactor: 1.2,
                               style: TextStyle(color: black)),
                           Text('9.15g',
-                              textScaleFactor: 1.4,
+                              textScaleFactor: 1.3,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
                         ],
@@ -346,12 +365,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.4),
-              blurRadius: 0.8,
-              offset: const Offset(0, 3))
-        ],
       ),
       child: Column(
         children: [
@@ -359,11 +372,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('당뇨병에 ', textScaleFactor: 1.5),
+              const Text('당뇨병에 ', textScaleFactor: 1.4),
               Text('매우 위험',
-                  textScaleFactor: 1.5,
+                  textScaleFactor: 1.4,
                   style: TextStyle(color: red, fontWeight: FontWeight.w700)),
-              const Text('한 음식입니다.', textScaleFactor: 1.5),
+              const Text('한 음식입니다.', textScaleFactor: 1.4),
             ],
           ),
           // 공백 -----------------------------------------------
@@ -401,7 +414,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 Text('총 당류',
                     textScaleFactor: 1.2, style: TextStyle(color: black)),
                 Text('21.09g',
-                    textScaleFactor: 1.6,
+                    textScaleFactor: 1.4,
                     style: TextStyle(color: black, fontWeight: FontWeight.w700))
               ],
             ),
@@ -428,25 +441,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               border: Border.all(
                   color: (_amount == 1) ? red : Colors.white, width: 2),
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                (_amount == 1)
-                    ? BoxShadow()
-                    : BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
-                        blurRadius: 0.8,
-                        offset: const Offset(0, 3))
-              ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   '1 / 2회 제공량',
-                  textScaleFactor: 1.6,
+                  textScaleFactor: 1.4,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
                 Text('150g',
-                    textScaleFactor: 1.4, style: TextStyle(color: black))
+                    textScaleFactor: 1.2, style: TextStyle(color: black))
               ],
             ),
           ),
@@ -466,25 +471,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               border: Border.all(
                   color: (_amount == 2) ? red : Colors.white, width: 2),
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                (_amount == 2)
-                    ? const BoxShadow()
-                    : BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
-                        blurRadius: 0.8,
-                        offset: const Offset(0, 3))
-              ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   '1회 제공량',
-                  textScaleFactor: 1.6,
+                  textScaleFactor: 1.4,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
                 Text('300g',
-                    textScaleFactor: 1.4, style: TextStyle(color: black))
+                    textScaleFactor: 1.2, style: TextStyle(color: black))
               ],
             ),
           ),
@@ -504,25 +501,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               border: Border.all(
                   color: (_amount == 3) ? red : Colors.white, width: 2),
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                (_amount == 3)
-                    ? const BoxShadow()
-                    : BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
-                        blurRadius: 0.8,
-                        offset: const Offset(0, 3))
-              ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   '1과 1 / 2회 제공량',
-                  textScaleFactor: 1.6,
+                  textScaleFactor: 1.4,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
                 Text('450g',
-                    textScaleFactor: 1.4, style: TextStyle(color: black))
+                    textScaleFactor: 1.2, style: TextStyle(color: black))
               ],
             ),
           ),
@@ -543,25 +532,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               border: Border.all(
                   color: (_amount == 4) ? red : Colors.white, width: 2),
               borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                (_amount == 4)
-                    ? const BoxShadow()
-                    : BoxShadow(
-                        color: Colors.grey.withOpacity(0.4),
-                        blurRadius: 0.8,
-                        offset: const Offset(0, 3))
-              ],
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   '2회 제공량',
-                  textScaleFactor: 1.6,
+                  textScaleFactor: 1.4,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
                 Text('600g',
-                    textScaleFactor: 1.4, style: TextStyle(color: black))
+                    textScaleFactor: 1.2, style: TextStyle(color: black))
               ],
             ),
           ),
@@ -619,10 +600,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 setState(() {
                   _loading = true;
                   String predNo = widget.predResult['predict_no'];
-                  insertMeal('', _amount.toString(), predNo, _desc).then((mealNo) {
-                    setState(() { _loading = false;
-                    Navigator.pop(context);});
-
+                  insertMeal('', _amount.toString(), predNo, _desc)
+                      .then((mealNo) {
+                    setState(() {
+                      _loading = false;
+                      Navigator.pop(context);
+                    });
                   });
                 });
               },
