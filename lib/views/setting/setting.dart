@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../session.dart';
 import '../loginPage.dart';
 
 class setting extends StatefulWidget {

@@ -4,6 +4,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 
 import 'package:ai_dang/my_expansion_panel.dart';
 import 'dart:io';
+import '../dbHandler.dart';
 import '../request.dart';
 
 var lightGray = const Color(0xffF3F3F3);
@@ -52,6 +53,21 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (mounted) {
+      getNutrient(widget.predResult['class_name']).then((sqlRs) {
+        var nut = {};
+        for(var row in sqlRs) {
+          nut['serving_size'] = row[1];
+          nut['energy'] = row[3];
+          nut['protein'] = row[5];
+          nut['fat'] = row[6];
+          nut['hydrate'] = row[7];
+          nut['total_sugar'] = row[8];
+        }
+        print(nut);
+      });
+    }
+
     return LoadingOverlay(
       isLoading: _loading,
       child: Scaffold(
@@ -244,7 +260,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
                     child: Text(
-                      '1회제공량(300g) 기준',
+                      '1회제공량(${widget.predResult['class_name']} g) 기준',
                       textScaleFactor: 1.2,
                       style: TextStyle(color: deepGray),
                     ),
