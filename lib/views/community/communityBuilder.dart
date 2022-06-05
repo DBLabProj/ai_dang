@@ -31,55 +31,54 @@ Future getBoardList(pageStart) async {
   return list;
 }
 
-Future getTotalCnt() async {
-  var cnt;
-  List<Widget> list = [const SizedBox(height: 20)];
+// Future getTotalCnt() async {
+//   var cnt;
+//   List<Widget> list = [const SizedBox(height: 20)];
+//
+//   await cntBoardList().then((sqlRs) {
+//     for (var row in sqlRs) {
+//       String totalCnt = row[0].toString();
+//       cnt = totalCnt;
+//     }
+//   });
+//
+//   for(int i = 1; i < (cnt/10)+1; i ++) {
+//     list.add(
+//       getPagingBtn(i);
+//     );
+//   }
+//   list.add(const SizedBox(height: 20));
+//
+//   return list;
+// }
 
-  await cntBoardList().then((sqlRs) {
-    for (var row in sqlRs) {
-      String totalCnt = row[0].toString();
-      cnt = totalCnt;
-    }
-  });
-
-  for(int i = 1; i < (cnt/10)+1; i ++) {
-    list.add(
-      getPagingBtn(i);
-    );
-  }
-  list.add(const SizedBox(height: 20));
-
-  return list;
-}
-
-Widget getPagingBtn() {
-  return Container(
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10), color: Colors.white),
-    child: Padding(
-      padding: const EdgeInsets.all(20.0),
-      // 식단 컴포넌트 내용 시작
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-                  ],
-                ),
-              )),
-        ],
-      ),
-    ),
-  );
-}
+// Widget getPagingBtn() {
+//   return Container(
+//     decoration: BoxDecoration(
+//         borderRadius: BorderRadius.circular(10), color: Colors.white),
+//     child: Padding(
+//       padding: const EdgeInsets.all(20.0),
+//       // 식단 컴포넌트 내용 시작
+//       child: Row(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           Expanded(
+//               child: Padding(
+//                 padding: const EdgeInsets.all(15.0),
+//                 child: Row(
+//                   crossAxisAlignment: CrossAxisAlignment.start,
+//                   children: [
+//
+//                   ],
+//                 ),
+//               )),
+//         ],
+//       ),
+//     ),
+//   );
+// }
 
 Widget getBoardComponent(boardUid, boardTitle, boardWriter) {
-  getTotalCnt();
   return Container(
     decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10), color: Colors.white),

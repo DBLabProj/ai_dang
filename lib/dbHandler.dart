@@ -77,10 +77,10 @@ Future boardList(pageStart) async {
 
   String sql = '''
     SELECT * FROM board
-    ORDER BY board_uid desc LIMIT 10 OFFSET ?
+    ORDER BY board_uid desc
   ''';
 
-  var result = await conn.query(sql, [pageStart]);
+  var result = await conn.query(sql);
   return result;
 }
 Future getNutrient(foodName) async {
