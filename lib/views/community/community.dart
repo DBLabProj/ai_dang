@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:ai_dang/dbHandler.dart';
 
@@ -89,6 +90,19 @@ class _communityState extends State<community> {
       );
     }
 
+    Widget addBoard() {
+      return SpeedDial(
+        icon: Icons.add,
+        activeIcon: Icons.close,
+        iconTheme: const IconThemeData(size: 32),
+        spacing: 10,
+        spaceBetweenChildren: 4,
+        backgroundColor: colorRed,
+        children: [
+        ],
+      );
+    }
+
     return LoadingOverlay(
       isLoading: _isLoading,
       opacity: 0.7,
@@ -102,6 +116,7 @@ class _communityState extends State<community> {
               ],
             ),
           ),
+          floatingActionButton: addBoard(),
         ),
     );
     // return Scaffold
