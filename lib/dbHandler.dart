@@ -58,3 +58,28 @@ Future insertUsers(signUpList) async {
   );
   return result;
 }
+
+Future cntBoardList() async {
+  var conn = await ConnHandler.instance.conn;
+
+  String sql = '''
+    SELECT COUNT(*) AS cnt
+    FROM board
+    ORDER BY board_uid desc
+  ''';
+
+  var result = await conn.query(sql);
+  return result;
+}
+
+Future boardList(pageStart) async {
+  var conn = await ConnHandler.instance.conn;
+
+  String sql = '''
+    SELECT * FROM board
+    ORDER BY board_uid desc LIMIT 10 OFFSET ?
+  ''';
+
+  var result = await conn.query(sql, [pageStart]);
+  return result;
+}
