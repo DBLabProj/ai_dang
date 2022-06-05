@@ -45,7 +45,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   int _amount = 1;
   String _desc = '';
-
+  Map nut = {};
   final Icon _arrowDown = const Icon(Icons.keyboard_arrow_down);
   final Icon _arrowUp = const Icon(Icons.keyboard_arrow_up);
 
@@ -55,7 +55,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   Widget build(BuildContext context) {
     if (mounted) {
       getNutrient(widget.predResult['class_name']).then((sqlRs) {
-        var nut = {};
+
         for(var row in sqlRs) {
           nut['serving_size'] = row[1];
           nut['energy'] = row[3];
@@ -260,7 +260,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
                     child: Text(
-                      '1회제공량(${widget.predResult['class_name']} g) 기준',
+                      '1회제공량(${nut['serving_size']} g) 기준',
                       textScaleFactor: 1.2,
                       style: TextStyle(color: deepGray),
                     ),
@@ -286,7 +286,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           Text('열량',
                               textScaleFactor: 1.2,
                               style: TextStyle(color: black)),
-                          Text('307kcal',
+                          Text('${nut['energy']}kcal',
                               textScaleFactor: 1.3,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
@@ -308,7 +308,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           Text('탄수화물',
                               textScaleFactor: 1.2,
                               style: TextStyle(color: black)),
-                          Text('23.46g',
+                          Text('${nut['hydrate']}g',
                               textScaleFactor: 1.3,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
@@ -330,7 +330,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           Text('단백질',
                               textScaleFactor: 1.2,
                               style: TextStyle(color: black)),
-                          Text('27.58g',
+                          Text('${nut['protein']}g',
                               textScaleFactor: 1.3,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
@@ -352,7 +352,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           Text('지방',
                               textScaleFactor: 1.2,
                               style: TextStyle(color: black)),
-                          Text('9.15g',
+                          Text('${nut['fat']}g',
                               textScaleFactor: 1.3,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
@@ -429,7 +429,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               children: [
                 Text('총 당류',
                     textScaleFactor: 1.2, style: TextStyle(color: black)),
-                Text('21.09g',
+                Text('${nut['total_sugar']}g',
                     textScaleFactor: 1.4,
                     style: TextStyle(color: black, fontWeight: FontWeight.w700))
               ],
@@ -466,7 +466,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   textScaleFactor: 1.4,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
-                Text('150g',
+                Text('${(nut['serving_size'] * 0.5).toInt()}g',
                     textScaleFactor: 1.2, style: TextStyle(color: black))
               ],
             ),
@@ -496,7 +496,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   textScaleFactor: 1.4,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
-                Text('300g',
+                Text('${nut['serving_size'].toInt()}g',
                     textScaleFactor: 1.2, style: TextStyle(color: black))
               ],
             ),
@@ -526,7 +526,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   textScaleFactor: 1.4,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
-                Text('450g',
+                Text('${(nut['serving_size'] * 1.5).toInt()}g',
                     textScaleFactor: 1.2, style: TextStyle(color: black))
               ],
             ),
@@ -557,7 +557,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   textScaleFactor: 1.4,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
-                Text('600g',
+                Text('${(nut['serving_size'] * 2).toInt()}g',
                     textScaleFactor: 1.2, style: TextStyle(color: black))
               ],
             ),
