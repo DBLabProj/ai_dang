@@ -1,5 +1,5 @@
 import 'package:ai_dang/views/Statistics/statistics.dart';
-import 'package:ai_dang/views/mypage/mypage.dart';
+import 'package:ai_dang/views/community/community.dart';
 import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 import 'dbHandler.dart';
@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   int selectedindex=0;
-  List _pages=[MyStatefulWidget(),statistics(),mypage(), setting()
+  List _pages=[MyStatefulWidget(),statistics(),community(), setting()
   ];
 
   @override
@@ -123,8 +123,8 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.insert_chart),
           ),
           BottomNavigationBarItem(
-            label: 'My Page',
-            icon: Icon(Icons.person),
+            label: 'Community',
+            icon: Icon(Icons.developer_board_outlined),
           ),
           BottomNavigationBarItem(
             label: 'Setting',
@@ -162,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => mypage()
+              builder: (context) => community()
           ),
         );
         break;
