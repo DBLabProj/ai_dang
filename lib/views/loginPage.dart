@@ -82,7 +82,7 @@ class _loginPageState extends State<loginPage> {
             child: ListBody(
               children: <Widget>[
                 Text(
-                  'Email과 Password를 확인을 해주세요!',
+                  'Email과 Password를 확인 해주세요!',
                 ),
               ],
             ),
