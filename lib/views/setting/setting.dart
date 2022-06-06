@@ -1,3 +1,4 @@
+import 'package:ai_dang/views/account/changePassword.dart';
 import 'package:flutter/material.dart';
 
 import '../../session.dart';
@@ -23,22 +24,20 @@ class _settingState extends State<setting> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-
-          child: Container(
-            height: (MediaQuery.of(context).size.height),
-            color: Colors.grey[200],
-            child: Center(
-
+        body: Container(
+          height: (MediaQuery.of(context).size.height),
+          color: Colors.grey[200],
+          child: Center(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                    height: (MediaQuery.of(context).size.height) * 0.06,
+                    height: (MediaQuery.of(context).size.height) * 0.03,
                   ),
                     Container(
                       width: (MediaQuery.of(context).size.width)*0.8,
-                      height: (MediaQuery.of(context).size.height) * 0.11,
+                      height: (MediaQuery.of(context).size.height) * 0.12,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -49,29 +48,35 @@ class _settingState extends State<setting> {
                             ),
                           Container(
                             margin: EdgeInsets.only(top:17),
-                            height: (MediaQuery.of(context).size.height) * 0.11,
+                            height: (MediaQuery.of(context).size.height) * 0.12,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  " $User_name님",style: TextStyle(
-                                    fontSize: (MediaQuery.of(context).size.width)*0.05,
-                                  fontWeight: FontWeight.w800
-                                ),
-                                ),
-                                TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => loginPage()),
-                                      );
-                                    },
-                                    child: Text('프로필 변경하기', style: TextStyle(
-                                      // fontWeight: FontWeight.w500,
-                                        fontSize: (MediaQuery.of(context).size.width)*0.025,
-                                        color: Colors.black
-                                    ),),
+                                Container(
+                            height: (MediaQuery.of(context).size.height) * 0.04,
+                                  child: Text(
+                                    " $User_name님",style: TextStyle(
+                                      fontSize: (MediaQuery.of(context).size.width)*0.05,
+                                    fontWeight: FontWeight.w800
                                   ),
+                                  ),
+                                ),
+                                Container(
+                                    height: (MediaQuery.of(context).size.height) * 0.05,
+                                  child: TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(builder: (context) => loginPage()),
+                                        );
+                                      },
+                                      child: Text('프로필 변경하기', style: TextStyle(
+                                        // fontWeight: FontWeight.w500,
+                                          fontSize: (MediaQuery.of(context).size.width)*0.025,
+                                          color: Colors.black
+                                      ),),
+                                    ),
+                                ),
                               ],
                             ),
                           )
@@ -215,7 +220,12 @@ class _settingState extends State<setting> {
                         children: [
 
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => changepass())
+                              );
+                            },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
