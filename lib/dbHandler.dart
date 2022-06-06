@@ -121,3 +121,14 @@ Future getNutrient(foodName) async {
   var result = await conn.query(sql, [foodName]);
   return result;
 }
+
+Future change_pass(changepass,id) async{
+  var conn = await ConnHandler.instance.conn;
+
+  String sql ='''
+      update user set password = '$changepass' where id = '$id'
+    ''';
+
+  var result = await conn.query(sql);
+  return result;
+}
