@@ -13,10 +13,17 @@ var colorDarkGray = const Color(0xffADADBE);
 var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
-
 Future getMealList(context, selectedDay) async {
   List<Widget> list = [const SizedBox(height: 20)];
-  Map eatInfo = {'cal': 0, 'protein': 0, 'fat': 0, 'cbHydra': 0};
+  Map eatInfo = {
+    'cal': 0,
+    'protein': 0,
+    'fat': 0,
+    'cbHydra': 0,
+    'cbHydra_per': 0.0,
+    'protein_per': 0.0,
+    'fat_per': 0.0
+  };
 
   await selectDayMeal(selectedDay).then((sqlRs) {
     for (var row in sqlRs) {
@@ -37,31 +44,34 @@ Future getMealList(context, selectedDay) async {
       eatInfo['protein'] += (protein * (amount / 2)).toInt();
       eatInfo['fat'] += (fat * (amount / 2)).toInt();
 
-      eatInfo['cbHydra_per'] = (eatInfo['cbHydra'] / Session.instance.dietInfo['recom_hydrate']);
-      eatInfo['protein_per'] = (eatInfo['protein'] / Session.instance.dietInfo['recom_protein']);
-      eatInfo['fat_per'] = (eatInfo['fat'] / Session.instance.dietInfo['recom_fat']);
+      eatInfo['cbHydra_per'] =
+          (eatInfo['cbHydra'] / Session.instance.dietInfo['recom_hydrate']);
+      eatInfo['protein_per'] =
+          (eatInfo['protein'] / Session.instance.dietInfo['recom_protein']);
+      eatInfo['fat_per'] =
+          (eatInfo['fat'] / Session.instance.dietInfo['recom_fat']);
 
-      list.add(
-          getMealComponent(context, mealName, datetime, amount.toString(), desc, imageName, totalSugar));
+      list.add(getMealComponent(context, mealName, datetime, amount.toString(),
+          desc, imageName, totalSugar));
       list.add(const SizedBox(height: 20));
     }
   });
   return {'meal_list': list, 'eat_info': eatInfo};
 }
 
-
-Widget getMealComponent(context, mealName, datetime, amount, desc, imageName, totalSugar) {
+Widget getMealComponent(
+    context, mealName, datetime, amount, desc, imageName, totalSugar) {
   Color dangerColor;
   // 당류 먹은 비율 (0 ~ 1) ------------------------------------
   double eatSugarPercent =
-  (totalSugar / Session.instance.dietInfo['recom_sugar']);
+      (totalSugar / Session.instance.dietInfo['recom_sugar']);
 
   // 위험도 컴포넌트 -------------------------------------------
   if (eatSugarPercent < 0.1) {
     dangerColor = const Color(0xff8AD03C);
-  } else if(eatSugarPercent < 0.3) {
+  } else if (eatSugarPercent < 0.3) {
     dangerColor = const Color(0xffFCE403);
-  } else if(eatSugarPercent < 0.5) {
+  } else if (eatSugarPercent < 0.5) {
     dangerColor = const Color(0xffFBAA47);
   } else {
     dangerColor = colorRed;

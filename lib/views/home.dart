@@ -1,4 +1,3 @@
-
 import 'package:ai_dang/session.dart';
 import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +39,7 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   var rmicons = false;
-  var _selectedDay = DateTime.now().toUtc().add(const Duration(hours: 9));
+  DateTime _selectedDay = DateTime.now().toUtc().add(const Duration(hours: 9));
   var _calendarFormat = CalendarFormat.week;
   final _picker = ImagePicker();
   bool _isLoading = false;
@@ -65,16 +64,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       });
     });
   }
+
+  void getSelectedDaysMeal() {
+    getMealList(context, _selectedDay).then((result) {
+      setState(() {
+        _mealList = result['meal_list'];
+        _eatInfo = result['eat_info'];
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    if (mounted) {
-      getMealList(context, _selectedDay).then((result) {
-        setState(() {
-          _mealList = result['meal_list'];
-          _eatInfo = result['eat_info'];
-        });
-      });
-    }
 
     return LoadingOverlay(
       isLoading: _isLoading,
@@ -118,19 +118,22 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               locale: 'ko_KR',
               firstDay: DateTime.utc(2010, 10, 16),
               lastDay: DateTime.utc(2030, 3, 14),
-              daysOfWeekHeight: 25,
+              daysOfWeekHeight: 23,
               focusedDay: _selectedDay,
               calendarFormat: _calendarFormat,
               calendarStyle: const CalendarStyle(
                 isTodayHighlighted: false,
               ),
               headerStyle: const HeaderStyle(
-                  headerPadding: EdgeInsets.all(20),
+                  headerPadding: EdgeInsets.all(15),
                   formatButtonVisible: false,
                   rightChevronVisible: false,
                   leftChevronVisible: false),
               selectedDayPredicate: (day) {
                 return isSameDay(_selectedDay, day);
+              },
+              onCalendarCreated: (PageController pCon) {
+                getSelectedDaysMeal();
               },
               onDaySelected: (selectedDay, focusedDay) {
                 if (!isSameDay(_selectedDay, selectedDay)) {
@@ -138,8 +141,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   setState(() {
                     _selectedDay = selectedDay;
                   });
+                  getSelectedDaysMeal();
                 }
               },
+              // onPageChanged: (focusedDay) {
+              //   _selectedDay = focusedDay;
+              // },
               calendarBuilders: CalendarBuilders(
                 defaultBuilder: (context, day, focusedDay) {
                   var strDay = DateFormat.d().format(day);
@@ -163,8 +170,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   var style = const TextStyle();
                   if (day.weekday == DateTime.sunday) {
                     style = const TextStyle(color: Colors.red);
-                  } else if (day.weekday == DateTime.saturday) {
-                    style = const TextStyle(color: Colors.blue);
                   }
                   return Center(
                       child: Text(text, textScaleFactor: 1.2, style: style));
@@ -208,7 +213,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   return Row(
                     children: [
                       Text(strDay,
-                          textScaleFactor: 1.9,
+                          textScaleFactor: 1.6,
                           style: TextStyle(
                               color: colorRed, fontWeight: FontWeight.w600)),
                       Center(child: iconBtn)
@@ -222,6 +227,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   Widget takeNutInfo() {
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(25, 0, 25, 20),
       child: Column(
@@ -235,7 +241,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('하루 섭취량', textScaleFactor: 1.2),
-                Text('${_eatInfo['cal']} / ${Session.instance.dietInfo['recom_cal'].toInt()} kcal', textScaleFactor: 1.3)
+                Text(
+                    '${_eatInfo['cal']} / ${Session.instance.dietInfo['recom_cal'].toInt()} kcal',
+                    textScaleFactor: 1.3)
               ],
             ),
           ),
@@ -264,7 +272,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ),
                       ),
                     ),
-                    Text('${_eatInfo['cbHydra']} / ${Session.instance.dietInfo['recom_hydrate'].toInt()} g', textScaleFactor: 1.2),
+                    Text(
+                        '${_eatInfo['cbHydra']} / ${Session.instance.dietInfo['recom_hydrate'].toInt()} g',
+                        textScaleFactor: 1.2),
                   ],
                 ),
                 // 단백질 섭취정보
@@ -286,7 +296,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ),
                       ),
                     ),
-                    Text('${_eatInfo['protein']} / ${Session.instance.dietInfo['recom_protein'].toInt()} g', textScaleFactor: 1.2),
+                    Text(
+                        '${_eatInfo['protein']} / ${Session.instance.dietInfo['recom_protein'].toInt()} g',
+                        textScaleFactor: 1.2),
                   ],
                 ),
                 // 지방 섭취정보
@@ -308,7 +320,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ),
                       ),
                     ),
-                    Text('${_eatInfo['fat']} / ${Session.instance.dietInfo['recom_fat'].toInt()} g', textScaleFactor: 1.2),
+                    Text(
+                        '${_eatInfo['fat']} / ${Session.instance.dietInfo['recom_fat'].toInt()} g',
+                        textScaleFactor: 1.2),
                   ],
                 ),
               ],
