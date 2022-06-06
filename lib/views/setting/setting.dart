@@ -1,4 +1,4 @@
-import 'package:ai_dang/views/account/changePassword.dart';
+import 'package:ai_dang/views/setting/changePassword.dart';
 import 'package:flutter/material.dart';
 
 import '../../session.dart';
