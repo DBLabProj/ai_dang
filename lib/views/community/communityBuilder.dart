@@ -37,7 +37,7 @@ Future getTotalCnt() async {
 
   await cntBoardList().then((sqlRs) {
     for (var row in sqlRs) {
-      String totalCnt = row[0].toString();
+      int totalCnt = row[0];
       cnt = totalCnt;
     }
   });
