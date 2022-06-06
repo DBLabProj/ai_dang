@@ -42,7 +42,7 @@ class _loginPageState extends State<loginPage> {
 
     var User_info_list = [];
     var result = await conn.query(
-      'select name, email, age, sex, height, weight, dt from user where email = "$Email"');
+      'select name, email, age, sex, height, weight, dt, password from user where email = "$Email"');
     for (var row in result) {
       Session.instance.setInfo({
         'name': row[0],
@@ -52,6 +52,7 @@ class _loginPageState extends State<loginPage> {
         'height' : row[4],
         'weight' : row[5],
         'dt' : row[6],
+        'password' : row[7],
       });
     }
     return print(Session.instance.userInfo);
