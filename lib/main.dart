@@ -1,6 +1,5 @@
 import 'package:ai_dang/views/Statistics/statistics.dart';
 import 'package:ai_dang/views/community/community.dart';
-import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 import 'dbHandler.dart';
 import 'views/camera.dart';

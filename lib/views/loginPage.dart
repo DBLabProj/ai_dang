@@ -1,13 +1,10 @@
 import 'package:ai_dang/session.dart';
 import 'package:ai_dang/views/account/signup.dart';
-import 'package:ai_dang/views/test.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/dbHandler.dart';
 
 import '../main.dart';
 import '../widgets/myTextField.dart';
-import 'home.dart';
 
 Color red = const Color(0xffCF2525);
 Color gray = const Color(0xffD6D6D6);
@@ -21,10 +18,10 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
-  MyTextField emailField = MyTextField('email', Icons.email, '이메일', '이메일을 입력하세요.');
-  MyTextField passwordField = MyTextField('password', Icons.vpn_key, '비밀번호', '비밀번호를 입력하세요.');
-
-
+  MyTextField emailField =
+      MyTextField('email', Icons.email, '이메일', '이메일을 입력하세요.');
+  MyTextField passwordField =
+      MyTextField('password', Icons.vpn_key, '비밀번호', '비밀번호를 입력하세요.');
 
   void checkUser(email, password) async {
     var conn = await ConnHandler.instance.conn;
@@ -105,9 +102,10 @@ class _loginPageState extends State<loginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     double areaWidth = (MediaQuery.of(context).size.width) * 0.75;
-    if(areaWidth > 300) {areaWidth = 300;}
+    if (areaWidth > 300) {
+      areaWidth = 300;
+    }
 
     return GestureDetector(
       onTap: () {
@@ -137,7 +135,8 @@ class _loginPageState extends State<loginPage> {
                           Text(
                             'AI DANG',
                             textScaleFactor: 4,
-                            style: TextStyle(fontWeight: FontWeight.w600, color: red),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600, color: red),
                           ),
                           // desc ----------------------------------------------------
                           Text(
@@ -163,11 +162,11 @@ class _loginPageState extends State<loginPage> {
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () {
-                                checkUser(emailField.getText(), passwordField.getText());
+                                checkUser(emailField.getText(),
+                                    passwordField.getText());
                               },
-                              child: const Text(
-                                '지금 시작하기',
-                                textScaleFactor: 1.4,
+                              child: const Text('지금 시작하기',
+                                textScaleFactor: 1.4
                               ),
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -182,17 +181,19 @@ class _loginPageState extends State<loginPage> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => signup()),
+                                MaterialPageRoute(
+                                    builder: (context) => signup()),
                               );
                             },
                             child: Text(
                               '처음이신가요? 회원가입',
                               textScaleFactor: 1.2,
-                              style: TextStyle(
-                                  color: red),
+                              style: TextStyle(color: red),
                             ),
                           ),
-                          SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                          SizedBox(
+                              height:
+                                  MediaQuery.of(context).size.height * 0.05),
                         ],
                       ),
                     ),

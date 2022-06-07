@@ -1,12 +1,10 @@
 import 'package:ai_dang/dbHandler.dart';
 import 'package:ai_dang/views/account/genderpage.dart';
 import 'package:ai_dang/views/loginPage.dart';
-import 'package:ai_dang/views/test.dart';
+import 'package:ai_dang/widgets/myTextField.dart';
 import 'package:flutter/material.dart';
 
 import 'genderpage.dart';
-
-
 
 class signup extends StatefulWidget {
   signup({Key? key}) : super(key: key);
@@ -16,429 +14,292 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
-  final _idTextEditController = TextEditingController();
+  MyTextField nameField =
+      MyTextField('email', Icons.account_circle, '닉네임', '닉네임을 입력하세요.');
+  MyTextField passwordField =
+      MyTextField('password', Icons.vpn_key, '비밀번호', '비밀번호를 입력하세요.');
 
-  final _passwordTextEditController = TextEditingController();
-
-  final _passwordTextEditController_check = TextEditingController();
-
-  final _nameTextEditController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _pwCheckController = TextEditingController();
 
   var signupList = [];
 
   @override
   void dispose() {
-    _idTextEditController.dispose();
-    _passwordTextEditController.dispose();
-    _passwordTextEditController_check.dispose();
+    _emailController.dispose();
+    _pwCheckController.dispose();
   }
 
+  bool _emailChecked = false;
+  bool _passwordChecked = false;
+  Widget _emailLabel = const SizedBox();
+  Widget _passwordLabel = const SizedBox();
 
-  void showDialogPop() {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            //제목 정의
-            '비밀번호가 다릅니다!',
-          ),
-          content: SingleChildScrollView(
-            //내용 정의
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                  '비밀번호를 다시 확인해주세요!',
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
-              },
-              child: Text(
-                '닫기',
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void showDialogPop_Email() {
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            //제목 정의
-            'Email 중복 확인',
-          ),
-          content: SingleChildScrollView(
-            //내용 정의
-            child: ListBody(
-              children: <Widget>[
-                Text(
-                  'Email 중복 확인을 해주세요!',
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
-              },
-              child: Text(
-                '닫기',
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-
-
-  void showDialogPop_Email_check(Email_check) {
-    if (Email_check == false){
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
-        builder: (BuildContext context) {
-          return
-            AlertDialog(
-              title: Text(
-                //제목 정의
-                '이미 사용중인 계정!',
-              ),
-              content: SingleChildScrollView(
-                //내용 정의
-                child: ListBody(
-                  children: <Widget>[
-                    Text(
-                      '이미 사용중인 Email입니다. 다시 입력해주세요.',
-                    ),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
-                  },
-                  child: Text(
-                    '닫기',
-                  ),
-                ),
-              ],
-            );
-        },
-      );
-    }
-    else {
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
-        builder: (BuildContext context) {
-          return
-            AlertDialog(
-              title: Text(
-                //제목 정의
-                '사용 가능한 계정입니다!',
-              ),
-              content: SingleChildScrollView(
-                //내용 정의
-                child: ListBody(
-                  children: <Widget>[
-                    Text(
-                      '이 Email을 사용하시겠습니까?',
-                    ),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
-                  },
-                  child: Text(
-                    '확인',
-                  ),
-                ),
-              ],
-            );
-        },
-      );
-
-    }
-
-  }
-
-  bool Email_check = false;
-  bool Password_check = false;
-
-  void test(Email) async{
+  Future<bool> checkEmailDup(email) async {
     var conn = await ConnHandler.instance.conn;
 
-    var result = await conn.query('select * from user where Email = "$Email"');
-    if (result.isEmpty == true){
-      Email_check = true; // 이메일 사용 가능일때
+    var result = await conn.query('select * from user where Email = "$email"');
+
+    return result.isEmpty;
+  }
+
+  bool checkPassword() {
+    if (passwordField.getText() == _pwCheckController.text) {
+      return true;
     }
-    else {
-      Email_check = false; // 이메일 중복일때
-    }
-    return showDialogPop_Email_check(Email_check);
+    return false;
+  }
+
+  void showDialogPop(title, desc) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            //내용 정의
+            child: ListBody(
+              children: <Widget>[
+                Text(desc),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
+              },
+              child: const Text('닫기'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    double areaWidth = (MediaQuery.of(context).size.width) * 0.75;
+    if (areaWidth > 300) {
+      areaWidth = 300;
+    }
+
     return GestureDetector(
       onTap: () {
         //FocusManager.instance.primaryFocus?.unfocus();
         FocusScope.of(context).unfocus();
       },
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) * 0.08,
-              ),
-              Container(
-                color: Colors.white,
-                height: (MediaQuery.of(context).size.height) -
-                    (MediaQuery.of(context).size.height) * 0.10,
-                width: (MediaQuery.of(context).size.width) -
-                    (MediaQuery.of(context).size.width) * 0.3,
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      '계정 생성하기',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize:((MediaQuery.of(context).size.width) * 0.1),
-                          color: Color(0xffCF2525)),
-                    ),
-                    Text(
-                      '계정을 생성하기 위해 아래 정보를 입력하세요.',
-                      style: TextStyle(
-                          fontSize:
-                          ((MediaQuery.of(context).size.width) * 0.14) *
-                              0.26,
-                          color: Color(0xffCF2525)),
-                    ),
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.1,
-                    ),
-
-                    Container(
-                      width: (MediaQuery.of(context).size.width) -
-                          (MediaQuery.of(context).size.width) * 0.35,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: (MediaQuery.of(context).size.width) -
-                                (MediaQuery.of(context).size.width) * 0.52,
-                            child: TextField(
-                              controller: _idTextEditController,
+      child: WillPopScope(
+        onWillPop: () {
+          return Future(() => false);
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          body: SafeArea(
+            child: Center(
+              child: SizedBox(
+                width: areaWidth,
+                child: IntrinsicHeight(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          children: <Widget>[
+                            // title ---------------------------------------------------
+                            Text(
+                              '환영합니다.',
+                              textScaleFactor: 4,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w600, color: red),
+                            ),
+                            // desc ----------------------------------------------------
+                            Text(
+                              '회원가입을 위해 기본정보를 입력하세요.',
+                              textScaleFactor: 1.1,
+                              style: TextStyle(color: red),
+                            ),
+                            const SizedBox(
+                              height: 70,
+                            ),
+                            // 이메일 필드 -----------------------------------------
+                            TextField(
+                              controller: _emailController,
+                              cursorColor: red,
+                              keyboardType: TextInputType.emailAddress,
+                              obscureText: false,
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              onChanged: (text) async {
+                                _emailChecked = await checkEmailDup(text);
+                                setState(() {
+                                  if (text.isNotEmpty) {
+                                    if (_emailChecked) {
+                                      _emailLabel = const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text('사용가능한 이메일입니다'),
+                                      );
+                                    } else {
+                                      _emailLabel = Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          '중복된 이메일입니다',
+                                          style: TextStyle(color: red),
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    _emailLabel = SizedBox(height: 0);
+                                  }
+                                });
+                              },
                               decoration: InputDecoration(
-                                labelText: 'Email',
-                                hintText: 'Enter your email',
-                                labelStyle: TextStyle(color: Color(0xffCF2525)),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                  borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                                labelText: '이메일',
+                                hintText: '이메일을 입력하세요.',
+                                labelStyle: TextStyle(color: darKGray),
+                                prefixIcon: Icon(Icons.email, color: darKGray),
+                                focusColor: red,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(width: 2, color: gray),
                                 ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                  borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(width: 2, color: red),
                                 ),
                               ),
-                              keyboardType: TextInputType.emailAddress,
                             ),
-                          ),
-                          // SizedBox(
-                          //   width: (MediaQuery.of(context).size.width)*0.01,
-                          // ),
-                          SizedBox(
-                            width: (MediaQuery.of(context).size.width) -
-                                (MediaQuery.of(context).size.width) * 0.85,
-                            height: (MediaQuery.of(context).size.height) * 0.065,
-                            child: ElevatedButton(
-                              onPressed: () {
-                                test(_idTextEditController.text);
+                            // 이메일 필드 라벨 -------------------------------------
+                            Container(
+                              width: areaWidth,
+                              constraints: const BoxConstraints(minHeight: 10),
+                              child: _emailLabel,
+                            ),
+                            nameField.getWidget(),
+                            // 공백 -----------------------------------------------
+                            const SizedBox(height: 10),
+                            passwordField.getWidget(),
+                            // 공백 -----------------------------------------------
+                            const SizedBox(height: 10),
+                            // 비밀번호 확인 필드 -----------------------------------
+                            TextField(
+                              controller: _pwCheckController,
+                              cursorColor: red,
+                              obscureText: true,
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              onChanged: (text) {
+                                _passwordChecked = checkPassword();
+                                setState(() {
+                                  if (text.isNotEmpty) {
+                                    if (_passwordChecked) {
+                                      _passwordLabel = const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: Text('사용가능한 비밀번호 입니다.'),
+                                      );
+                                    } else {
+                                      _passwordLabel = Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          '두 비밀번호가 같지 않습니다.',
+                                          style: TextStyle(color: red),
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    _passwordLabel = const SizedBox(height: 0);
+                                  }
+                                });
                               },
-                              child: Text('중복 확인', style: TextStyle(
-                                  fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.15
-                              ),),
-                              style: ElevatedButton.styleFrom(shape:  RoundedRectangleBorder(
-                                  borderRadius:  BorderRadius.circular(10.0)),
-                                primary : Color(0xffCF2525),),
+                              decoration: InputDecoration(
+                                labelText: '비밀번호 확인',
+                                hintText: '비밀번호를 다시 입력하세요.',
+                                labelStyle: TextStyle(color: darKGray),
+                                prefixIcon: Icon(Icons.vpn_key, color: darKGray),
+                                focusColor: red,
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(width: 2, color: gray),
+                                ),
+                                focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(width: 2, color: red),
+                                ),
+                              ),
                             ),
-                          )
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.01,
-                    ),
-                    SizedBox(
-                      width: (MediaQuery.of(context).size.width) -
-                          (MediaQuery.of(context).size.width) * 0.35,
-                      child: TextField(
-                        controller: _nameTextEditController,
-                        decoration: InputDecoration(
-                          // filled: true,
-                          labelText: 'Name',
-                          hintText: 'Enter your Name',
-                          labelStyle: TextStyle(color: Color(0xffCF2525)),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
+                            // 비밀번호 필드 라벨 -----------------------------------
+                            Container(
+                              width: areaWidth,
+                              constraints: const BoxConstraints(minHeight: 10),
+                              child: _passwordLabel,
+                            ),
+                            const SizedBox(height: 75),
+                            SizedBox(
+                              width: areaWidth * 0.75,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (_emailController.text.isEmpty ||
+                                      _pwCheckController.text.isEmpty ||
+                                      nameField.getText().isEmpty ||
+                                      passwordField.getText().isEmpty) {
+                                    showDialogPop('유효하지 않은 값', '모든 내용을 입력해주세요.');
+                                  } else {
+                                    if (!_emailChecked) {
+                                      showDialogPop(
+                                          '이메일 중복', '중복된 이메일입니다. 다시 시도해주세요.');
+                                    } else if (!_passwordChecked) {
+                                      showDialogPop(
+                                          '비밀번호 다름', '두 비밀번호가 같지 않습니다.');
+                                    } else {
+                                      signupList.add(_emailController.text);
+                                      signupList.add(passwordField.getText());
+                                      signupList.add(nameField.getText());
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => genderpage(
+                                                signUpList: signupList)),
+                                      );
+                                    }
+                                  }
+                                },
+                                child:
+                                    const Text('신체정보 입력하기', textScaleFactor: 1.4),
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0)),
+                                  primary: const Color(0xffCF2525),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height:
+                                  (MediaQuery.of(context).size.height) * 0.085,
+                              child: TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => loginPage()),
+                                  );
+                                },
+                                child: Text(
+                                  '이미 계정이 있으신가요? 로그인',
+                                  textScaleFactor: 1.2,
+                                  style: TextStyle(color: red),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.01,
-                    ),
-                    SizedBox(
-                      width: (MediaQuery.of(context).size.width) -
-                          (MediaQuery.of(context).size.width) * 0.35,
-                      child: TextField(
-                        controller: _passwordTextEditController,
-                        decoration: InputDecoration(
-                          // filled: true,
-                          labelText: 'Password',
-                          hintText: 'Enter your password',
-                          labelStyle: TextStyle(color: Color(0xffCF2525)),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                        ),
-                        obscureText: true,
-                      ),
-                    ),
-
-
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.01,
-                    ),
-                    SizedBox(
-                      width: (MediaQuery.of(context).size.width) -
-                          (MediaQuery.of(context).size.width) * 0.35,
-                      child: TextField(
-                        controller: _passwordTextEditController_check,
-                        decoration: InputDecoration(
-                          // filled: true,
-                          labelText: 'Password check',
-                          hintText: 'Enter your password',
-                          labelStyle: TextStyle(color: Color(0xffCF2525)),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          ),
-                        ),
-                        obscureText: true,
-                      ),
-                    ),
-
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.060,
-                    ),
-                    SizedBox(
-                      height: (MediaQuery.of(context).size.height) * 0.065,
-                      width: (MediaQuery.of(context).size.width) -
-                          (MediaQuery.of(context).size.width) * 0.40,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (Email_check==false) {
-                            showDialogPop_Email();
-                          }
-                          else if (_passwordTextEditController.text == _passwordTextEditController_check.text) {
-                            Password_check = true;
-                          } else {
-                            showDialogPop();
-                          }
-
-                          if (Password_check == true && Email_check == true) {
-                            signupList.add(_idTextEditController.text);
-                            signupList.add(_passwordTextEditController.text);
-                            // signupList.add(_passwordTextEditController_check.text);
-                            signupList.add(_nameTextEditController.text);
-
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => genderpage(signUpList: signupList)),
-                            );
-                          }
-                          print(signupList);
-
-                        },
-                        child: Text('가입하기', style: TextStyle(
-                            fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26
-                        ),),
-                        style: ElevatedButton.styleFrom(shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(10.0)),
-                          primary : Color(0xffCF2525),),
-                      ),
-                    ),
-                    SizedBox(
-                      height: (MediaQuery.of(context).size.height) * 0.085,
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => loginPage()),
-                          );
-                        }, child: Text('이미 계정이 있으신가요? 로그인',style: TextStyle(
-                          fontSize:
-                          ((MediaQuery.of(context).size.width) * 0.16) * 0.26,
-                          color: Color(0xffCF2525)),
-                      ),),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ],
-
+            ),
           ),
-        ),),);
+        ),
+      ),
+    );
   }
 }

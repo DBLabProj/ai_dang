@@ -1,5 +1,4 @@
 import 'package:ai_dang/views/account/age.dart';
-import 'package:ai_dang/views/test.dart';
 import 'package:ai_dang/views/account/weightpage.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';

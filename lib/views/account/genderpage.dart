@@ -1,7 +1,5 @@
 import 'package:ai_dang/views/account/age.dart';
-import 'package:ai_dang/views/loginPage.dart';
 import 'package:ai_dang/views/account/signup.dart';
-import 'package:ai_dang/views/test.dart';
 import 'package:flutter/material.dart';
 
 class genderpage extends StatefulWidget {
@@ -164,11 +162,8 @@ class _genderpageState extends State<genderpage> {
 
                     print(widget.signUpList);
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => signup(
-                      )),
-                    );
+
+                    Navigator.pop(context);
                   },
                   child: Text('이전 단계로', style: TextStyle(
                     color: Color(0xffCF2525),

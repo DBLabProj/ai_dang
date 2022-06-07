@@ -6,6 +6,7 @@ class MyTextField {
   final Color _red = const Color(0xffCF2525);
   final Color _gray = const Color(0xffD6D6D6);
   final Color _darKGray = const Color(0xff3E3E3E);
+  Widget _fieldLabel = const Text('');
 
   MyTextField(type, icons, label, hint) {
     TextInputType inputType = TextInputType.text;
@@ -23,21 +24,24 @@ class MyTextField {
       obscureText: obscureText,
       enableSuggestions: false,
       autocorrect: false,
+      onEditingComplete: () {
+
+      },
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
         labelStyle: TextStyle(color: _darKGray),
         prefixIcon: Icon(icons, color: _darKGray),
 
-        focusColor: _red,
-        enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(width: 2, color: _gray),
-        ),
-        focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(width: 2, color: _red),
-        ),
-      ),
-    );
+            focusColor: _red,
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(width: 2, color: _gray),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(width: 2, color: _red),
+            ),
+          ),
+        );
   }
 
   Widget getWidget() {
@@ -47,4 +51,5 @@ class MyTextField {
   String getText() {
     return _controller.text;
   }
+
 }

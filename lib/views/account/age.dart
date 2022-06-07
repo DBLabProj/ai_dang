@@ -1,6 +1,5 @@
 import 'package:ai_dang/views/account/genderpage.dart';
 import 'package:ai_dang/views/account/heightpage.dart';
-import 'package:ai_dang/views/test.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
