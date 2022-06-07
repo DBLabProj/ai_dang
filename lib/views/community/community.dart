@@ -1,4 +1,5 @@
 
+import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -26,20 +27,27 @@ class community extends StatefulWidget {
 
 class _communityState extends State<community> {
 
+  final _searchTextEditController = TextEditingController();
+
+  String _search ='';
+
   bool _isLoading = false;
-  int pageStart = 0;
+
+  int reloadCommandSearch = 1;
+
   List<Widget> _boardList = [];
 
   @override
   Widget build(BuildContext context) {
     if (mounted) {
-      getBoardList(pageStart).then((boardList) {
+      var pageStart = 0;
+      var reloadCommandNum = 0;
+      getBoardList(pageStart, reloadCommandNum, _search).then((boardList) {
         setState(() {
           _boardList = boardList;
         });
       });
     }
-
     Widget _myInfo() {
       return Container(
         color: Colors.white,
@@ -49,7 +57,7 @@ class _communityState extends State<community> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                color: Colors.white,
+                color: colorRed,
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
@@ -58,7 +66,7 @@ class _communityState extends State<community> {
                       Text(
                         '아이당 커뮤니티',
                         style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.white,
                             fontWeight: FontWeight.w600,
                             fontSize: (MediaQuery.of(context).size.width)*0.04
                         ),
@@ -69,6 +77,73 @@ class _communityState extends State<community> {
               ),
             ],
           ),
+        ),
+      );
+    }
+
+    //검색창
+   Widget searchBoard() {
+      return Container(
+        color: lightGray,
+        padding: const EdgeInsets.fromLTRB(20, 2, 20 ,0),
+        child: Column(
+        children: [
+          SizedBox(height: 20,),
+          Row(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: TextField(
+                    controller: _searchTextEditController,
+                    onChanged: (text) {
+                      _search = text;
+                    },
+                    style: TextStyle(
+                      fontSize: 15
+                    ),
+                    decoration: const InputDecoration(
+                      labelStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          height: 1
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(),
+                      labelText: "검색",
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                      ),
+                    ),
+                ),
+              ),
+
+              ElevatedButton(
+                onPressed: () {
+                  var pageStart = 0;
+                  getBoardList(pageStart, reloadCommandSearch, _search).then((boardList) {
+                    setState(() {
+                      _boardList = boardList;
+                    });
+                  });
+                },
+                child: Text(
+                  '검색',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                      fontSize: (MediaQuery.of(context).size.width)*0.04
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: colorRed,
+                ),
+              ),
+            ],
+          ),
+        ],
         ),
       );
     }
@@ -118,6 +193,7 @@ class _communityState extends State<community> {
             child: Column(
               children: [
                 _myInfo(),
+                searchBoard(),
                 boardInfo(),
               ],
             ),
@@ -195,7 +271,7 @@ class Write extends StatelessWidget {
         title: Text(
           '아이당 커뮤니티',
           style: TextStyle(
-              color: Colors.black,
+              color: Colors.white,
               fontWeight: FontWeight.w600,
               fontSize: (MediaQuery.of(context).size.width)*0.04
           ),
