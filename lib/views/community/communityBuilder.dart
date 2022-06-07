@@ -12,7 +12,7 @@ var colorDarkGray = const Color(0xffADADBE);
 var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
-Future getBoardList(pageStart, loadCommand, reloadCommand, text) async {
+Future getBoardList(context, pageStart, loadCommand, reloadCommand, text) async {
 
   List<Widget> list = [const SizedBox(height: 20)];
 
@@ -26,7 +26,7 @@ Future getBoardList(pageStart, loadCommand, reloadCommand, text) async {
         String boardWriter = row[4];
 
         list.add(
-            getBoardComponent(boardUid, boardTitle, boardWriter));
+            getBoardComponent(context, boardUid, boardTitle, boardWriter));
         list.add(const SizedBox(height: 20));
       }
     });
@@ -40,7 +40,7 @@ Future getBoardList(pageStart, loadCommand, reloadCommand, text) async {
         String boardWriter = row[4];
 
         list.add(
-            getBoardComponent(boardUid, boardTitle, boardWriter));
+            getBoardComponent(context, boardUid, boardTitle, boardWriter));
         list.add(const SizedBox(height: 20));
       }
     });
@@ -96,54 +96,101 @@ Widget getPagingBtn() {
   );
 }
 
-Widget getBoardComponent(boardUid, boardTitle, boardWriter) {
+Widget getBoardComponent(context, boardUid, boardTitle, boardWriter) {
   getTotalCnt();
-  return Container(
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10), color: Colors.white),
-    child: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => detailInfo(context, boardUid, boardTitle, boardWriter))
+      );
+    },
+    child: Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10), color: Colors.white),
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          boardUid,
+                          style: TextStyle(
+                              color: colorBlack,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(width: 40),
+                        Text(
+                          boardTitle,
+                          style: TextStyle(
+                              color: colorDarkGray,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                    //board_uid
+                    const SizedBox(height: 30),
+                    Text(
+                      boardWriter,
+                      style: TextStyle(
+                          color: colorDarkGray,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+              )),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+Widget detailInfo(context,  boardUid, boardTitle, boardWriter) {
+  return Scaffold(
+    body: SafeArea(
+      child: Container(
+        color: Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                color: colorRed,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        boardUid,
+                        '아이당 커뮤니티',
                         style: TextStyle(
-                            color: colorBlack,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: (MediaQuery.of(context).size.width)*0.04
+                        ),
                       ),
-                      const SizedBox(width: 40),
-                      Text(
-                        boardTitle,
-                        style: TextStyle(
-                            color: colorDarkGray,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w400),
-                      ),
+                      Text( boardUid),
+                      Text(boardTitle),
+                      Text(boardWriter),
                     ],
                   ),
-                  //board_uid
-                  const SizedBox(height: 30),
-                  Text(
-                    boardWriter,
-                    style: TextStyle(
-                        color: colorDarkGray,
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400),
-                  ),
-                ],
+                ),
               ),
-            )),
-        ],
+            ],
+          ),
+        ),
       ),
     ),
   );

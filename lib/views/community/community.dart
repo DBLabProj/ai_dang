@@ -43,7 +43,7 @@ class _communityState extends State<community> {
       var pageStart = 0;
       if (loadCommand == true) {
         if(reloadCommandSearch == false) {
-          getBoardList(pageStart, loadCommand, reloadCommandSearch, _search).then((boardList) {
+          getBoardList(context, pageStart, loadCommand, reloadCommandSearch, _search).then((boardList) {
             setState(() {
               _boardList = boardList;
             });
@@ -127,7 +127,7 @@ class _communityState extends State<community> {
                 onPressed: () {
                   var pageStart = 0;
                   reloadCommandSearch = true;
-                  getBoardList(pageStart, loadCommand, reloadCommandSearch, _search).then((boardList) {
+                  getBoardList(context, pageStart, loadCommand, reloadCommandSearch, _search).then((boardList) {
                     setState(() {
                       _boardList = boardList;
                     });
@@ -153,63 +153,20 @@ class _communityState extends State<community> {
       );
     }
 
-    Widget detailInfo() {
-      return Scaffold(
-        body: SafeArea(
-          child: Container(
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Container(
-                    color: colorRed,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '아이당 커뮤니티',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: (MediaQuery.of(context).size.width)*0.04
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      );
-    }
+
 
     Widget boardInfo() {
       return Expanded(
         child: Container(
           color: lightGray,
-          child: GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => detailInfo())
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(40, 2, 40, 0),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.max,
-                  children: _boardList,
-                ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(40, 2, 40, 0),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.max,
+                children: _boardList,
               ),
             ),
           ),
