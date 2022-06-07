@@ -104,6 +104,21 @@ Future insertBoard(_title, _content) async {
   return result;
 }
 
+Future getBoard(_search) async {
+  var conn = await ConnHandler.instance.conn;
+  var search = _search;
+
+  String sql = '''
+    SELECT * FROM board
+    WHERE board_title LIKE CONCAT('%', ?, '%') or board_content LIKE CONCAT('%', ?, '%')
+    ORDER BY board_uid desc
+  ''';
+
+  var result = await conn.query(sql, [search, search]);
+
+  return result;
+}
+
 Future getNutrient(foodName) async {
   var conn = await ConnHandler.instance.conn;
   // String sql = '''
