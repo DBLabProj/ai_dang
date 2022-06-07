@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
-import 'package:ai_dang/my_expansion_panel.dart';
+import 'package:ai_dang/widgets/myExpansionPanel.dart';
 import 'dart:io';
 import '../dbHandler.dart';
 import '../request.dart';
