@@ -12,12 +12,11 @@ var colorDarkGray = const Color(0xffADADBE);
 var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
-Future getBoardList(pageStart, reloadCommandNum, text) async {
-
+Future getBoardList(pageStart, loadCommand, reloadCommand, text) async {
 
   List<Widget> list = [const SizedBox(height: 20)];
 
-  if(reloadCommandNum == 0) {
+  if(loadCommand == true && reloadCommand == false) {
     print("lalalalalalalala" + text);
     await boardList(pageStart).then((sqlRs) {
       for (var row in sqlRs) {
@@ -31,7 +30,7 @@ Future getBoardList(pageStart, reloadCommandNum, text) async {
         list.add(const SizedBox(height: 20));
       }
     });
-  } else if (reloadCommandNum == 1) {
+  } else if (loadCommand == true && reloadCommand == true) {
     print("lalalalalalalala" + text);
     await getBoard(text).then((sqlRs) {
       for (var row in sqlRs) {
@@ -46,8 +45,6 @@ Future getBoardList(pageStart, reloadCommandNum, text) async {
       }
     });
   }
-
-
 
   return list;
 }
