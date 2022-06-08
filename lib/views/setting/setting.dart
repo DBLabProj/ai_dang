@@ -1,11 +1,11 @@
 import 'package:ai_dang/views/setting/changePassword.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../session.dart';
 import '../loginPage.dart';
 
 class setting extends StatefulWidget {
-
   const setting({Key? key}) : super(key: key);
 
   @override
@@ -19,538 +19,383 @@ class _settingState extends State<setting> {
   var User_age = Session.instance.userInfo['age'];
   var User_dt = Session.instance.userInfo['dt'];
   var User_sex = Session.instance.userInfo['sex'];
+  var lightGray = const Color(0xffEEEEEE);
 
+  Widget getIconButtonGroup(icons, color, label, settingText) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Icon(
+              icons,
+              color: color,
+            ),
+            const SizedBox(width: 20),
+            Text(
+              label,
+              textScaleFactor: 1.1,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500, color: Colors.black),
+            ),
+          ],
+        ),
+        if (settingText == '') ...[
+          const Icon(
+            Icons.chevron_right_outlined,
+            color: Colors.black,
+          ),
+        ] else ...[
+          Row(
+            children: [
+              Text(
+                settingText,
+                style: const TextStyle(color: Colors.grey),
+              ),
+              const Icon(
+                Icons.chevron_right_outlined,
+                color: Colors.black,
+              )
+            ],
+          ),
+        ]
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    double areaWidth = (MediaQuery.of(context).size.width) * 0.85;
+    if (areaWidth > 500) {
+      areaWidth = 500;
+    }
     return Scaffold(
-        body: Container(
-          height: (MediaQuery.of(context).size.height),
-          color: Colors.grey[200],
-          child: Center(
+      backgroundColor: Colors.grey[200],
+      body: SafeArea(
+        child: Center(
+          child: SizedBox(
+            width: areaWidth,
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
                 children: <Widget>[
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.height) * 0.03,
-                  ),
-                    Container(
-                      width: (MediaQuery.of(context).size.width)*0.8,
-                      height: (MediaQuery.of(context).size.height) * 0.12,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                              child: Icon(Icons.account_circle,color: Colors.grey,
-                              size: (MediaQuery.of(context).size.width)*0.15,),
-                            ),
-                          Container(
-                            margin: EdgeInsets.only(top:17),
-                            height: (MediaQuery.of(context).size.height) * 0.12,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                            height: (MediaQuery.of(context).size.height) * 0.04,
-                                  child: Text(
-                                    " $User_name님",style: TextStyle(
-                                      fontSize: (MediaQuery.of(context).size.width)*0.05,
-                                    fontWeight: FontWeight.w800
-                                  ),
-                                  ),
-                                ),
-                                Container(
-                                    height: (MediaQuery.of(context).size.height) * 0.05,
-                                  child: TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => loginPage()),
-                                        );
-                                      },
-                                      child: Text('프로필 변경하기', style: TextStyle(
-                                        // fontWeight: FontWeight.w500,
-                                          fontSize: (MediaQuery.of(context).size.width)*0.025,
-                                          color: Colors.black
-                                      ),),
-                                    ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                  // 프로필 영역 -------------------------------------------------
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.account_circle,
+                        color: Colors.grey,
+                        size: 64,
                       ),
-                    ),
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.height) * 0.02,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            " $User_name님",
+                            textScaleFactor: 1.6,
+                            style: const TextStyle(fontWeight: FontWeight.w800),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => loginPage()),
+                              );
+                            },
+                            style: TextButton.styleFrom(
+                                padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                minimumSize: const Size(50, 30),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                alignment: Alignment.centerLeft),
+                            child: const Text(
+                              '프로필 변경하기',
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
                   ),
-
+                  const SizedBox(height: 15),
                   Container(
-                    width: (MediaQuery.of(context).size.width)*0.8,
-                    height: ((MediaQuery.of(context).size.height) * 0.11),
+                    padding: const EdgeInsets.all(15),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '성별',style: TextStyle(
-                                  fontSize: (MediaQuery.of(context).size.width)*0.03,
-                                  color: Colors.black
-                              ),
-                              ),
-                              SizedBox(
-                                height: (MediaQuery.of(context).size.height)*0.01,
-                              ),
-                              Text(
-                                '$User_sex', style: TextStyle(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              '성별',
+                              textScaleFactor: 1.0,
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              '$User_sex',
+                              textScaleFactor: 1.3,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  fontSize: (MediaQuery.of(context).size.width)*0.045,
-                                  color: Color(0xffCF2525)
-                              ),
-                              )
-                            ],
-                          ),
+                                  color: Color(0xffCF2525)),
+                            )
+                          ],
                         ),
-                        Container(
-                          height: (MediaQuery.of(context).size.height)*0.05,
-                          child: VerticalDivider(
-                            width: (MediaQuery.of(context).size.width)*0.16,
-                            color: Colors.grey[200],thickness: 1.0,),
-                        ),
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '나이',style: TextStyle(
-                                  fontSize: (MediaQuery.of(context).size.width)*0.03,
-                                  color: Colors.black
-                              ),
-                              ),
-                              SizedBox(
-                                height: (MediaQuery.of(context).size.height)*0.01,
-                              ),
-                              Text(
-                                '$User_age세', style: TextStyle(
+                        Container(width: 1, height: 30, color: lightGray),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              '나이',
+                              textScaleFactor: 1.0,
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              '$User_age',
+                              textScaleFactor: 1.3,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  fontSize: (MediaQuery.of(context).size.width)*0.045,
-                                  color: Color(0xffCF2525)
-                              ),
-                              )
-                            ],
-                          ),
+                                  color: Color(0xffCF2525)),
+                            )
+                          ],
                         ),
-                        Container(
-                          height: (MediaQuery.of(context).size.height)*0.05,
-                          child: VerticalDivider(
-                            width: (MediaQuery.of(context).size.width)*0.16,
-                            color: Colors.grey[200],thickness: 1.0,),
-                        ),
-                        Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                '당뇨유형',style: TextStyle(
-                                  fontSize: (MediaQuery.of(context).size.width)*0.03,
-                                  color: Colors.black
-                              ),
-                              ),
-                              SizedBox(
-                                height: (MediaQuery.of(context).size.height)*0.01,
-                              ),
-                              Text(
-                                '$User_dt', style: TextStyle(
+                        Container(width: 1, height: 30, color: lightGray),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              '당뇨유형',
+                              textScaleFactor: 1.0,
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            const SizedBox(height: 10),
+                            Text(
+                              '$User_dt',
+                              textScaleFactor: 1.3,
+                              style: const TextStyle(
                                   fontWeight: FontWeight.w600,
-                                  fontSize: (MediaQuery.of(context).size.width)*0.045,
-                                  color: Color(0xffCF2525)
-                              ),
-                              )
-                            ],
-                          ),
+                                  color: Color(0xffCF2525)),
+                            )
+                          ],
                         ),
                       ],
                     ),
                   ),
 
-
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.height) * 0.03,
-                  ),
-
-                  Container(
-                    width: (MediaQuery.of(context).size.width)*0.8,
-                    child:
-                    Row(
+                  // 계정 설정 --------------------------------------------------
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '  계정 설정',
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: (MediaQuery.of(context).size.width)*0.04,
-                            color: Color(0xffCF2525)
-                          ),
+                              fontSize:
+                                  (MediaQuery.of(context).size.width) * 0.04,
+                              color: Color(0xffCF2525)),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.height) * 0.01,
-                  ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-
-                      width: (MediaQuery.of(context).size.width)*0.8,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-
-                          TextButton(
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    padding: const EdgeInsets.all(6),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        // 비밀번호 변경 버튼 --------------------------------------
+                        TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => changepass()));
+                            },
+                            child: getIconButtonGroup(Icons.password,
+                                Colors.red[300], '비밀번호 번경', '')),
+                        Container(
+                            width: areaWidth * 0.75,
+                            height: 1,
+                            color: lightGray),
+                        // 로그아웃 버튼 ------------------------------------------
+                        TextButton(
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => changepass())
+                                MaterialPageRoute(
+                                    builder: (context) => loginPage()),
                               );
                             },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.password,color: Colors.red[300],),
-                                      SizedBox(
-                                        width: (MediaQuery.of(context).size.width)*0.05,
-                                      ),
-                                      Text('비밀번호 변경', style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: (MediaQuery.of(context).size.width)*0.035,
-                                          color: Colors.black
-                                      ),),
-                                    ],
-                                  ),
-                                ),
-                                Icon(Icons.chevron_right_outlined, color: Colors.black,),
-                              ],
-                            )
-                          ),
-
-                          TextButton(
-                              onPressed: () {
-
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => loginPage()),
-                                );
-                              },
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.logout,color: Colors.deepPurple,),
-                                        SizedBox(
-                                          width: (MediaQuery.of(context).size.width)*0.05,
-                                        ),
-                                        Text('로그아웃', style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: (MediaQuery.of(context).size.width)*0.035,
-                                            color: Colors.black
-                                        ),),
-                                      ],
-                                    ),
-                                  ),
-                                  Icon(Icons.chevron_right_outlined, color: Colors.black,),
-                                ],
-                              )
-                          ),
-
-                          TextButton(
-                              onPressed: () {},
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-
-                                  Container(
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.person_off,color: Colors.red[300],),
-                                        SizedBox(
-                                          width: (MediaQuery.of(context).size.width)*0.05,
-                                        ),
-                                        Text('서비스 탈퇴', style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: (MediaQuery.of(context).size.width)*0.035,
-                                            color: Colors.black
-                                        ),),
-                                      ],
-                                    ),
-                                  ),
-                                  Icon(Icons.chevron_right_outlined, color: Colors.black,),
-                                ],
-                              )
-                          ),
-                        ],
-                      ),
+                            child: getIconButtonGroup(
+                                Icons.logout, Colors.deepPurple, '로그아웃', '')),
+                        Container(
+                            width: areaWidth * 0.75,
+                            height: 1,
+                            color: lightGray),
+                        // 서비스 탈퇴 버튼 ---------------------------------------
+                        TextButton(
+                            onPressed: () {},
+                            child: getIconButtonGroup(Icons.person_off,
+                                Colors.red[300], '서비스 탈퇴', '')),
+                      ],
                     ),
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.height) * 0.03,
                   ),
 
-                  Container(
-                    width: (MediaQuery.of(context).size.width)*0.8,
-                    child:
-                    Row(
+                  // 알림 설정 --------------------------------------------------
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '  알림 설정',
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: (MediaQuery.of(context).size.width)*0.04,
-                              color: Color(0xffCF2525)
-                          ),
+                              fontSize:
+                                  (MediaQuery.of(context).size.width) * 0.04,
+                              color: Color(0xffCF2525)),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.height) * 0.01,
-                  ),
-
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                     ),
-
-                    width: (MediaQuery.of(context).size.width)*0.8,
+                    padding: const EdgeInsets.fromLTRB(6, 0, 6, 6),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        SizedBox(
-                            // onPressed: () {},
+                        // 푸쉬알림 사용 -----------------------------------------
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 4, 5, 4),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: (MediaQuery.of(context).size.width)*0.015,
-                                      ),
-                                      Icon(Icons.notifications,color: Colors.yellowAccent[700],),
-                                      SizedBox(
-                                        width: (MediaQuery.of(context).size.width)*0.05,
-                                      ),
-                                      Text('푸쉬알림 사용', style: TextStyle(
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.notifications,
+                                      color: Colors.yellowAccent[700],
+                                    ),
+                                    const SizedBox(width: 20),
+                                    const Text(
+                                      '푸쉬알림 사용',
+                                      textScaleFactor: 1.1,
+                                      style: TextStyle(
                                           fontWeight: FontWeight.w500,
-                                          fontSize: (MediaQuery.of(context).size.width)*0.035,
-                                          color: Colors.black
-                                      ),),
-
-                                    ],
-                                  ),
+                                          color: Colors.black),
+                                    ),
+                                  ],
                                 ),
                                 Switch(
                                   value: _isChecked,
-                                  onChanged: (value){
+                                  onChanged: (value) {
                                     setState(() {
                                       _isChecked = value;
                                     });
                                   },
                                 )
                               ],
-                            )
-                        ),
+                            )),
+                        Container(
+                            width: areaWidth * 0.75,
+                            height: 1,
+                            color: lightGray),
+                        // 방해금지 모드 -----------------------------------------
                         TextButton(
                             onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.brightness_4,color: Colors.lightBlueAccent,),
-                                      SizedBox(
-                                        width: (MediaQuery.of(context).size.width)*0.05,
-                                      ),
-                                      Text('방해금지 모드', style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: (MediaQuery.of(context).size.width)*0.035,
-                                          color: Colors.black
-                                      ),),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                    child: Row(
-                                      children: [
-                                        Text('23:00 ~ 07:00', style: TextStyle(
-                                          color: Colors.grey
-                                        ),),
-                                        Icon(Icons.chevron_right_outlined, color: Colors.black,)
-                                      ],
-                                    )),
-                              ],
-                            )
-                        ),
+                            child: getIconButtonGroup(
+                                Icons.brightness_4,
+                                Colors.lightBlueAccent,
+                                '방해금지 모드',
+                                '23:00 ~ 07:00')),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.height) * 0.03,
-                  ),
 
-                  Container(
-                    width: (MediaQuery.of(context).size.width)*0.8,
-                    child:
-                    Row(
+                  // 일반 설정 ---------------------------------------------------
+                  const SizedBox(height: 15),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           '  일반 설정',
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: (MediaQuery.of(context).size.width)*0.04,
-                              color: Color(0xffCF2525)
-                          ),
+                              fontSize:
+                                  (MediaQuery.of(context).size.width) * 0.04,
+                              color: Color(0xffCF2525)),
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(
-                    height: (MediaQuery.of(context).size.height) * 0.01,
                   ),
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.white,
                     ),
-
-                    width: (MediaQuery.of(context).size.width)*0.8,
+                    padding: const EdgeInsets.all(6),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        // 마케팅 동의 설정 ---------------------------------------
                         TextButton(
                             onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.article,color: Colors.deepPurple,),
-                                      SizedBox(
-                                        width: (MediaQuery.of(context).size.width)*0.05,
-                                      ),
-                                      Text('마케팅 동의 설정', style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: (MediaQuery.of(context).size.width)*0.035,
-                                          color: Colors.black
-                                      ),),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                    child: Row(
-                                      children: [
-                                        Text('미동의', style: TextStyle(
-                                            color: Colors.grey
-                                        ),),
-                                        Icon(Icons.chevron_right_outlined, color: Colors.black,)
-                                      ],
-                                    )),
-                              ],
-                            )
-                        ),
+                            child: getIconButtonGroup(Icons.article,
+                                Colors.deepPurple, '마케팅 동의 설정', '미동의')),
+                        Container(
+                            width: areaWidth * 0.75,
+                            height: 1,
+                            color: lightGray),
+                        // 버전 정보 --------------------------------------------
                         TextButton(
                             onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.phone_android,color: Colors.lightBlueAccent,),
-                                      SizedBox(
-                                        width: (MediaQuery.of(context).size.width)*0.05,
-                                      ),
-                                      Text('버전 정보', style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: (MediaQuery.of(context).size.width)*0.035,
-                                          color: Colors.black
-                                      ),),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                    child: Row(
-                                      children: [
-                                        Text('alpha-1.0.0.1', style: TextStyle(
-                                            color: Colors.grey
-                                        ),),
-                                      ],
-                                    )),
-                              ],
-                            )
-                        ),
+                            child: getIconButtonGroup(
+                                Icons.phone_android,
+                                Colors.lightBlueAccent,
+                                '버전 정보',
+                                'alpha-1.0.0.1')),
+                        Container(
+                            width: areaWidth * 0.75,
+                            height: 1,
+                            color: lightGray),
+                        // 업데이트 확인 -----------------------------------------
                         TextButton(
                             onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.update,color: Colors.redAccent,),
-                                      SizedBox(
-                                        width: (MediaQuery.of(context).size.width)*0.05,
-                                      ),
-                                      Text('업데이트 확인', style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: (MediaQuery.of(context).size.width)*0.035,
-                                          color: Colors.black
-                                      ),),
-                                    ],
-                                  ),
-                                ),
-                                        Icon(Icons.chevron_right_outlined, color: Colors.black,)
-
-
-                              ],
-                            )
-                        ),
+                            child: getIconButtonGroup(Icons.update,
+                                Colors.redAccent, '업데이트 확인', '')),
                       ],
                     ),
                   ),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
           ),
         ),
-        // bottomNavigationBar:  navbartest()
+      ),
 
+      // bottomNavigationBar:  navbartest()
     );
   }
 }

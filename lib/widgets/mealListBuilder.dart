@@ -24,8 +24,8 @@ Future getMealList(context, selectedDay) async {
     'protein_per': 0.0,
     'fat_per': 0.0
   };
-
-  await selectDayMeal(selectedDay).then((sqlRs) {
+  String userId = Session.instance.userInfo['email'].toString();
+  await selectDayMeal(selectedDay, userId).then((sqlRs) {
     for (var row in sqlRs) {
       String mealName = row[0];
       String datetime = DateFormat.jm('ko_KR').format(row[1]);

@@ -65,46 +65,47 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     });
   }
 
-  void getSelectedDaysMeal() {
-    getMealList(context, _selectedDay).then((result) {
-      setState(() {
-        _mealList = result['meal_list'];
-        _eatInfo = result['eat_info'];
-      });
-    });
+  Future getSelectedDaysMeal() async {
+    var sqlResult = await getMealList(context, _selectedDay);
+    _mealList = sqlResult['meal_list'];
+    _eatInfo = sqlResult['eat_info'];
   }
   @override
   Widget build(BuildContext context) {
-
-    return LoadingOverlay(
-      isLoading: _isLoading,
-      opacity: 0.7,
-      color: Colors.black,
-      child: WillPopScope(
-        onWillPop: () {
-          return Future(() => false);
-        },
-        child: Scaffold(
-          body: Container(
-            color: Colors.white,
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Column(
-                  children: [
-                    calendar(),
-                    // 구분선, 영양분 섭취정보
-                    takeNutInfo(),
-                    // 식단 정보
-                    mealInfo(),
-                  ],
+    return FutureBuilder(
+      future: getSelectedDaysMeal(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        return LoadingOverlay(
+          isLoading: _isLoading,
+          opacity: 0.7,
+          color: Colors.black,
+          child: WillPopScope(
+            onWillPop: () {
+              return Future(() => false);
+            },
+            child: Scaffold(
+              body: Container(
+                color: Colors.white,
+                child: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: Column(
+                      children: [
+                        calendar(),
+                        // 구분선, 영양분 섭취정보
+                        takeNutInfo(),
+                        // 식단 정보
+                        mealInfo(),
+                      ],
+                    ),
+                  ),
                 ),
               ),
+              floatingActionButton: addImageDIal(),
             ),
           ),
-          floatingActionButton: addImageDIal(),
-        ),
-      ),
+        );
+      },
     );
   }
 

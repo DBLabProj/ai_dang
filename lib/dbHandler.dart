@@ -30,7 +30,7 @@ class ConnHandler {
   }
 }
 
-Future selectDayMeal(selectedDay) async {
+Future selectDayMeal(selectedDay, userName) async {
   var conn = await ConnHandler.instance.conn;
 
   String sql = '''
@@ -41,9 +41,10 @@ Future selectDayMeal(selectedDay) async {
             ON (M.predict_no = P.no)
             INNER JOIN main_food_info F
             ON (P.result = F.food_name)
-    WHERE   date_format(M.datetime, '%Y%m%d') = date_format(?, '%Y%m%d')
+    WHERE   (date_format(M.datetime, '%Y%m%d') = date_format(?, '%Y%m%d'))
+    AND     (M.user = ?)
   ''';
-  var result = await conn.query(sql, [selectedDay]);
+  var result = await conn.query(sql, [selectedDay, userName]);
   return result;
 }
 

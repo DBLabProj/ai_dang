@@ -681,7 +681,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 setState(() {
                   _loading = true;
                   String predNo = widget.predResult['predict_no'];
-                  insertMeal('', _amount.toString(), predNo, _desc)
+                  String userId = Session.instance.userInfo['email'].toString();
+                  insertMeal(userId, _amount.toString(), predNo, _desc)
                       .then((mealNo) {
                     setState(() {
                       _loading = false;
