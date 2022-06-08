@@ -8,7 +8,6 @@ import 'package:ai_dang/dbHandler.dart';
 
 import 'communityBuilder.dart';
 
-
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);
 var colorLightGray = const Color(0xffF3F3F3);
@@ -30,10 +29,11 @@ class _communityState extends State<community> {
   final _searchTextEditController = TextEditingController();
 
   String _search ='';
+  String _boardUid = '';
 
   bool _isLoading = false;
-
-  int reloadCommandSearch = 1;
+  bool reloadCommandSearch = false;
+  bool loadCommand = true;
 
   List<Widget> _boardList = [];
 
@@ -41,12 +41,15 @@ class _communityState extends State<community> {
   Widget build(BuildContext context) {
     if (mounted) {
       var pageStart = 0;
-      var reloadCommandNum = 0;
-      getBoardList(pageStart, reloadCommandNum, _search).then((boardList) {
-        setState(() {
-          _boardList = boardList;
-        });
-      });
+      if (loadCommand == true) {
+        if(reloadCommandSearch == false) {
+          getBoardList(context, pageStart, loadCommand, reloadCommandSearch, _search).then((boardList) {
+            setState(() {
+              _boardList = boardList;
+            });
+          });
+        }
+      }
     }
     Widget _myInfo() {
       return Container(
@@ -85,7 +88,7 @@ class _communityState extends State<community> {
    Widget searchBoard() {
       return Container(
         color: lightGray,
-        padding: const EdgeInsets.fromLTRB(20, 2, 20 ,0),
+        padding: const EdgeInsets.fromLTRB(20, 2, 20 ,2),
         child: Column(
         children: [
           SizedBox(height: 20,),
@@ -123,7 +126,8 @@ class _communityState extends State<community> {
               ElevatedButton(
                 onPressed: () {
                   var pageStart = 0;
-                  getBoardList(pageStart, reloadCommandSearch, _search).then((boardList) {
+                  reloadCommandSearch = true;
+                  getBoardList(context, pageStart, loadCommand, reloadCommandSearch, _search).then((boardList) {
                     setState(() {
                       _boardList = boardList;
                     });
@@ -143,15 +147,18 @@ class _communityState extends State<community> {
               ),
             ],
           ),
+          SizedBox(height: 20,),
         ],
         ),
       );
     }
 
+
+
     Widget boardInfo() {
       return Expanded(
         child: Container(
-          color: colorLightGray,
+          color: lightGray,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(40, 2, 40, 0),
             child: SingleChildScrollView(
@@ -188,17 +195,23 @@ class _communityState extends State<community> {
       isLoading: _isLoading,
       opacity: 0.7,
       color: Colors.black,
-        child: Scaffold(
-          body: SafeArea(
-            child: Column(
-              children: [
-                _myInfo(),
-                searchBoard(),
-                boardInfo(),
-              ],
+        child: GestureDetector(
+          onTap: () {
+            //FocusManager.instance.primaryFocus?.unfocus();
+            FocusScope.of(context).unfocus();
+          },
+          child: Scaffold(
+            body: SafeArea(
+              child: Column(
+                children: [
+                  _myInfo(),
+                  searchBoard(),
+                  boardInfo(),
+                ],
+              ),
             ),
+            floatingActionButton: addBoard(),
           ),
-          floatingActionButton: addBoard(),
         ),
     );
     // return Scaffold
@@ -215,25 +228,23 @@ class Write extends StatelessWidget {
   String _title = '';
   String _content = '';
   
-  String checkConfirmDialog(_title, _content) {
-    String title = _title;
-    String content = _content;
-
-    if(title.isEmpty == true) {
-      String message = "제목을 입력해주세요.";
-
-      return message;
-    } else if (title.isNotEmpty && content.isEmpty) {
-
-      String message = "내용을 입력해주세요.";
-      return message;
-    } else {
-      String message = "등록이 완료되었습니다.";
-      return message;
-    }
-  }
-
-
+  // String checkConfirmDialog(_title, _content) {
+  //   String title = _title;
+  //   String content = _content;
+  //
+  //   if(title.isEmpty == true) {
+  //     String message = "제목을 입력해주세요.";
+  //
+  //     return message;
+  //   } else if (title.isNotEmpty && content.isEmpty) {
+  //
+  //     String message = "내용을 입력해주세요.";
+  //     return message;
+  //   } else {
+  //     String message = "등록이 완료되었습니다.";
+  //     return message;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -337,8 +348,7 @@ class Write extends StatelessWidget {
                           )),
                       ElevatedButton(
                           onPressed: () {
-                            showConfirmDialog(checkConfirmDialog(_title, _content));
-
+                            insertBoard(_title, _content);
                             Navigator.pop(context);
                         },
                           child: Text(
