@@ -1,13 +1,11 @@
 import 'package:ai_dang/views/Statistics/statistics.dart';
 import 'package:ai_dang/views/community/community.dart';
 import 'package:flutter/material.dart';
-import 'dbHandler.dart';
-import 'views/camera.dart';
 import 'views/loginPage.dart';
 import 'views/home.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:ai_dang/views/setting/setting.dart';
-
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 void main() {
   initializeDateFormatting().then((_) => runApp(MyApp()));
@@ -20,13 +18,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'First App',
-      builder: (context, child) {
+      builder: EasyLoading.init(builder: (context, child) {
+        EasyLoading.instance.maskType = EasyLoadingMaskType.blur;
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1),
           child: child!,
         );
-      },
-      home:  loginPage(),
+      }),
+      home: const loginPage(),
     );
   }
 }
@@ -34,84 +33,30 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-
-  }
-
-  int selectedindex=0;
-  List _pages=[MyStatefulWidget(),statistics(),community(), setting()
+  int selectedIndex = 0;
+  final List _pages = [
+    const HomePage(),
+    const statistics(),
+    const community(),
+    const setting()
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: Center(
-        child: _pages[selectedindex],
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: <Widget>[
-      //       const Text(
-      //         '첫 화면 메인 페이지11',
-      //       ),
-      //
-      //       TextButton(
-      //         style: TextButton.styleFrom(
-      //           primary: Colors.blue,
-      //         ),
-      //         onPressed: () {
-      //           // print(_incrementCounter);
-      //           Navigator.push(
-      //               context,
-      //               MaterialPageRoute(builder: (context) => navbartest())
-      //           );
-      //         },
-      //         child: Text('테스트 페이지로 이동'),
-      //       ),
-      //       TextButton(
-      //         style: TextButton.styleFrom(
-      //           primary: Colors.blue,
-      //         ),
-      //         onPressed: () {
-      //           Navigator.push(
-      //               context,
-      //               MaterialPageRoute(builder: (context) => loginPage())
-      //           );
-      //         },
-      //         child: Text('로그인 페이지로 이동'),
-      //       ),
-      //       TextButton(
-      //         style: TextButton.styleFrom(
-      //           primary: Colors.blue,
-      //         ),
-      //         onPressed: () {
-      //           Navigator.push(
-      //               context,
-      //               MaterialPageRoute(builder: (context) => HomePage())
-      //           );
-      //         },
-      //         child: Text('홈 페이지로 이동'),
-      //       )
-      //     ],
-      //   ),
+        child: _pages[selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Color(0xffCF2525),
+        selectedItemColor: const Color(0xffCF2525),
         type: BottomNavigationBarType.fixed,
-
         onTap: _onItemTapped,
-        currentIndex: selectedindex,
+        currentIndex: selectedIndex,
         items: const [
           BottomNavigationBarItem(
             label: 'Home',
@@ -127,53 +72,17 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           BottomNavigationBarItem(
             label: 'Setting',
-            icon: Icon(Icons.settings ),
+            icon: Icon(Icons.settings),
           ),
         ],
       ),
     );
   }
-  void _onItemTapped(int index){
+
+  void _onItemTapped(int index) {
     setState(() {
-      selectedindex=index;
+      selectedIndex = index;
       // _switchScreen(selectedindex);
     });
-  }
-  void _switchScreen(index){
-    switch (index) {
-      case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => MyStatefulWidget()
-          ),
-        );
-        break;
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => statistics()
-          ),
-        );
-        break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => community()
-          ),
-        );
-        break;
-      case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => setting()
-          ),
-        );
-        break;
-
-    }
   }
 }

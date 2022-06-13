@@ -1,8 +1,30 @@
 // 비동기 처리를
+import 'package:ai_dang/views/predResult.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
+import 'dart:io';
+
+Future predict(context, imageSource, picker) async {
+  XFile? image = await picker.pickImage(source: imageSource);
+
+  if(image != null) {
+    EasyLoading.show(status: '전송 중...');
+    var sendData = await transImage(image);
+    var predData = await sendImage(sendData);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => PredResultPage(
+              predResult: predData, image: File(image.path))),
+    );
+    EasyLoading.dismiss();
+  }
+
+}
 
 Future insertMeal(user, amount, predictNo, desc)  async{
   http.Response response = await http.post(

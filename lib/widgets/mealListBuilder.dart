@@ -25,38 +25,53 @@ Future getMealList(context, selectedDay) async {
     'fat_per': 0.0
   };
   String userId = Session.instance.userInfo['email'].toString();
-  await selectDayMeal(selectedDay, userId).then((sqlRs) {
-    for (var row in sqlRs) {
-      String mealName = row[0];
-      String datetime = DateFormat.jm('ko_KR').format(row[1]);
-      int amount = row[2];
-      String desc = row[3];
-      String imageName = row[4];
+  var sqlRs = await selectDayMeal(selectedDay, userId);
+  for (var row in sqlRs) {
+    String mealName = row[0];
+    String datetime = DateFormat.jm('ko_KR').format(row[1]);
+    int amount = row[2];
+    String desc = row[3];
+    String imageName = row[4];
 
-      double totalSugar = row[5];
-      double cal = row[6];
-      double protein = row[7];
-      double fat = row[8];
-      double cbHydra = row[9];
+    double totalSugar = row[5];
+    double cal = row[6];
+    double protein = row[7];
+    double fat = row[8];
+    double cbHydra = row[9];
 
-      eatInfo['cal'] += (cal * (amount / 2)).toInt();
-      eatInfo['cbHydra'] += (cbHydra * (amount / 2)).toInt();
-      eatInfo['protein'] += (protein * (amount / 2)).toInt();
-      eatInfo['fat'] += (fat * (amount / 2)).toInt();
+    eatInfo['cal'] += (cal * (amount / 2)).toInt();
+    eatInfo['cbHydra'] += (cbHydra * (amount / 2)).toInt();
+    eatInfo['protein'] += (protein * (amount / 2)).toInt();
+    eatInfo['fat'] += (fat * (amount / 2)).toInt();
 
-      eatInfo['cbHydra_per'] =
-          (eatInfo['cbHydra'] / Session.instance.dietInfo['recom_hydrate']);
-      eatInfo['protein_per'] =
-          (eatInfo['protein'] / Session.instance.dietInfo['recom_protein']);
-      eatInfo['fat_per'] =
-          (eatInfo['fat'] / Session.instance.dietInfo['recom_fat']);
+    eatInfo['cbHydra_per'] =
+    (eatInfo['cbHydra'] / Session.instance.dietInfo['recom_hydrate']);
+    eatInfo['protein_per'] =
+    (eatInfo['protein'] / Session.instance.dietInfo['recom_protein']);
+    eatInfo['fat_per'] =
+    (eatInfo['fat'] / Session.instance.dietInfo['recom_fat']);
 
-      list.add(getMealComponent(context, mealName, datetime, amount.toString(),
-          desc, imageName, totalSugar));
-      list.add(const SizedBox(height: 20));
-    }
-  });
+    list.add(getMealComponent(context, mealName, datetime, amount.toString(),
+        desc, imageName, totalSugar));
+    list.add(const SizedBox(height: 20));
+  }
   return {'meal_list': list, 'eat_info': eatInfo};
+}
+
+Future getTodayMeal(context) async {
+  var today = DateTime.now().toUtc().add(const Duration(hours: 9));
+  var sqlResult = await getMealList(context, today);
+  List<Widget> mealList = sqlResult['meal_list'];
+  Map eatInfo = sqlResult['eat_info'];
+  return [mealList, eatInfo];
+}
+
+
+Future getSelectedDayMeal(context, selectedDay) async {
+  var sqlResult = await getMealList(context, selectedDay);
+  List<Widget> mealList = sqlResult['meal_list'];
+  Map eatInfo = sqlResult['eat_info'];
+  return [mealList, eatInfo];
 }
 
 Widget getMealComponent(

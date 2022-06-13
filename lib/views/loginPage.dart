@@ -1,7 +1,10 @@
 import 'package:ai_dang/session.dart';
 import 'package:ai_dang/views/account/signup.dart';
+import 'package:ai_dang/widgets/mealListBuilder.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/dbHandler.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../main.dart';
 import '../widgets/myTextField.dart';
@@ -28,12 +31,14 @@ class _loginPageState extends State<loginPage> {
 
     var result = await conn.query(
         'select * from user where Email = "$email" and Password = "$password"');
+
     // 비어있으면 true
     if (result.isEmpty == false) {
-      return login();
+      login();
     } else {
-      return showErrorMessage();
+      showErrorMessage();
     }
+
   }
 
   void setUserInfo(email) async {
@@ -58,9 +63,11 @@ class _loginPageState extends State<loginPage> {
 
   void login() async {
     setUserInfo(emailField.getText());
+    // 초깃값 식단 불러오기
+    EasyLoading.dismiss();
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MyHomePage()),
+      MaterialPageRoute(builder: (context) => const MyHomePage()),
     );
   }
 
@@ -162,6 +169,7 @@ class _loginPageState extends State<loginPage> {
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () {
+                                EasyLoading.show(status: '로그인 중..');
                                 checkUser(emailField.getText(),
                                     passwordField.getText());
                               },

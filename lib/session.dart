@@ -13,7 +13,7 @@ class Session {
   void setInfo(userInfo) {
     _userInfo = userInfo;
 
-    _dietInfo['recom_cal'] = ((_userInfo['height'] - 100) * 0.9) * 30;
+    _dietInfo['recom_cal'] = (((_userInfo['height'] - 100) * 0.9) * 30).toInt();
     _dietInfo['recom_hydrate'] = ((_dietInfo['recom_cal'] * 0.55) / 4).toInt();
     _dietInfo['recom_protein'] = ((_dietInfo['recom_cal'] * 0.2) / 4).toInt();
     _dietInfo['recom_fat'] = ((_dietInfo['recom_cal'] * 0.25) / 9).toInt();
