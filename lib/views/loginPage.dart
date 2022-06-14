@@ -38,31 +38,11 @@ class _loginPageState extends State<loginPage> {
     } else {
       showErrorMessage();
     }
-
   }
 
-  void setUserInfo(email) async {
-    var conn = await ConnHandler.instance.conn;
-
-    var result = await conn.query(
-        'select name, email, age, sex, height, weight, dt, password, id from user where email = "$email"');
-    for (var row in result) {
-      Session.instance.setInfo({
-        'name': row[0],
-        'email': row[1],
-        'age': row[2],
-        'sex': row[3],
-        'height': row[4],
-        'weight': row[5],
-        'dt': row[6],
-        'password': row[7],
-        'id': row[8],
-      });
-    }
-  }
 
   void login() async {
-    setUserInfo(emailField.getText());
+    await setUserInfo(emailField.getText());
     // 초깃값 식단 불러오기
     EasyLoading.dismiss();
     Navigator.push(
@@ -173,9 +153,8 @@ class _loginPageState extends State<loginPage> {
                                 checkUser(emailField.getText(),
                                     passwordField.getText());
                               },
-                              child: const Text('지금 시작하기',
-                                textScaleFactor: 1.4
-                              ),
+                              child:
+                                  const Text('지금 시작하기', textScaleFactor: 1.4),
                               style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(10.0)),

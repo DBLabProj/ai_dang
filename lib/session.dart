@@ -10,7 +10,7 @@ class Session {
 
   Map get dietInfo => _dietInfo;
 
-  void setInfo(userInfo) {
+  Future setInfo(userInfo) async {
     _userInfo = userInfo;
 
     _dietInfo['recom_cal'] = (((_userInfo['height'] - 100) * 0.9) * 30).toInt();

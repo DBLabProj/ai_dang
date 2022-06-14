@@ -13,7 +13,7 @@ var colorDarkGray = const Color(0xffADADBE);
 var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
-Future getMealList(context, selectedDay) async {
+Future buildMealList(context, selectedDay) async {
   List<Widget> list = [const SizedBox(height: 20)];
   Map eatInfo = {
     'cal': 0,
@@ -50,7 +50,6 @@ Future getMealList(context, selectedDay) async {
     (eatInfo['protein'] / Session.instance.dietInfo['recom_protein']);
     eatInfo['fat_per'] =
     (eatInfo['fat'] / Session.instance.dietInfo['recom_fat']);
-
     list.add(getMealComponent(context, mealName, datetime, amount.toString(),
         desc, imageName, totalSugar));
     list.add(const SizedBox(height: 20));
@@ -58,19 +57,10 @@ Future getMealList(context, selectedDay) async {
   return {'meal_list': list, 'eat_info': eatInfo};
 }
 
-Future getTodayMeal(context) async {
-  var today = DateTime.now().toUtc().add(const Duration(hours: 9));
-  var sqlResult = await getMealList(context, today);
-  List<Widget> mealList = sqlResult['meal_list'];
-  Map eatInfo = sqlResult['eat_info'];
-  return [mealList, eatInfo];
-}
-
-
 Future getSelectedDayMeal(context, selectedDay) async {
-  var sqlResult = await getMealList(context, selectedDay);
-  List<Widget> mealList = sqlResult['meal_list'];
-  Map eatInfo = sqlResult['eat_info'];
+  var sqlResult = await buildMealList(context, selectedDay);
+  List<Widget> mealList = await sqlResult['meal_list'];
+  Map eatInfo = await sqlResult['eat_info'];
   return [mealList, eatInfo];
 }
 

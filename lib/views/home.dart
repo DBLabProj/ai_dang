@@ -52,8 +52,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return FutureBuilder(
       future: getSelectedDayMeal(context, _selectedDay),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-
-
         if(!snapshot.hasData) {
           EasyLoading.show(status: '로딩 중..');
         } else {
