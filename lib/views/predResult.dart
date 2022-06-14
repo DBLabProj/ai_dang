@@ -1,6 +1,7 @@
 import 'package:ai_dang/session.dart';
 import 'package:ai_dang/views/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
@@ -44,7 +45,6 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   bool _expanded = false;
-  bool _loading = false;
 
   int _amount = 1;
   String _desc = '';
@@ -52,7 +52,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final Icon _arrowUp = const Icon(Icons.keyboard_arrow_up);
 
   final _descTextCon = TextEditingController();
-  Map nut = {};
+  Map nut = {
+    'serving_size': 0,
+    'energy': 0,
+    'protein': 0,
+    'fat': 0,
+    'hydrate': 0,
+    'total_sugar': 0
+  };
 
   Future<Map> get() async {
     var sqlRs = await getNutrient(widget.predResult['class_name']);
@@ -74,73 +81,74 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return FutureBuilder(
       future: get(),
       builder: (context, AsyncSnapshot<Map> snapshot) {
-        if(snapshot.hasData) {
-          return Scaffold(
-            body: SafeArea(
-              child: CustomScrollView(
-                physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics()),
-                slivers: <Widget>[
-                  foodImage(),
-                  SliverFillRemaining(
-                    child: Column(
-                      children: [
-                        // 측정 결과, 영양정보 영역 --------------------------------------
-                        predictResult(),
-                        // 하단 스크롤 영역 ---------------------------------------------
-                        Expanded(
-                          child: Container(
-                            color: lightGray,
-                            padding: const EdgeInsets.fromLTRB(25, 2, 25, 0),
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 25),
-                                  // 총 당류 인디케이터 영역 -----------------------------
-                                  sugarInfo(),
-                                  // 제공량 선택 라벨 영역 -------------------------------
-                                  Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20, 40, 20, 20),
-                                      child: const Text(
-                                        '얼마나 드셨나요? (제공량 선택)',
-                                        textScaleFactor: 1.2,
-                                      )),
-                                  // 제공량 선택 영역 -----------------------------------
-                                  selectAmount(),
-                                  // 설명 라벨 영역 -------------------------------------
-                                  Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20, 40, 20, 20),
-                                      child: const Text(
-                                        '음식에 관한 설명을 적어주세요.',
-                                        textScaleFactor: 1.2,
-                                      )),
-                                  // 설명 텍스트 입력 영역 -------------------------------
-                                  inputDesc(),
-                                  const SizedBox(
-                                    height: 40,
-                                  ),
-                                ],
-                              ),
+        if(!snapshot.hasData) {
+          EasyLoading.show(status: '로딩 중..');
+        } else {
+          EasyLoading.dismiss();
+        }
+        return Scaffold(
+          body: SafeArea(
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              slivers: <Widget>[
+                foodImage(),
+                SliverFillRemaining(
+                  child: Column(
+                    children: [
+                      // 측정 결과, 영양정보 영역 --------------------------------------
+                      predictResult(),
+                      // 하단 스크롤 영역 ---------------------------------------------
+                      Expanded(
+                        child: Container(
+                          color: lightGray,
+                          padding: const EdgeInsets.fromLTRB(25, 2, 25, 0),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 25),
+                                // 총 당류 인디케이터 영역 -----------------------------
+                                sugarInfo(),
+                                // 제공량 선택 라벨 영역 -------------------------------
+                                Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 40, 20, 20),
+                                    child: const Text(
+                                      '얼마나 드셨나요? (제공량 선택)',
+                                      textScaleFactor: 1.2,
+                                    )),
+                                // 제공량 선택 영역 -----------------------------------
+                                selectAmount(),
+                                // 설명 라벨 영역 -------------------------------------
+                                Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 40, 20, 20),
+                                    child: const Text(
+                                      '음식에 관한 설명을 적어주세요.',
+                                      textScaleFactor: 1.2,
+                                    )),
+                                // 설명 텍스트 입력 영역 -------------------------------
+                                inputDesc(),
+                                const SizedBox(
+                                  height: 40,
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
-            // 입력완료 버튼 앱 바 -------------------------------------------------------
-            bottomNavigationBar: confirmButtonBar(),
-          );
-        } else {
-          return Text('로딩중');
-        }
+          ),
+          // 입력완료 버튼 앱 바 -------------------------------------------------------
+          bottomNavigationBar: confirmButtonBar(),
+        );
       },
     );
   }
@@ -683,7 +691,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
-                  _loading = true;
+                  EasyLoading.show(status: '로딩중...');
                   String predNo = widget.predResult['predict_no'];
                   String userId = Session.instance.userInfo['email'].toString();
                   insertMeal(userId, _amount.toString(), predNo, _desc)
@@ -691,7 +699,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
 
                     setState(() {
-                      _loading = false;
+                      EasyLoading.dismiss();
                       Navigator.push(
                         context,
                         MaterialPageRoute(

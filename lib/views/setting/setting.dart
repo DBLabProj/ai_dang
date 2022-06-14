@@ -356,7 +356,7 @@ class _settingState extends State<setting> {
                     ),
                     padding: const EdgeInsets.all(6),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         // 마케팅 동의 설정 ---------------------------------------
                         TextButton(
