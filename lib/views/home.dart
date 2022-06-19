@@ -1,8 +1,9 @@
 import 'package:ai_dang/session.dart';
 import 'package:ai_dang/views/predResult.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/request.dart';
-import 'dart:io';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -42,69 +43,48 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   DateTime _selectedDay = DateTime.now().toUtc().add(const Duration(hours: 9));
   var _calendarFormat = CalendarFormat.week;
   final _picker = ImagePicker();
-  bool _isLoading = false;
+
   Map _eatInfo = {};
   List<Widget> _mealList = [];
 
-  Future predict(
-      BuildContext context, ImageSource imageSource, ImagePicker picker) async {
-    XFile? image = await picker.pickImage(source: imageSource);
-
-    transImage(image).then((sendData) {
-      sendImage(sendData).then((predData) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => PredResultPage(
-                  predResult: predData, image: File(image!.path))),
-        );
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    });
-  }
-
-  void getSelectedDaysMeal() {
-    getMealList(context, _selectedDay).then((result) {
-      setState(() {
-        _mealList = result['meal_list'];
-        _eatInfo = result['eat_info'];
-      });
-    });
-  }
   @override
   Widget build(BuildContext context) {
-
-    return LoadingOverlay(
-      isLoading: _isLoading,
-      opacity: 0.7,
-      color: Colors.black,
-      child: WillPopScope(
-        onWillPop: () {
-          return Future(() => false);
-        },
-        child: Scaffold(
-          body: Container(
-            color: Colors.white,
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                child: Column(
-                  children: [
-                    calendar(),
-                    // 구분선, 영양분 섭취정보
-                    takeNutInfo(),
-                    // 식단 정보
-                    mealInfo(),
-                  ],
+    return FutureBuilder(
+      future: getSelectedDayMeal(context, _selectedDay),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if(!snapshot.hasData) {
+          EasyLoading.show(status: '로딩 중..');
+        } else {
+          _eatInfo = snapshot.data[1];
+          _mealList = snapshot.data[0];
+          EasyLoading.dismiss();
+        }
+        return WillPopScope(
+          onWillPop: () {
+            return Future(() => false);
+          },
+          child: Scaffold(
+            body: Container(
+              color: Colors.white,
+              child: SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Column(
+                    children: [
+                      calendar(),
+                      // 구분선, 영양분 섭취정보
+                      takeNutInfo(),
+                      // 식단 정보
+                      mealInfo(),
+                    ],
+                  ),
                 ),
               ),
             ),
+            floatingActionButton: addImageDIal(),
           ),
-          floatingActionButton: addImageDIal(),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -132,21 +112,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               selectedDayPredicate: (day) {
                 return isSameDay(_selectedDay, day);
               },
-              onCalendarCreated: (PageController pCon) {
-                getSelectedDaysMeal();
-              },
               onDaySelected: (selectedDay, focusedDay) {
                 if (!isSameDay(_selectedDay, selectedDay)) {
                   // Call `setState()` when updating the selected day
                   setState(() {
                     _selectedDay = selectedDay;
                   });
-                  getSelectedDaysMeal();
                 }
               },
-              // onPageChanged: (focusedDay) {
-              //   _selectedDay = focusedDay;
-              // },
               calendarBuilders: CalendarBuilders(
                 defaultBuilder: (context, day, focusedDay) {
                   var strDay = DateFormat.d().format(day);
@@ -240,9 +213,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('하루 섭취량', textScaleFactor: 1.2),
+                const Text('하루 섭취량', textScaleFactor: 1.2),
                 Text(
-                    '${_eatInfo['cal']} / ${Session.instance.dietInfo['recom_cal'].toInt()} kcal',
+                    '${_eatInfo['cal']} / ${Session.instance.dietInfo['recom_cal']} kcal',
                     textScaleFactor: 1.3)
               ],
             ),
@@ -261,7 +234,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       padding: const EdgeInsets.fromLTRB(0, 13, 0, 13),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.25,
-                        height: 5,
+                        height: 10,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: LinearProgressIndicator(
@@ -273,7 +246,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       ),
                     ),
                     Text(
-                        '${_eatInfo['cbHydra']} / ${Session.instance.dietInfo['recom_hydrate'].toInt()} g',
+                        '${_eatInfo['cbHydra']} / ${Session.instance.dietInfo['recom_hydrate']} g',
                         textScaleFactor: 1.2),
                   ],
                 ),
@@ -285,7 +258,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       padding: const EdgeInsets.fromLTRB(0, 13, 0, 13),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.25,
-                        height: 5,
+                        height: 10,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: LinearProgressIndicator(
@@ -297,7 +270,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       ),
                     ),
                     Text(
-                        '${_eatInfo['protein']} / ${Session.instance.dietInfo['recom_protein'].toInt()} g',
+                        '${_eatInfo['protein']} / ${Session.instance.dietInfo['recom_protein']} g',
                         textScaleFactor: 1.2),
                   ],
                 ),
@@ -309,7 +282,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       padding: const EdgeInsets.fromLTRB(0, 13, 0, 13),
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width * 0.25,
-                        height: 5,
+                        height: 10,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: LinearProgressIndicator(
@@ -321,7 +294,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       ),
                     ),
                     Text(
-                        '${_eatInfo['fat']} / ${Session.instance.dietInfo['recom_fat'].toInt()} g',
+                        '${_eatInfo['fat']} / ${Session.instance.dietInfo['recom_fat']} g',
                         textScaleFactor: 1.2),
                   ],
                 ),
@@ -367,10 +340,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           foregroundColor: colorBlack,
           label: '카메라로 추가하기',
           onTap: () {
-            setState(() {
-              _isLoading = true;
-              predict(context, ImageSource.camera, _picker);
-            });
+            predict(context, ImageSource.camera, _picker);
           },
         ),
         SpeedDialChild(
@@ -379,10 +349,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           foregroundColor: colorBlack,
           label: '앨범에서 추가하기',
           onTap: () {
-            setState(() {
-              _isLoading = true;
-              predict(context, ImageSource.gallery, _picker);
-            });
+            predict(context, ImageSource.gallery, _picker);
           },
         ),
       ],

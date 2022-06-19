@@ -1,3 +1,4 @@
+import 'package:ai_dang/session.dart';
 import 'package:mysql1/mysql1.dart';
 import 'dart:async';
 
@@ -30,9 +31,8 @@ class ConnHandler {
   }
 }
 
-Future selectDayMeal(selectedDay) async {
+Future selectDayMeal(selectedDay, userName) async {
   var conn = await ConnHandler.instance.conn;
-
   String sql = '''
     SELECT  P.result, M.datetime, M.amount, M.description, P.image_name, 
             F.total_sugar, F.energy, F.protein, F.fat, F.carbohydrate
@@ -41,17 +41,33 @@ Future selectDayMeal(selectedDay) async {
             ON (M.predict_no = P.no)
             INNER JOIN main_food_info F
             ON (P.result = F.food_name)
-    WHERE   date_format(M.datetime, '%Y%m%d') = date_format(?, '%Y%m%d')
+    WHERE   (date_format(M.datetime, '%Y%m%d') = date_format(?, '%Y%m%d'))
+    AND     (M.user = ?)
   ''';
-  var result = await conn.query(sql, [selectedDay]);
+  var result = await conn.query(sql, [selectedDay, userName]);
   return result;
 }
 
-Future selectUsers() async {
+
+Future setUserInfo(email) async {
   var conn = await ConnHandler.instance.conn;
 
-  var result = await conn.query('select * from user');
-  return print(result);
+  var result = await conn.query(
+      'select name, email, age, sex, height, weight, dt, password, id from user where email = "$email"');
+  for (var row in result) {
+    await Session.instance.setInfo({
+      'name': row[0],
+      'email': row[1],
+      'age': row[2],
+      'sex': row[3],
+      'height': row[4],
+      'weight': row[5],
+      'dt': row[6],
+      'password': row[7],
+      'id': row[8],
+    });
+  }
+  return result;
 }
 
 Future insertUsers(signUpList) async {

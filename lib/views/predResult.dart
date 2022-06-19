@@ -1,11 +1,14 @@
 import 'package:ai_dang/session.dart';
+import 'package:ai_dang/views/home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import 'package:ai_dang/widgets/myExpansionPanel.dart';
 import 'dart:io';
 import '../dbHandler.dart';
+import '../main.dart';
 import '../request.dart';
 
 var lightGray = const Color(0xffF3F3F3);
@@ -42,7 +45,6 @@ class MyStatefulWidget extends StatefulWidget {
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   bool _expanded = false;
-  bool _loading = false;
 
   int _amount = 1;
   String _desc = '';
@@ -50,7 +52,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final Icon _arrowUp = const Icon(Icons.keyboard_arrow_up);
 
   final _descTextCon = TextEditingController();
-  Map nut = {};
+  Map nut = {
+    'serving_size': 0,
+    'energy': 0,
+    'protein': 0,
+    'fat': 0,
+    'hydrate': 0,
+    'total_sugar': 0
+  };
 
   Future<Map> get() async {
     var sqlRs = await getNutrient(widget.predResult['class_name']);
@@ -68,11 +77,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder(
       future: get(),
       builder: (context, AsyncSnapshot<Map> snapshot) {
-        if (!snapshot.hasData) {
-          return CircularProgressIndicator();
+        if(!snapshot.hasData) {
+          EasyLoading.show(status: '로딩 중..');
+        } else {
+          EasyLoading.dismiss();
         }
         return Scaffold(
           body: SafeArea(
@@ -679,13 +691,20 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
-                  _loading = true;
+                  EasyLoading.show(status: '로딩중...');
                   String predNo = widget.predResult['predict_no'];
-                  insertMeal('', _amount.toString(), predNo, _desc)
+                  String userId = Session.instance.userInfo['email'].toString();
+                  insertMeal(userId, _amount.toString(), predNo, _desc)
                       .then((mealNo) {
+
+
                     setState(() {
-                      _loading = false;
-                      Navigator.pop(context);
+                      EasyLoading.dismiss();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyHomePage()),
+                      );
                     });
                   });
                 });

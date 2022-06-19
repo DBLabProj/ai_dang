@@ -13,7 +13,7 @@ var colorDarkGray = const Color(0xffADADBE);
 var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
-Future getMealList(context, selectedDay) async {
+Future buildMealList(context, selectedDay) async {
   List<Widget> list = [const SizedBox(height: 20)];
   Map eatInfo = {
     'cal': 0,
@@ -24,39 +24,44 @@ Future getMealList(context, selectedDay) async {
     'protein_per': 0.0,
     'fat_per': 0.0
   };
+  String userId = Session.instance.userInfo['email'].toString();
+  var sqlRs = await selectDayMeal(selectedDay, userId);
+  for (var row in sqlRs) {
+    String mealName = row[0];
+    String datetime = DateFormat.jm('ko_KR').format(row[1]);
+    int amount = row[2];
+    String desc = row[3];
+    String imageName = row[4];
 
-  await selectDayMeal(selectedDay).then((sqlRs) {
-    for (var row in sqlRs) {
-      String mealName = row[0];
-      String datetime = DateFormat.jm('ko_KR').format(row[1]);
-      int amount = row[2];
-      String desc = row[3];
-      String imageName = row[4];
+    double totalSugar = row[5];
+    double cal = row[6];
+    double protein = row[7];
+    double fat = row[8];
+    double cbHydra = row[9];
 
-      double totalSugar = row[5];
-      double cal = row[6];
-      double protein = row[7];
-      double fat = row[8];
-      double cbHydra = row[9];
+    eatInfo['cal'] += (cal * (amount / 2)).toInt();
+    eatInfo['cbHydra'] += (cbHydra * (amount / 2)).toInt();
+    eatInfo['protein'] += (protein * (amount / 2)).toInt();
+    eatInfo['fat'] += (fat * (amount / 2)).toInt();
 
-      eatInfo['cal'] += (cal * (amount / 2)).toInt();
-      eatInfo['cbHydra'] += (cbHydra * (amount / 2)).toInt();
-      eatInfo['protein'] += (protein * (amount / 2)).toInt();
-      eatInfo['fat'] += (fat * (amount / 2)).toInt();
-
-      eatInfo['cbHydra_per'] =
-          (eatInfo['cbHydra'] / Session.instance.dietInfo['recom_hydrate']);
-      eatInfo['protein_per'] =
-          (eatInfo['protein'] / Session.instance.dietInfo['recom_protein']);
-      eatInfo['fat_per'] =
-          (eatInfo['fat'] / Session.instance.dietInfo['recom_fat']);
-
-      list.add(getMealComponent(context, mealName, datetime, amount.toString(),
-          desc, imageName, totalSugar));
-      list.add(const SizedBox(height: 20));
-    }
-  });
+    eatInfo['cbHydra_per'] =
+    (eatInfo['cbHydra'] / Session.instance.dietInfo['recom_hydrate']);
+    eatInfo['protein_per'] =
+    (eatInfo['protein'] / Session.instance.dietInfo['recom_protein']);
+    eatInfo['fat_per'] =
+    (eatInfo['fat'] / Session.instance.dietInfo['recom_fat']);
+    list.add(getMealComponent(context, mealName, datetime, amount.toString(),
+        desc, imageName, totalSugar));
+    list.add(const SizedBox(height: 20));
+  }
   return {'meal_list': list, 'eat_info': eatInfo};
+}
+
+Future getSelectedDayMeal(context, selectedDay) async {
+  var sqlResult = await buildMealList(context, selectedDay);
+  List<Widget> mealList = await sqlResult['meal_list'];
+  Map eatInfo = await sqlResult['eat_info'];
+  return [mealList, eatInfo];
 }
 
 Widget getMealComponent(
