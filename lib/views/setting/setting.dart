@@ -235,11 +235,8 @@ class _settingState extends State<setting> {
                         // 로그아웃 버튼 ------------------------------------------
                         TextButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => loginPage()),
-                              );
+                              Navigator.of(context)
+                                  .popUntil((route) => route.isFirst);
                             },
                             child: getIconButtonGroup(
                                 Icons.logout, Colors.deepPurple, '로그아웃', '')),
@@ -382,8 +379,8 @@ class _settingState extends State<setting> {
                         // 업데이트 확인 -----------------------------------------
                         TextButton(
                             onPressed: () {},
-                            child: getIconButtonGroup(Icons.update,
-                                Colors.redAccent, '업데이트 확인', '')),
+                            child: getIconButtonGroup(
+                                Icons.update, Colors.redAccent, '업데이트 확인', '')),
                       ],
                     ),
                   ),

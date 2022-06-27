@@ -99,7 +99,7 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            '2022년 4월 2주 리포트',
+            '2022년 6월 3주 리포트',
             style: TextStyle(
               fontWeight: FontWeight.w700,
               color: colorRed,
@@ -151,27 +151,18 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                     ),
 
                   ),
-                  Container(
-                    width: (MediaQuery
-                        .of(context)
-                        .size
-                        .width),
-                    color: colorLightGray,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                          20.0, 10.0, 20.0, 10.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: (MediaQuery
-                                .of(context)
-                                .size
-                                .width) * 0.9,
-                            height: (MediaQuery
-                                .of(context)
-                                .size
-                                .height) * 0.65,
-                            color: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(
+                        20.0, 10.0, 20.0, 10.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: (MediaQuery
+                              .of(context)
+                              .size
+                              .width) * 0.9,
+                          color: Colors.white,
+                          child: Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -185,28 +176,26 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                                       .size
                                       .height) * 0.02,
                                 ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: (MediaQuery
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: (MediaQuery
+                                          .of(context)
+                                          .size
+                                          .width) * 0.05,
+                                    ),
+                                    Text(
+                                      '혈당 섭취량 그래프',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                        color: colorRed,
+                                        fontSize: (MediaQuery
                                             .of(context)
                                             .size
-                                            .width) * 0.05,
+                                            .width) * 0.04,
                                       ),
-                                      Text(
-                                        '혈당 섭취량 그래프',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          color: colorRed,
-                                          fontSize: (MediaQuery
-                                              .of(context)
-                                              .size
-                                              .width) * 0.04,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                                 SizedBox(
                                   width: (MediaQuery
@@ -328,8 +317,8 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                   // SizedBox(
@@ -498,10 +487,6 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                                     .of(context)
                                     .size
                                     .width) * 0.9,
-                                height: (MediaQuery
-                                    .of(context)
-                                    .size
-                                    .height) * 0.65,
                                 color: Colors.white,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'First App',
+      debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(builder: (context, child) {
         EasyLoading.instance.maskType = EasyLoadingMaskType.blur;
         return MediaQuery(

@@ -220,7 +220,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('측정 결과,',
+                              Text('분류 결과,',
                                   textScaleFactor: 1.2,
                                   style: TextStyle(
                                       color: black,
@@ -228,12 +228,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               Row(
                                 children: [
                                   Text('${widget.predResult['class_name']}',
-                                      textScaleFactor: 2,
+                                      textScaleFactor: 1.8,
                                       style: TextStyle(
                                           color: red,
                                           fontWeight: FontWeight.w900)),
                                   Text(' 입니다.',
-                                      textScaleFactor: 2,
+                                      textScaleFactor: 1.8,
                                       style: TextStyle(
                                           color: black,
                                           fontWeight: FontWeight.w900))
@@ -258,7 +258,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                   },
                                 ),
                                 Text((_expanded) ? '영양정보 접기' : '영양정보 펼치기',
-                                    textScaleFactor: 1,
+                                    textScaleFactor: 0.8,
                                     style: TextStyle(
                                         color: black,
                                         fontWeight: FontWeight.w500)),
