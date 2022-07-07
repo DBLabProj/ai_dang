@@ -146,7 +146,7 @@ class _changepassState extends State<changepass> {
                       ),
                     ),
 
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.060,
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.20,
                     ),
                     SizedBox(
                       height: (MediaQuery.of(context).size.height) * 0.065,
@@ -166,20 +166,7 @@ class _changepassState extends State<changepass> {
                             showDialogPop_check();
 
                           }
-                          //   showDialogPop();
-                          // }
-                          //
-                          // if (Password_check == true && Email_check == true) {
-                          //   signupList.add(_idTextEditController.text);
-                          //   signupList.add(_passwordTextEditController.text);
-                          //   // signupList.add(_passwordTextEditController_check.text);
-                          //   signupList.add(_nameTextEditController.text);
-                          //
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(builder: (context) => genderpage(signUpList: signupList)),
-                          //   );
-                          // }
+
 
                         },
                         child: Text('변경하기', style: TextStyle(
