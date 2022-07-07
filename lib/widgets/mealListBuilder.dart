@@ -81,6 +81,18 @@ Widget getMealComponent(
   } else {
     dangerColor = colorRed;
   }
+  String amountText = '';
+
+  // 양 Text ------------------------------------------------
+  if (amount == 1) {
+    amountText = '1/2회 제공량';
+  } else if(amount == 2) {
+    amountText = '1회 제공량';
+  } else if (amount == 3) {
+    amountText = '1과 1/2회 제공량';
+  } else {
+    amountText = '2회 제공량';
+  }
 
   return Container(
     decoration: BoxDecoration(
@@ -111,27 +123,27 @@ Widget getMealComponent(
                 // 식단 이름
                 Text(
                   mealName,
+                  textScaleFactor: 1.6,
                   style: TextStyle(
                       color: colorBlack,
-                      fontSize: 18,
                       fontWeight: FontWeight.w500),
                 ),
                 // 시간 및 식사종류
                 const SizedBox(height: 7),
                 Text(
-                  "$datetime · $amount",
+                  "$datetime\n$amountText",
+                  textScaleFactor: 1,
                   style: TextStyle(
                       color: colorDarkGray,
-                      fontSize: 13,
                       fontWeight: FontWeight.w400),
                 ),
                 // 식단 설명
                 const SizedBox(height: 20),
                 Text(
                   desc,
+                  textScaleFactor: 1.2,
                   style: TextStyle(
-                      color: colorDarkGray,
-                      fontSize: 13,
+                      color: colorBlack,
                       fontWeight: FontWeight.w400),
                 ),
               ],

@@ -15,9 +15,20 @@ class _genderpageState extends State<genderpage> {
   var btnOneStyle;
   var btnTwoStyle;
 
+  void setBtnSide() {
+    var redSide = const BorderSide(color: Colors.red, width: 3);
+    var greySide = BorderSide(color: Colors.grey.shade300, width: 1.5);
+    if(sex == "male") {
+      btnOneStyle = redSide;
+      btnTwoStyle = greySide;
+    } else {
+      btnOneStyle = greySide;
+      btnTwoStyle = redSide;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(widget.signUpList);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -28,48 +39,34 @@ class _genderpageState extends State<genderpage> {
             ),
             Container(
               color: Colors.white,
-                height: (MediaQuery.of(context).size.height) -
-                    (MediaQuery.of(context).size.height) * 0.1,
-                width: (MediaQuery.of(context).size.width) -
-                    (MediaQuery.of(context).size.width) * 0.3,
               child:Column(
             children: <Widget>[
-              Text(
+              const Text(
                 '성별을 선택하세요.',
+                textScaleFactor: 1.4,
                 style: TextStyle(
-                    fontSize:
-                    ((MediaQuery.of(context).size.width) * 0.20) *
-                        0.26,
                     color: Color(0xffCF2525)),
-              ),
-              SizedBox(height: (MediaQuery.of(context).size.height) * 0.05,
               ),
 
               SizedBox(
-                width: (MediaQuery.of(context).size.width) * 0.25,
-                height: (MediaQuery.of(context).size.height) * 0.17,
+                width: 130,
+                height: 130,
                 child: ElevatedButton(
 
                   onPressed: (){
                     setState(() {
                       sex = "male";
-                      if(sex == "male") {
-                        btnOneStyle = BorderSide(color: Colors.red);
-                        btnTwoStyle = null;
-                      } else {
-                        btnOneStyle = null;
-                        btnTwoStyle = BorderSide(color: Colors.red);
-                      }
-
+                      setBtnSide();
                     });
                   },
-                  child: Image(
+                  child: const Image(
                     image: AssetImage("assets/image/male.png"),
                   ),
                   style: ElevatedButton.styleFrom(
                       primary: Colors.white,
+
                       shadowColor: Colors.red,
-                      elevation: 3,
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(600)
                       ),
@@ -77,41 +74,28 @@ class _genderpageState extends State<genderpage> {
                   ),
                 ),
               ),
-              SizedBox(
-                child: Text("남성", style: TextStyle(
-                  fontSize: ((MediaQuery.of(context).size.width) * 0.16) * 0.26
-                ),),
-                height: (MediaQuery.of(context).size.height) * 0.05,
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 40),
+                child: Text("남성", textScaleFactor: 1.2,)
               ),
               SizedBox(
-                height: (MediaQuery.of(context).size.height) * 0.05,
-              ),
-
-              SizedBox(
-                width: (MediaQuery.of(context).size.width) * 0.25,
-                height: (MediaQuery.of(context).size.height) * 0.17,
+                width: 130,
+                height: 130,
                 child: ElevatedButton(
 
                   onPressed: (){
                     setState(() {
                       sex = "female";
-                      if(sex == "male") {
-                        btnOneStyle = BorderSide(color: Colors.red);
-                        btnTwoStyle = null;
-                      } else {
-                        btnOneStyle = null;
-                        btnTwoStyle = BorderSide(color: Colors.red);
-                      }
-
+                      setBtnSide();
                     });
                   },
-                  child: Image(
+                  child: const Image(
                     image: AssetImage("assets/image/female.png"),
                   ),
                   style: ElevatedButton.styleFrom(
                       primary: Colors.white,
                       shadowColor: Colors.red,
-                      elevation: 3,
+                      elevation: 0,
                       shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(500)
                       ),
