@@ -235,6 +235,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
+  multi_charts:
+    dependency: "direct main"
+    description:
+      name: multi_charts
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   mysql1:
     dependency: "direct main"
     description:

@@ -2,7 +2,7 @@ import 'package:ai_dang/views/home.dart';
 import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_overlay/loading_overlay.dart';
+import 'package:multi_charts/multi_charts.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../session.dart';
@@ -16,26 +16,23 @@ var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
 class statistics extends StatefulWidget {
-
   const statistics({Key? key}) : super(key: key);
 
   @override
   State<statistics> createState() => _statisticsState();
 }
 
+var dietInfo_cal = Session.instance.dietInfo['recom_cal'];
+var dietInfo_hydrate = Session.instance.dietInfo['recom_hydrate'];
+var dietInfo_protein = Session.instance.dietInfo['recom_protein'];
+var dietInfo_fat = Session.instance.dietInfo['recom_fat'];
+var dietInfo_sugar = Session.instance.dietInfo['recom_sugar'];
 
-  var dietInfo_cal = Session.instance.dietInfo['recom_cal'];
-  var dietInfo_hydrate = Session.instance.dietInfo['recom_hydrate'];
-  var dietInfo_protein = Session.instance.dietInfo['recom_protein'];
-  var dietInfo_fat = Session.instance.dietInfo['recom_fat'];
-  var dietInfo_sugar = Session.instance.dietInfo['recom_sugar'];
-
-  class ChartData {
-    ChartData(this.x, this.y);
-    final int x;
-    final int y;
-  }
-
+class ChartData {
+  ChartData(this.x, this.y);
+  final int x;
+  final int y;
+}
 
 final List<ChartData> chartData = [
   ChartData(11, 35),
@@ -44,24 +41,6 @@ final List<ChartData> chartData = [
   ChartData(14, 25),
   ChartData(15, 40)
 ];
-
-
-// final List<ChartData> chartData = [
-//   //환자평균
-//   ChartData(11, 35, 20),
-//   ChartData(12, 23, 15),
-//   ChartData(13, 34, 30),
-// ];
-
-
-
-
-
-
-//
-// class ChartUserData {
-//
-// }
 
 class EatChartData {
   EatChartData(this.x, this.y, this.y_user);
@@ -77,7 +56,6 @@ class BloodData {
 }
 
 class _statisticsState extends State<statistics> with TickerProviderStateMixin {
-
   final List<BloodData> bloodData = [
     BloodData('5월 26일', 120),
     BloodData('5월 27일', 110),
@@ -94,23 +72,40 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
     EatChartData('평균', 107, 109),
   ];
 
+  Widget infoWidget(label, value, {var labelColor = const Color(0xff535353)}) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(5.0, 15.0, 5.0, 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label,
+              textScaleFactor: 1,
+              style: TextStyle(color: labelColor, fontWeight: FontWeight.w500)),
+          Text(value,
+              textScaleFactor: 1.1,
+              style: TextStyle(color: black, fontWeight: FontWeight.w700))
+        ],
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 1.5, color: gray),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    print(dietInfo_hydrate);
     return DefaultTabController(
-      length: 2 ,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Text(
             '2022년 6월 3주 리포트',
+            textScaleFactor: 0.9,
             style: TextStyle(
               fontWeight: FontWeight.w700,
               color: colorRed,
-              fontSize: (MediaQuery
-                  .of(context)
-                  .size
-                  .width) * 0.04,
             ),
           ),
           centerTitle: true,
@@ -120,810 +115,289 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
             // indicatorSize: TabBarIndicatorSize.label, // 라벨 사이즈에 맞게
             indicatorWeight: 6, // 라벨 꽉 차게
             indicatorColor: colorRed,
-            labelColor: colorRed,
-            labelStyle: TextStyle(
+            labelColor: black,
+            labelStyle: const TextStyle(
               fontWeight: FontWeight.w700,
-              color: colorRed,
-              fontSize: (MediaQuery
-                  .of(context)
-                  .size
-                  .width) * 0.04,
             ),
-            tabs: [
-              Tab(text: '혈당 정보',),
-              Tab(text: '영양 정보',),
+            tabs: const [
+              Tab(
+                text: '혈당 정보',
+              ),
+              Tab(text: '영양 정보'),
             ],
           ),
         ),
-        body: TabBarView(
-          children: [
-            Center(child:
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: (MediaQuery
-                        .of(context)
-                        .size
-                        .width),
-                    height: (MediaQuery
-                        .of(context)
-                        .size
-                        .height) * 0.03,
-                    child: Container(
-                      color: colorLightGray,
-                    ),
+        body: Container(
+          color: colorLightGray,
+          child: TabBarView(
+            children: [
+              // 혈당 정보 ------------------------------------------------------
+              Center(
+                  child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    // 혈당섭취 정보
+                    sugarConsumeInfo(),
+                    // 혈당섭취 비교 그래프
+                    sugarCompareInfo(),
+                  ],
+                ),
+              )),
 
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        20.0, 10.0, 20.0, 10.0),
-                    child: Column(
-                      children: [
-                        Container(
-                          width: (MediaQuery
-                              .of(context)
-                              .size
-                              .width) * 0.9,
-                          color: Colors.white,
-                          child: Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: (MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width),
-                                  height: (MediaQuery
-                                      .of(context)
-                                      .size
-                                      .height) * 0.02,
-                                ),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width) * 0.05,
-                                    ),
-                                    Text(
-                                      '혈당 섭취량 그래프',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: colorRed,
-                                        fontSize: (MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width) * 0.04,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: (MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width),
-                                  height: (MediaQuery
-                                      .of(context)
-                                      .size
-                                      .height) * 0.02,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      20.0, 10.0, 20.0, 10.0),
-                                  child: Column(
-                                    children: <Widget>[
-                                      SfCartesianChart(
-                                          primaryXAxis: CategoryAxis(),
-                                          series: <CartesianSeries>[
-                                            LineSeries<BloodData, String>(
-                                              dataSource: bloodData,
-                                              xValueMapper: (BloodData data, _) => data.x,
-                                              yValueMapper: (BloodData data, _) => data.y,
-                                              color: colorRed,
-                                              markerSettings: MarkerSettings(
-                                                  isVisible: true,
-                                                  color: colorRed
-                                              ),
-                                            ),
-                                          ]
-                                      ),
-                                      // 열량 정보  ------------------------------------
-                                      Container(
-                                        padding:
-                                        const EdgeInsets.fromLTRB(
-                                            15.0, 20.0, 15.0, 10.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceBetween,
-                                          children: [
-                                            Text('평균 섭취량',
-                                                textScaleFactor: 1.1,
-                                                style: TextStyle(
-                                                    color: black)),
-                                            Text('1,702g',
-                                                textScaleFactor: 1.1,
-                                                style: TextStyle(
-                                                    color: black,
-                                                    fontWeight: FontWeight
-                                                        .w700))
-                                          ],
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                width: 1.5, color: gray),
-                                          ),
-                                        ),
-                                      ),
-                                      // 탄수화물 정보 ----------------------------------
-                                      Container(
-                                        padding:
-                                        const EdgeInsets.fromLTRB(
-                                            15.0, 20.0, 15.0, 10.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceBetween,
-                                          children: [
-                                            Text('최고 섭취량',
-                                                textScaleFactor: 1.1,
-                                                style: TextStyle(
-                                                    color: black)),
-                                            Text('1,890g',
-                                                textScaleFactor: 1.1,
-                                                style: TextStyle(
-                                                    color: black,
-                                                    fontWeight: FontWeight
-                                                        .w700))
-                                          ],
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                width: 1.5, color: gray),
-                                          ),
-                                        ),
-                                      ),
-                                      // 단백질 정보 -----------------------------------
-                                      Container(
-                                        padding:
-                                        const EdgeInsets.fromLTRB(
-                                            15.0, 20.0, 15.0, 10.0),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .spaceBetween,
-                                          children: [
-                                            Text('최저 섭취량',
-                                                textScaleFactor: 1.1,
-                                                style: TextStyle(
-                                                    color: black)),
-                                            Text('1,414g',
-                                                textScaleFactor: 1.1,
-                                                style: TextStyle(
-                                                    color: black,
-                                                    fontWeight: FontWeight
-                                                        .w700))
-                                          ],
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            bottom: BorderSide(
-                                                width: 1.5, color: gray),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  // SizedBox(
-                  //   width: (MediaQuery.of(context).size.width),
-                  //   height: (MediaQuery.of(context).size.height) * 0.03,
-                  // ),
-                  Container(
-                    width: (MediaQuery
-                        .of(context)
-                        .size
-                        .width),
-                    color: colorLightGray,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                          20.0, 10.0, 20.0, 10.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            width: (MediaQuery
-                                .of(context)
-                                .size
-                                .width) * 0.9,
-                            // height: (MediaQuery.of(context).size.height) * 0.75,
-                            color: Colors.white,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  width: (MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width),
-                                  height: (MediaQuery
-                                      .of(context)
-                                      .size
-                                      .height) * 0.02,
-                                ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: (MediaQuery
-                                            .of(context)
-                                            .size
-                                            .width) * 0.05,
-                                      ),
-                                      Text(
-                                        '섭취량 비교 그래프',
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w700,
-                                          color: colorRed,
-                                          fontSize: (MediaQuery
-                                              .of(context)
-                                              .size
-                                              .width) * 0.04,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: (MediaQuery
-                                      .of(context)
-                                      .size
-                                      .width),
-                                  height: (MediaQuery
-                                      .of(context)
-                                      .size
-                                      .height) * 0.02,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      20.0, 10.0, 20.0, 10.0),
-                                  child: Column(
-                                    children: <Widget>[
-                                      SfCartesianChart(
-                                          primaryXAxis: CategoryAxis(),
-                                          series: <CartesianSeries>[
-                                            BarSeries<EatChartData, String>(
-                                                dataSource: eatChartData,
-                                                xValueMapper: (EatChartData data, _) => data.x,
-                                                yValueMapper: (EatChartData data, _) => data.y,
-                                                color: colorRed
-                                            ),
-                                            BarSeries<EatChartData, String>(
-                                                dataSource: eatChartData,
-                                                xValueMapper: (EatChartData data, _) => data.x,
-                                                yValueMapper: (EatChartData data, _) => data.y_user,
-                                                color: colorBlack
-                                            )
-                                          ]
-                                      ),
-                                      Container(
-                                        padding:
-                                        const EdgeInsets.fromLTRB(
-                                            15.0, 20.0, 15.0, 10.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Text('당뇨병 환자 평균보다 혈당을 18% 더 섭취하고 있어요.',
-                                                textScaleFactor: 1.2,
-                                                style: TextStyle(
-                                                    color: black)),
-                                          ],
-                                        ),
-                                      ),
-
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-
-            ),
-
-
-
-
-
-
-
-
-
-            // 영양 정보
-            Center(
-                child: SingleChildScrollView(
+              // 영양 정보 ------------------------------------------------------
+              Container(
+                color: colorLightGray,
+                child: Center(
+                    child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(
-                        width: (MediaQuery
-                            .of(context)
-                            .size
-                            .width),
-                        height: (MediaQuery
-                            .of(context)
-                            .size
-                            .height) * 0.03,
-                        child: Container(
-                          color: colorLightGray,
-                        ),
-
-                      ),
-                      Container(
-                        width: (MediaQuery
-                            .of(context)
-                            .size
-                            .width),
-                        color: colorLightGray,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                              20.0, 10.0, 20.0, 10.0),
-                          child: Column(
-                            children: [
-                              Container(
-                                width: (MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width) * 0.9,
-                                color: Colors.white,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width),
-                                      height: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height) * 0.02,
-                                    ),
-                                    Container(
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: (MediaQuery
-                                                .of(context)
-                                                .size
-                                                .width) * 0.05,
-                                          ),
-                                          Text(
-                                            '칼로리 섭취량 그래프',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              color: colorRed,
-                                              fontSize: (MediaQuery
-                                                  .of(context)
-                                                  .size
-                                                  .width) * 0.04,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width),
-                                      height: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height) * 0.02,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20.0, 10.0, 20.0, 10.0),
-                                      child: Column(
-                                        children: <Widget>[
-                                          SfCartesianChart(
-                                              enableSideBySideSeriesPlacement: false,
-                                              series: <
-                                                  ChartSeries<ChartData, int>>[
-                                                // Renders column chart
-                                                ColumnSeries<ChartData, int>(
-                                                  dataSource: chartData,
-                                                  xValueMapper: (ChartData data,
-                                                      _) => data.x,
-                                                  yValueMapper: (ChartData data,
-                                                      _) => data.y,
-                                                  width: 0.5,
-                                                  color: colorRed,
-                                                )
-                                              ]
-                                          ),
-                                          // 열량 정보  ------------------------------------
-                                          Container(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(
-                                                15.0, 20.0, 15.0, 10.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                Text('평균 섭취량',
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black)),
-                                                Text('1,702g',
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black,
-                                                        fontWeight: FontWeight
-                                                            .w700))
-                                              ],
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                    width: 1.5, color: gray),
-                                              ),
-                                            ),
-                                          ),
-                                          // 탄수화물 정보 ----------------------------------
-                                          Container(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(
-                                                15.0, 20.0, 15.0, 10.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                Text('최고 섭취량',
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black)),
-                                                Text('1,890g',
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black,
-                                                        fontWeight: FontWeight
-                                                            .w700))
-                                              ],
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                    width: 1.5, color: gray),
-                                              ),
-                                            ),
-                                          ),
-                                          // 단백질 정보 -----------------------------------
-                                          Container(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(
-                                                15.0, 20.0, 15.0, 10.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                Text('최저 섭취량',
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black)),
-                                                Text('1,414g',
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black,
-                                                        fontWeight: FontWeight
-                                                            .w700))
-                                              ],
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                    width: 1.5, color: gray),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      // SizedBox(
-                      //   width: (MediaQuery.of(context).size.width),
-                      //   height: (MediaQuery.of(context).size.height) * 0.03,
-                      // ),
-                      Container(
-                        width: (MediaQuery
-                            .of(context)
-                            .size
-                            .width),
-                        color: colorLightGray,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                              20.0, 10.0, 20.0, 10.0),
-                          child: Column(
-                            children: [
-                              Container(
-                                width: (MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width) * 0.9,
-                                // height: (MediaQuery.of(context).size.height) * 0.75,
-                                color: Colors.white,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width),
-                                      height: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height) * 0.02,
-                                    ),
-                                    Container(
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            width: (MediaQuery
-                                                .of(context)
-                                                .size
-                                                .width) * 0.05,
-                                          ),
-                                          Text(
-                                            '섭취 영양소 그래프',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w700,
-                                              color: colorRed,
-                                              fontSize: (MediaQuery
-                                                  .of(context)
-                                                  .size
-                                                  .width) * 0.04,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .width),
-                                      height: (MediaQuery
-                                          .of(context)
-                                          .size
-                                          .height) * 0.02,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          20.0, 10.0, 20.0, 10.0),
-                                      child: Column(
-                                        children: <Widget>[
-                                          SfCartesianChart(
-                                              enableSideBySideSeriesPlacement: false,
-                                              series: <
-                                                  ChartSeries<ChartData, int>>[
-                                                // Renders column chart
-                                                ColumnSeries<ChartData, int>(
-                                                  dataSource: chartData,
-                                                  xValueMapper: (ChartData data,
-                                                      _) => data.x,
-                                                  yValueMapper: (ChartData data,
-                                                      _) => data.y,
-                                                  width: 0.5,
-                                                  color: colorRed,
-                                                )
-                                              ]
-                                          ),
-                                          Container(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(
-                                                15.0, 20.0, 15.0, 10.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                Text('나트륨을',
-                                                    textScaleFactor: 1.2,
-                                                    style: TextStyle(
-                                                        color: black)),
-                                                Text('너무 과도하게 섭취',
-                                                    textScaleFactor: 1.2,
-                                                    style: TextStyle(
-                                                        color: colorRed)),
-                                                Text('하고 있어요.',
-                                                    textScaleFactor: 1.2,
-                                                    style: TextStyle(
-                                                        color: black)),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: (MediaQuery
-                                                .of(context)
-                                                .size
-                                                .width),
-                                            height: (MediaQuery
-                                                .of(context)
-                                                .size
-                                                .height) * 0.01,
-                                          ),
-                                          Container(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(
-                                                15.0, 20.0, 15.0, 10.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                Text('탄수화물 섭취량',
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black)),
-                                                Text(dietInfo_hydrate.toString(),
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black,
-                                                        fontWeight: FontWeight
-                                                            .w700))
-                                              ],
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                    width: 1.5, color: gray),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(
-                                                15.0, 20.0, 15.0, 10.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                Text('단백질 섭취량',
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black)),
-                                                Text(dietInfo_protein.toString(),
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black,
-                                                        fontWeight: FontWeight
-                                                            .w700))
-                                              ],
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                    width: 1.5, color: gray),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(
-                                                15.0, 20.0, 15.0, 10.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                Text('지방 섭취량',
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black)),
-                                                Text(dietInfo_fat.toString(),
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black,
-                                                        fontWeight: FontWeight
-                                                            .w700))
-                                              ],
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                    width: 1.5, color: gray),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(
-                                                15.0, 20.0, 15.0, 10.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                Text('당 섭취량',
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black)),
-                                                Text(dietInfo_sugar.toString(),
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black,
-                                                        fontWeight: FontWeight
-                                                            .w700))
-                                              ],
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                    width: 1.5, color: gray),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            padding:
-                                            const EdgeInsets.fromLTRB(
-                                                15.0, 20.0, 15.0, 10.0),
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                Text('칼로리 섭취량',
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black)),
-                                                Text(dietInfo_cal.toString(),
-                                                    textScaleFactor: 1.1,
-                                                    style: TextStyle(
-                                                        color: black,
-                                                        fontWeight: FontWeight
-                                                            .w700))
-                                              ],
-                                            ),
-                                            decoration: BoxDecoration(
-                                              border: Border(
-                                                bottom: BorderSide(
-                                                    width: 1.5, color: gray),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
+                      // 칼로리 섭취량 그래프 -------------------------------------
+                      calConsumeInfo(),
+                      // 섭취 영양소 그래프 --------------------------------------
+                      nutConsumeInfo(),
                     ],
                   ),
                 )),
-          ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 혈당 섭취량 정보
+  Widget sugarConsumeInfo() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 0.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '혈당 섭취량 그래프',
+                textScaleFactor: 1.1,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: colorRed,
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 200,
+                child: SfCartesianChart(
+                    primaryXAxis: CategoryAxis(),
+                    series: <CartesianSeries>[
+                      LineSeries<BloodData, String>(
+                        dataSource: bloodData,
+                        xValueMapper: (BloodData data, _) => data.x,
+                        yValueMapper: (BloodData data, _) => data.y,
+                        color: colorRed,
+                        markerSettings:
+                            MarkerSettings(isVisible: true, color: colorRed),
+                      ),
+                    ]),
+              ),
+              infoWidget('평균 섭취량', '102g', labelColor: colorRed),
+              infoWidget('최고 섭취량', '160g'),
+              infoWidget('최저 섭취량', '79g')
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 혈당섭취 비교 그래프
+  Widget sugarCompareInfo() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 20.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(30.0, 20.0, 30.0, 25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '섭취량 비교 그래프',
+                textScaleFactor: 1.1,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: colorRed,
+                ),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 250,
+                child: SfCartesianChart(
+                    primaryXAxis: CategoryAxis(),
+                    series: <CartesianSeries>[
+                      BarSeries<EatChartData, String>(
+                        dataSource: eatChartData,
+                        xValueMapper: (EatChartData data, _) => data.x,
+                        yValueMapper: (EatChartData data, _) => data.y,
+                        color: colorRed,
+                        width: 0.5,
+                      ),
+                      BarSeries<EatChartData, String>(
+                        dataSource: eatChartData,
+                        xValueMapper: (EatChartData data, _) => data.x,
+                        yValueMapper: (EatChartData data, _) => data.y_user,
+                        color: colorBlack,
+                        width: 0.5,
+                      )
+                    ]),
+              ),
+              RichText(
+                textScaleFactor: 1.1,
+                text: TextSpan(
+                  text: '이전 섭취량 평균보다 ',
+                  style: TextStyle(color: black, fontWeight: FontWeight.w400),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: '혈당을 18% 더 섭취',
+                        style: TextStyle(
+                            color: colorRed, fontWeight: FontWeight.w600)),
+                    const TextSpan(text: '하고 있어요.')
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 칼로리 섭취량 그래프
+  Widget calConsumeInfo() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 0.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '칼로리 섭취량 그래프',
+                textScaleFactor: 1.1,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: colorRed,
+                ),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 200,
+                child: SfCartesianChart(
+                    enableSideBySideSeriesPlacement: false,
+                    series: <ChartSeries<ChartData, int>>[
+                      // Renders column chart
+                      ColumnSeries<ChartData, int>(
+                        dataSource: chartData,
+                        xValueMapper: (ChartData data, _) => data.x,
+                        yValueMapper: (ChartData data, _) => data.y,
+                        width: 0.5,
+                        color: colorRed,
+                      )
+                    ]),
+              ),
+              // 열량 정보  ------------------------------------
+              infoWidget('평균 섭취량', '1,702kcal', labelColor: colorRed),
+              infoWidget('최고 섭취량', '1,890kcal'),
+              infoWidget('최저 섭취량', '1,414kcal'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  // 섭취 영양소 그래프
+  Widget nutConsumeInfo() {
+    return Padding(
+      padding:
+      const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 20.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(
+              25.0, 20.0, 25.0, 25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '섭취 영양소 그래프',
+                textScaleFactor: 1.1,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: colorRed,
+                ),
+              ),
+              // 섭취 영양소 차트 ------------------------------
+              SizedBox(
+                height: 250,
+                //Radar Chart
+                child: RadarChart(
+                  values: const [9.0, 10.3, 8.9, 13.5, 10.1],
+                  labels: const [
+                    "탄수화물",
+                    "단백질",
+                    "지방",
+                    "나트륨",
+                    "콜레스트롤",
+                  ],
+                  maxValue: 15,
+                  fillColor: colorRed,
+                  strokeColor: colorDarkGray,
+                  chartRadiusFactor: 0.8,
+                ),
+              ),
+              Center(
+                child: RichText(
+                    textScaleFactor: 1.1,
+                    text: TextSpan(
+                      text: '나트륨을 ',
+                      style: TextStyle(
+                          color: black,
+                          fontWeight: FontWeight.w400),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: '너무 과도하게 섭취',
+                            style: TextStyle(
+                                color: colorRed,
+                                fontWeight: FontWeight.w600)),
+                        const TextSpan(text: '하고 있어요.')
+                      ],
+                    )),
+              ),
+              SizedBox(height: 20),
+              infoWidget('탄수화물 섭취량', '90%'),
+              infoWidget('단백질 섭취량', '103%'),
+              infoWidget('지방 섭취량', '89%'),
+              infoWidget('나트륨 섭취량', '135%',
+                  labelColor: colorRed),
+              infoWidget('콜레스트롤 섭취량', '101%'),
+            ],
+          ),
         ),
       ),
     );
