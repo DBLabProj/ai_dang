@@ -329,7 +329,11 @@ class _TopCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
     return MyContainer( 
+=======
+    return MyContainer(
+>>>>>>> 1efe4c0b40421da95c960947343a140299f49a3f
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
