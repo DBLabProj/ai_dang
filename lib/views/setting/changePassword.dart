@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ai_dang/session.dart';
 import 'package:ai_dang/dbHandler.dart';
-
+import 'package:ai_dang/views/loginPage.dart';
 import '../loginPage.dart';
 
 class changepass extends StatefulWidget {
@@ -83,20 +83,15 @@ class _changepassState extends State<changepass> {
                       child: TextField(
                         controller: _nowpassword,
                         decoration: InputDecoration(
-                          // filled: true,
-                          labelText: '현재 비밀번호',
-                          hintText: '현재 비밀번호를 입력하세요',
-                          labelStyle: TextStyle(color: Color(0xffCF2525)),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                          labelText: '현재 비밀번호 입력',
+                          labelStyle: TextStyle(color: darKGray),
+                          prefixIcon: Icon(Icons.vpn_key, color: darKGray),
+                          focusColor: red,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(width: 2, color: gray),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(width: 2, color: red),
                           ),
                         ),
                         obscureText: true,
@@ -112,20 +107,15 @@ class _changepassState extends State<changepass> {
                       child: TextField(
                         controller: _changepassword,
                         decoration: InputDecoration(
-                          // filled: true,
                           labelText: '변경할 비밀번호',
-                          hintText: '변경할 비밀번호를 입력하세요',
-                          labelStyle: TextStyle(color: Color(0xffCF2525)),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                          labelStyle: TextStyle(color: darKGray),
+                          prefixIcon: Icon(Icons.vpn_key, color: darKGray),
+                          focusColor: red,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(width: 2, color: gray),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(width: 2, color: red),
                           ),
                         ),
                         obscureText: true,
@@ -141,27 +131,22 @@ class _changepassState extends State<changepass> {
                       child: TextField(
                         controller: _changepassword_check,
                         decoration: InputDecoration(
-                          // filled: true,
                           labelText: '변경할 비밀번호 확인',
-                          hintText: '변경할 비밀번호를 입력하세요',
-                          labelStyle: TextStyle(color: Color(0xffCF2525)),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
+                          labelStyle: TextStyle(color: darKGray),
+                          prefixIcon: Icon(Icons.vpn_key, color: darKGray),
+                          focusColor: red,
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(width: 2, color: gray),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(width: 2, color: red),
                           ),
                         ),
                         obscureText: true,
                       ),
                     ),
 
-                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.060,
+                    SizedBox(height: (MediaQuery.of(context).size.height) * 0.20,
                     ),
                     SizedBox(
                       height: (MediaQuery.of(context).size.height) * 0.065,
@@ -181,20 +166,7 @@ class _changepassState extends State<changepass> {
                             showDialogPop_check();
 
                           }
-                          //   showDialogPop();
-                          // }
-                          //
-                          // if (Password_check == true && Email_check == true) {
-                          //   signupList.add(_idTextEditController.text);
-                          //   signupList.add(_passwordTextEditController.text);
-                          //   // signupList.add(_passwordTextEditController_check.text);
-                          //   signupList.add(_nameTextEditController.text);
-                          //
-                          //   Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(builder: (context) => genderpage(signUpList: signupList)),
-                          //   );
-                          // }
+
 
                         },
                         child: Text('변경하기', style: TextStyle(

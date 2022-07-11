@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../session.dart';
+
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);
 var colorLightGray = const Color(0xffF3F3F3);
@@ -22,16 +24,16 @@ class statistics extends StatefulWidget {
 }
 
 
-
-
-
+  var dietInfo_cal = Session.instance.dietInfo['recom_cal'];
+  var dietInfo_hydrate = Session.instance.dietInfo['recom_hydrate'];
+  var dietInfo_protein = Session.instance.dietInfo['recom_protein'];
+  var dietInfo_fat = Session.instance.dietInfo['recom_fat'];
+  var dietInfo_sugar = Session.instance.dietInfo['recom_sugar'];
 
   class ChartData {
     ChartData(this.x, this.y);
     final int x;
     final int y;
-
-
   }
 
 
@@ -94,6 +96,8 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
+    print(dietInfo_hydrate);
     return DefaultTabController(
       length: 2 ,
       child: Scaffold(
@@ -783,7 +787,7 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                                                     textScaleFactor: 1.1,
                                                     style: TextStyle(
                                                         color: black)),
-                                                Text('125%',
+                                                Text(dietInfo_hydrate.toString(),
                                                     textScaleFactor: 1.1,
                                                     style: TextStyle(
                                                         color: black,
@@ -810,7 +814,7 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                                                     textScaleFactor: 1.1,
                                                     style: TextStyle(
                                                         color: black)),
-                                                Text('103%',
+                                                Text(dietInfo_protein.toString(),
                                                     textScaleFactor: 1.1,
                                                     style: TextStyle(
                                                         color: black,
@@ -837,7 +841,7 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                                                     textScaleFactor: 1.1,
                                                     style: TextStyle(
                                                         color: black)),
-                                                Text('89%',
+                                                Text(dietInfo_fat.toString(),
                                                     textScaleFactor: 1.1,
                                                     style: TextStyle(
                                                         color: black,
@@ -860,11 +864,11 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                                               mainAxisAlignment: MainAxisAlignment
                                                   .spaceBetween,
                                               children: [
-                                                Text('나트륨 섭취량',
+                                                Text('당 섭취량',
                                                     textScaleFactor: 1.1,
                                                     style: TextStyle(
                                                         color: black)),
-                                                Text('135%',
+                                                Text(dietInfo_sugar.toString(),
                                                     textScaleFactor: 1.1,
                                                     style: TextStyle(
                                                         color: black,
@@ -887,11 +891,11 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                                               mainAxisAlignment: MainAxisAlignment
                                                   .spaceBetween,
                                               children: [
-                                                Text('콜레스테롤 섭취량',
+                                                Text('칼로리 섭취량',
                                                     textScaleFactor: 1.1,
                                                     style: TextStyle(
                                                         color: black)),
-                                                Text('111%',
+                                                Text(dietInfo_cal.toString(),
                                                     textScaleFactor: 1.1,
                                                     style: TextStyle(
                                                         color: black,
