@@ -27,6 +27,8 @@ class _loginPageState extends State<loginPage> {
       MyTextField('password', Icons.vpn_key, '비밀번호', '비밀번호를 입력하세요.');
 
   void checkUser(email, password) async {
+
+    EasyLoading.show(status: '로그인 중..');
     var conn = await ConnHandler.instance.conn;
 
     var result = await conn.query(
@@ -52,6 +54,7 @@ class _loginPageState extends State<loginPage> {
   }
 
   void showErrorMessage() {
+    EasyLoading.dismiss();
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -94,6 +97,15 @@ class _loginPageState extends State<loginPage> {
       areaWidth = 300;
     }
 
+    emailField.setOnSubmitted((void val) {
+        FocusScope.of(context).nextFocus();
+    });
+    // passwordfield에 엔터키 누르면 로그인기능
+    passwordField.setOnSubmitted((void val) {
+      checkUser(emailField.getText(),
+          passwordField.getText());
+    });
+
     return GestureDetector(
       onTap: () {
         //FocusManager.instance.primaryFocus?.unfocus();
@@ -127,7 +139,7 @@ class _loginPageState extends State<loginPage> {
                           ),
                           // desc ----------------------------------------------------
                           Text(
-                            '나만의 스마트한 당뇨관리 비서',
+                            '나만의 스마트한 당뇨관리 영양사',
                             textScaleFactor: 1.3,
                             style: TextStyle(color: red),
                           ),
@@ -149,7 +161,6 @@ class _loginPageState extends State<loginPage> {
                             height: 50,
                             child: ElevatedButton(
                               onPressed: () {
-                                EasyLoading.show(status: '로그인 중..');
                                 checkUser(emailField.getText(),
                                     passwordField.getText());
                               },
