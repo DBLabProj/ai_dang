@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:multi_charts/multi_charts.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
+import '../../dbHandler.dart';
 import '../../session.dart';
 
 var colorBlack = const Color(0xff535353);
@@ -96,23 +97,43 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            '2022년 6월 3주 리포트',
-            textScaleFactor: 0.9,
-            style: TextStyle(
-              fontWeight: FontWeight.w700,
-              color: colorRed,
-            ),
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // 이전 버튼 ------------------------------------------------------
+              IconButton(
+                icon: Icon(Icons.arrow_back_ios, color: colorBlack),
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                iconSize: 21,
+                onPressed: () {},
+              ),
+              Text(
+                '2022년 6월 3주 리포트',
+                textScaleFactor: 0.9,
+                style: TextStyle(
+                  fontWeight: FontWeight.w700,
+                  color: colorRed,
+                ),
+              ),
+              // 이후 버튼 ------------------------------------------------------
+              IconButton(
+                icon: Icon(Icons.arrow_forward_ios, color: colorBlack),
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                iconSize: 21,
+                onPressed: () {},
+              ),
+            ],
           ),
-          centerTitle: true,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           bottom: TabBar(
-            // indicatorSize: TabBarIndicatorSize.label, // 라벨 사이즈에 맞게
             indicatorWeight: 6, // 라벨 꽉 차게
             indicatorColor: colorRed,
             labelColor: black,
@@ -261,7 +282,7 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
               RichText(
                 textScaleFactor: 1.1,
                 text: TextSpan(
-                  text: '이전 섭취량 평균보다 ',
+                  text: '저번 주 보다 ',
                   style: TextStyle(color: black, fontWeight: FontWeight.w400),
                   children: <TextSpan>[
                     TextSpan(
@@ -331,16 +352,14 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
   // 섭취 영양소 그래프
   Widget nutConsumeInfo() {
     return Padding(
-      padding:
-      const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 20.0),
+      padding: const EdgeInsets.fromLTRB(20.0, 25.0, 20.0, 20.0),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
         ),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(
-              25.0, 20.0, 25.0, 25.0),
+          padding: const EdgeInsets.fromLTRB(25.0, 20.0, 25.0, 25.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -376,15 +395,13 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                     textScaleFactor: 1.1,
                     text: TextSpan(
                       text: '나트륨을 ',
-                      style: TextStyle(
-                          color: black,
-                          fontWeight: FontWeight.w400),
+                      style:
+                          TextStyle(color: black, fontWeight: FontWeight.w400),
                       children: <TextSpan>[
                         TextSpan(
                             text: '너무 과도하게 섭취',
                             style: TextStyle(
-                                color: colorRed,
-                                fontWeight: FontWeight.w600)),
+                                color: colorRed, fontWeight: FontWeight.w600)),
                         const TextSpan(text: '하고 있어요.')
                       ],
                     )),
@@ -393,8 +410,7 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
               infoWidget('탄수화물 섭취량', '90%'),
               infoWidget('단백질 섭취량', '103%'),
               infoWidget('지방 섭취량', '89%'),
-              infoWidget('나트륨 섭취량', '135%',
-                  labelColor: colorRed),
+              infoWidget('나트륨 섭취량', '135%', labelColor: colorRed),
               infoWidget('콜레스트롤 섭취량', '101%'),
             ],
           ),

@@ -163,3 +163,41 @@ Future change_pass(changepass,id) async{
   var result = await conn.query(sql);
   return result;
 }
+
+// 통계페이지
+Future getReportList() async {
+  var conn = await ConnHandler.instance.conn;
+  String sql = '''
+    SELECT	concat(concat(year(M.datetime), '-'), week(M.datetime)) as week,
+        (energy * (amount/2)) as energy_SUM, (carbohydrate * (amount/2)) as cbhydra_SUM,
+        (protein * (amount/2)) as protein_SUM, (fat * (amount/2)) as fat_SUM,
+            (total_sugar * (amount/2)) as sugar_SUM
+    FROM    meal M
+        INNER JOIN predict P
+        ON (M.predict_no = P.no)
+        INNER JOIN main_food_info F
+        ON (P.result = F.food_name)
+    WHERE 	M.user = ?
+    GROUP BY week;
+  ''';
+
+  String userId = Session.instance.userInfo['email'].toString();
+  var result = await conn.query(sql, [userId]);
+  return result;
+}
+
+Future getDailyConsumeInfo(week) async {
+
+}
+// SELECT	concat(concat(year(M.datetime), '-'), week(M.datetime)) as week,
+//     date_format(M.datetime, '%Y%m%d') as date,
+//     sum((energy * (amount/2))) as energy_SUM, sum((carbohydrate * (amount/2))) as cbhydra_SUM,
+//     sum((protein * (amount/2))) as protein_SUM, sum((fat * (amount/2))) as fat_SUM,
+//     sum((total_sugar * (amount/2))) as sugar_SUM
+// FROM    meal M
+// INNER JOIN predict P
+// ON (M.predict_no = P.no)
+// INNER JOIN main_food_info F
+// ON (P.result = F.food_name)
+// WHERE 	M.user = 'test'
+// GROUP BY week, date WITH ROLLUP;
