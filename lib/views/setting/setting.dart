@@ -1,4 +1,5 @@
 import 'package:ai_dang/views/setting/changePassword.dart';
+import 'package:ai_dang/views/setting/profileDetail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -104,7 +105,7 @@ class _settingState extends State<setting> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => loginPage()),
+                                    builder: (context) => bodyInfoUpdate()),
                               );
                             },
                             style: TextButton.styleFrom(
