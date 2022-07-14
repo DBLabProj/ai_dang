@@ -163,3 +163,27 @@ Future change_pass(changepass,id) async{
   var result = await conn.query(sql);
   return result;
 }
+
+// 통계페이지
+Future getConsumeInfo() async {
+  var conn = await ConnHandler.instance.conn;
+  String sql = '''
+    SELECT	concat(YEAR(M.datetime), '/', MONTH(M.datetime), '/',
+            (WEEK(M.datetime) - WEEK(DATE_SUB(M.datetime, INTERVAL DAYOFMONTH(M.datetime)-1 DAY)) + 1)) as week,
+        date_format(M.datetime, '%Y%m%d') as date,
+        sum((energy * (amount/2))) as energy_SUM, sum((carbohydrate * (amount/2))) as cbhydra_SUM,
+        sum((protein * (amount/2))) as protein_SUM, sum((fat * (amount/2))) as fat_SUM,
+            sum((total_sugar * (amount/2))) as sugar_SUM
+    FROM    meal M
+        INNER JOIN predict P
+        ON (M.predict_no = P.no)
+        INNER JOIN main_food_info F
+        ON (P.result = F.food_name)
+    WHERE 	M.user = ?
+    GROUP BY week, date WITH ROLLUP;
+  ''';
+
+  String userId = Session.instance.userInfo['email'].toString();
+  var result = await conn.query(sql, [userId]);
+  return result;
+}
