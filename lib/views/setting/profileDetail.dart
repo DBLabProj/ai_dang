@@ -1,3 +1,9 @@
+import 'package:ai_dang/views/account/heightpage.dart';
+import 'package:ai_dang/views/loginPage.dart';
+import 'package:ai_dang/views/setting/changeAge.dart';
+import 'package:ai_dang/views/setting/changeHeight.dart';
+import 'package:ai_dang/views/setting/changeWeight.dart';
+import 'package:ai_dang/views/setting/changeDt.dart';
 import 'package:ai_dang/views/setting/test.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/session.dart';
@@ -63,42 +69,46 @@ class bodyInfoUpdate extends StatelessWidget {
               //   ],
               // ),
               SizedBox(
-                height: outPadding,
+                height: (MediaQuery.of(context).size.height) * 0.005,
               ),
               Row(
                 children: [
 
                   Text(
                     '안녕하세요 $User_name님',
-                    style: Theme.of(context).textTheme.headline3!.copyWith(
-                        color: colorRed,
+                    // textScaleFactor: 1.8,
+                    style: TextStyle(
+                      fontSize: (MediaQuery.of(context).size.width) * 0.08,
+                    color: colorRed,
                         fontWeight: FontWeight.bold),
                   ),
 
                   SizedBox(
-                    width: outPadding,
+                    width: (MediaQuery.of(context).size.width) * 0.03,
                   ),
                   const Icon(
                     Icons.account_circle,
                     color: Colors.grey,
                     size: 64,
                   ),
-
                 ],
               ),
 
               Text(
                 '수정을 원하시는 프로필을 선택해주세요.',
-                style: Theme.of(context).textTheme.headline6!.copyWith(
-                    color: colorRed),
+                // textScaleFactor: 1.2,
+                style: TextStyle(
+                    fontSize: (MediaQuery.of(context).size.width) * 0.035,
+                    color: colorRed
+                ),
               ),
               SizedBox(
-                height: outPadding,
+                height: (MediaQuery.of(context).size.height) * 0.02,
               ),
 
                _TopCard(),
                SizedBox(
-                height: outPadding,
+                 height: (MediaQuery.of(context).size.height) * 0.02,
               ),
               Row(
                 children: [
@@ -114,11 +124,11 @@ class bodyInfoUpdate extends StatelessWidget {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  _ActionBtn()
+                  // _ActionBtn()
                 ],
               ),
               SizedBox(
-                height: outPadding,
+                height: (MediaQuery.of(context).size.height) * 0.02,
               ),
               Expanded(
                 child: Row(
@@ -130,25 +140,26 @@ class bodyInfoUpdate extends StatelessWidget {
                             Flexible(
                               flex: 3,
                               child: MyContainer(
+                                link: changeAge(),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       '$User_age',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                        fontSize: (MediaQuery.of(context).size.width) * 0.08,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white
+                                      )
+                                          // fontWeight: FontWeight.bold),
                                     ),
                                     Text(
                                       '나이 수정하기',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1!
-                                          .copyWith(
-                                          color: Colors.white),
+                                      style: TextStyle(
+                                          fontSize: (MediaQuery.of(context).size.width) * 0.03,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -160,25 +171,25 @@ class bodyInfoUpdate extends StatelessWidget {
                             Flexible(
                               flex: 2,
                               child: MyContainer(
+                                link: changeWeight(),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       '$User_weight',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: (MediaQuery.of(context).size.width) * 0.08,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white
+                                        )
                                     ),
                                     Text(
                                       '체중 수정하기',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1!
-                                          .copyWith(
-                                          color: Colors.white),
+                                      style: TextStyle(
+                                          fontSize: (MediaQuery.of(context).size.width) * 0.03,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -196,25 +207,25 @@ class bodyInfoUpdate extends StatelessWidget {
                             Flexible(
                               flex: 2,
                               child: MyContainer(
+                                link: changeheight(),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       '$User_height',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: (MediaQuery.of(context).size.width) * 0.08,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white
+                                        )
                                     ),
                                     Text(
                                       '신장 수정하기',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1!
-                                          .copyWith(
-                                          color: Colors.white),
+                                      style: TextStyle(
+                                          fontSize: (MediaQuery.of(context).size.width) * 0.03,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -226,25 +237,28 @@ class bodyInfoUpdate extends StatelessWidget {
                             Flexible(
                               flex: 3,
                               child: MyContainer(
+                                link: changeDt(),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
                                       '$User_dt',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline6!
-                                          .copyWith(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontSize: (MediaQuery.of(context).size.width) * 0.08,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white
+                                        )
+                                    ),
+                                    SizedBox(
+                                      height: (MediaQuery.of(context).size.height) * 0.01,
                                     ),
                                     Text(
                                       '당뇨유형 수정하기',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .subtitle1!
-                                          .copyWith(
-                                          color: Colors.white),
+                                      style: TextStyle(
+                                          fontSize: (MediaQuery.of(context).size.width) * 0.03,
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.white
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -389,3 +403,4 @@ class _TopCard extends StatelessWidget {
     );
   }
 }
+
