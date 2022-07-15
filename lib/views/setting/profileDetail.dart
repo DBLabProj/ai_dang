@@ -10,6 +10,7 @@ import 'package:ai_dang/views/setting/test.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/session.dart';
 
+import '../../main.dart';
 import 'circular_border_avatar.dart';
 import 'my_container.dart';
 class bodyInfoUpdate extends StatefulWidget {
@@ -68,13 +69,25 @@ class _bodyInfoUpdateState extends State<bodyInfoUpdate> {
     ),
 
       Scaffold(
+    backgroundColor: Colors.grey[200],
         appBar: AppBar(
+          title: Text(
+            '프로필 변경',style: TextStyle(
+            color: colorRed
+          ),
+          ),
+          elevation: 0,
           automaticallyImplyLeading: false,
+          backgroundColor: Colors.grey[200],
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: colorRed,),
-            onPressed: () =>Navigator.push(
+            // padding: EdgeInsets.only(left:25),
+            color: Colors.white,
+            icon: Icon(Icons.chevron_left, color: colorRed,),
+            iconSize: 45,
+            onPressed: () =>
+                Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => setting())
+              MaterialPageRoute(builder: (context) => MyHomePage(pageNum : 3))
             ),
           ),
         ),
@@ -85,16 +98,15 @@ class _bodyInfoUpdateState extends State<bodyInfoUpdate> {
             },
             child: SafeArea(
             child: Padding(
-              padding: EdgeInsets.all(outPadding),
+              padding: EdgeInsets.fromLTRB(outPadding,0,outPadding,outPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-      SizedBox(
-        height: (MediaQuery.of(context).size.height) * 0.005,
-      ),
+      // SizedBox(
+      //   height: (MediaQuery.of(context).size.height) * 0.005,
+      // ),
       Row(
         children: [
-
             Text(
               '안녕하세요 $User_name님',
               // textScaleFactor: 1.8,

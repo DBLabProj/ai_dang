@@ -32,14 +32,19 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  final pageNum;
+  const MyHomePage({Key? key, @required this.pageNum}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+
   int selectedIndex = 0;
+
+
   final List _pages = [
     const HomePage(),
     const statistics(),
@@ -49,6 +54,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.pageNum);
+    if (widget.pageNum == 3){
+      selectedIndex = 3;
+    }
     return Scaffold(
       body: Center(
         child: _pages[selectedIndex],

@@ -48,7 +48,7 @@ class _loginPageState extends State<loginPage> {
     EasyLoading.dismiss();
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const MyHomePage()),
+      MaterialPageRoute(builder: (context) => const MyHomePage(pageNum: 0,)),
     );
   }
 
