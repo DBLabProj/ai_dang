@@ -49,7 +49,7 @@ Future selectDayMeal(selectedDay, userName) async {
 }
 
 
-Future setUserInfo(email) async {
+Future getUserInfo(email) async {
   var conn = await ConnHandler.instance.conn;
 
   var result = await conn.query(
@@ -67,6 +67,7 @@ Future setUserInfo(email) async {
       'id': row[8],
     });
   }
+
   return result;
 }
 
@@ -153,12 +154,40 @@ Future getNutrient(foodName) async {
   return result;
 }
 
+// 회원 정보 가져오기
+Future get_userInfo(id) async{
+  var conn = await ConnHandler.instance.conn;
+
+  String sql = '''
+  select * from user where email = '$id'
+  ''';
+
+  var result = await conn.query(sql);
+
+  return result;
+}
+
+
+
+// 비밀번호 변경
 Future change_pass(changepass,id) async{
   var conn = await ConnHandler.instance.conn;
 
   String sql ='''
       update user set password = '$changepass' where id = '$id'
     ''';
+
+  var result = await conn.query(sql);
+  return result;
+}
+
+// 나이 변경
+Future chage_age(changeAge,id) async{
+  var conn = await ConnHandler.instance.conn;
+
+  String sql ='''
+    update user set age = '$changeAge' where id = '$id'
+  ''';
 
   var result = await conn.query(sql);
   return result;

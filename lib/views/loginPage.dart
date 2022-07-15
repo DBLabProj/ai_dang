@@ -42,9 +42,8 @@ class _loginPageState extends State<loginPage> {
     }
   }
 
-
   void login() async {
-    await setUserInfo(emailField.getText());
+    await getUserInfo(emailField.getText());
     // 초깃값 식단 불러오기
     EasyLoading.dismiss();
     Navigator.push(
