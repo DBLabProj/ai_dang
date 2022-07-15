@@ -1,19 +1,41 @@
+import 'package:ai_dang/dbHandler.dart';
 import 'package:ai_dang/views/account/heightpage.dart';
 import 'package:ai_dang/views/loginPage.dart';
 import 'package:ai_dang/views/setting/changeAge.dart';
 import 'package:ai_dang/views/setting/changeHeight.dart';
 import 'package:ai_dang/views/setting/changeWeight.dart';
 import 'package:ai_dang/views/setting/changeDt.dart';
+import 'package:ai_dang/views/setting/setting.dart';
 import 'package:ai_dang/views/setting/test.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/session.dart';
 
 import 'circular_border_avatar.dart';
 import 'my_container.dart';
-class bodyInfoUpdate extends StatelessWidget {
+class bodyInfoUpdate extends StatefulWidget {
   bodyInfoUpdate({Key? key}) : super(key: key);
 
   @override
+  State<bodyInfoUpdate> createState() => _bodyInfoUpdateState();
+}
+
+class _bodyInfoUpdateState extends State<bodyInfoUpdate> {
+  @override
+
+  // 회원 정보 가져오기
+  Future get_userInfoList(id) async{
+    List UserInfoList = [];
+    await get_userInfo(id).then((sqlRs)
+    {
+      for (var row in sqlRs) {
+        String name = row[1];
+        UserInfoList.add(name);
+      }
+    });
+    return UserInfoList;
+  }
+
+
   var User_name = Session.instance.userInfo['name'];
   var User_age = Session.instance.userInfo['age'];
   var User_dt = Session.instance.userInfo['dt'];
@@ -21,10 +43,7 @@ class bodyInfoUpdate extends StatelessWidget {
   var User_height = Session.instance.userInfo['height'];
   var User_weight = Session.instance.userInfo['weight'];
 
-
   var colorRed = const Color(0xffCF2525);
-
-
   var outPadding = 32.0;
   var seedColor = Color(0xff00ffff);
 
@@ -47,234 +66,237 @@ class bodyInfoUpdate extends StatelessWidget {
     ],
     )),
     ),
+
       Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(outPadding),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     SizedBox(
-              //         height: 100,
-              //         child: Image.asset('assets/image/logo.png',
-              //             fit: BoxFit.fitHeight)),
-              //     // Expanded(child: Container()),
-              //     // CircularBorderAvatar(
-              //     //   'https://randomuser.me/api/portraits/women/26.jpg',
-              //     //   borderColor: colorRed,
-              //     // )
-              //   ],
-              // ),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) * 0.005,
-              ),
-              Row(
-                children: [
-
-                  Text(
-                    '안녕하세요 $User_name님',
-                    // textScaleFactor: 1.8,
-                    style: TextStyle(
-                      fontSize: (MediaQuery.of(context).size.width) * 0.08,
-                    color: colorRed,
-                        fontWeight: FontWeight.bold),
-                  ),
-
-                  SizedBox(
-                    width: (MediaQuery.of(context).size.width) * 0.03,
-                  ),
-                  const Icon(
-                    Icons.account_circle,
-                    color: Colors.grey,
-                    size: 64,
-                  ),
-                ],
-              ),
-
-              Text(
-                '수정을 원하시는 프로필을 선택해주세요.',
-                // textScaleFactor: 1.2,
-                style: TextStyle(
-                    fontSize: (MediaQuery.of(context).size.width) * 0.035,
-                    color: colorRed
-                ),
-              ),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) * 0.02,
-              ),
-
-               _TopCard(),
-               SizedBox(
-                 height: (MediaQuery.of(context).size.height) * 0.02,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      'My Profile',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline5!
-                          .copyWith(
-                          color:
-                          colorRed,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  // _ActionBtn()
-                ],
-              ),
-              SizedBox(
-                height: (MediaQuery.of(context).size.height) * 0.02,
-              ),
-              Expanded(
-                child: Row(
-                  children: [
-                    Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Flexible(
-                              flex: 3,
-                              child: MyContainer(
-                                link: changeAge(),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '$User_age',
-                                      style: TextStyle(
-                                        fontSize: (MediaQuery.of(context).size.width) * 0.08,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white
-                                      )
-                                          // fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      '나이 수정하기',
-                                      style: TextStyle(
-                                          fontSize: (MediaQuery.of(context).size.width) * 0.03,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: outPadding,
-                            ),
-                            Flexible(
-                              flex: 2,
-                              child: MyContainer(
-                                link: changeWeight(),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '$User_weight',
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context).size.width) * 0.08,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white
-                                        )
-                                    ),
-                                    Text(
-                                      '체중 수정하기',
-                                      style: TextStyle(
-                                          fontSize: (MediaQuery.of(context).size.width) * 0.03,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                    SizedBox(
-                      width: outPadding,
-                    ),
-                    Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Flexible(
-                              flex: 2,
-                              child: MyContainer(
-                                link: changeheight(),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '$User_height',
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context).size.width) * 0.08,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white
-                                        )
-                                    ),
-                                    Text(
-                                      '신장 수정하기',
-                                      style: TextStyle(
-                                          fontSize: (MediaQuery.of(context).size.width) * 0.03,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: outPadding,
-                            ),
-                            Flexible(
-                              flex: 3,
-                              child: MyContainer(
-                                link: changeDt(),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '$User_dt',
-                                        style: TextStyle(
-                                            fontSize: (MediaQuery.of(context).size.width) * 0.08,
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white
-                                        )
-                                    ),
-                                    SizedBox(
-                                      height: (MediaQuery.of(context).size.height) * 0.01,
-                                    ),
-                                    Text(
-                                      '당뇨유형 수정하기',
-                                      style: TextStyle(
-                                          fontSize: (MediaQuery.of(context).size.width) * 0.03,
-                                          fontWeight: FontWeight.w600,
-                                          color: Colors.white
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16)
-            ],
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: colorRed,),
+            onPressed: () =>Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => setting())
+            ),
           ),
         ),
+
+          body: WillPopScope(
+            onWillPop: () {
+              return Future(() => false);
+            },
+            child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(outPadding),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+      SizedBox(
+        height: (MediaQuery.of(context).size.height) * 0.005,
       ),
-      )
+      Row(
+        children: [
+
+            Text(
+              '안녕하세요 $User_name님',
+              // textScaleFactor: 1.8,
+              style: TextStyle(
+                fontSize: (MediaQuery.of(context).size.width) * 0.08,
+              color: colorRed,
+                  fontWeight: FontWeight.bold),
+            ),
+
+            SizedBox(
+              width: (MediaQuery.of(context).size.width) * 0.03,
+            ),
+            const Icon(
+              Icons.account_circle,
+              color: Colors.grey,
+              size: 64,
+            ),
+        ],
+      ),
+
+      Text(
+        '수정을 원하시는 프로필을 선택해주세요.',
+        // textScaleFactor: 1.2,
+        style: TextStyle(
+              fontSize: (MediaQuery.of(context).size.width) * 0.035,
+              color: colorRed
+        ),
+      ),
+      SizedBox(
+        height: (MediaQuery.of(context).size.height) * 0.02,
+      ),
+
+       _TopCard(),
+       SizedBox(
+         height: (MediaQuery.of(context).size.height) * 0.02,
+      ),
+      Row(
+        children: [
+            Expanded(
+              child: Text(
+                'My Profile',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5!
+                    .copyWith(
+                    color:
+                    colorRed,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            // _ActionBtn()
+        ],
+      ),
+      SizedBox(
+        height: (MediaQuery.of(context).size.height) * 0.02,
+      ),
+      Expanded(
+        child: Row(
+            children: [
+              Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Flexible(
+                        flex: 3,
+                        child: MyContainer(
+                          link: changeAge(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                  '$User_age',
+                                  style: TextStyle(
+                                      fontSize: (MediaQuery.of(context).size.width) * 0.08,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white
+                                  )
+                                // fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                '나이 수정하기',
+                                style: TextStyle(
+                                    fontSize: (MediaQuery.of(context).size.width) * 0.03,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: outPadding,
+                      ),
+                      Flexible(
+                        flex: 2,
+                        child: MyContainer(
+                          link: changeWeight(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                  '$User_weight',
+                                  style: TextStyle(
+                                      fontSize: (MediaQuery.of(context).size.width) * 0.08,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white
+                                  )
+                              ),
+                              Text(
+                                '체중 수정하기',
+                                style: TextStyle(
+                                    fontSize: (MediaQuery.of(context).size.width) * 0.03,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              SizedBox(
+                width: outPadding,
+              ),
+              Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Flexible(
+                        flex: 2,
+                        child: MyContainer(
+                          link: changeheight(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                  '$User_height',
+                                  style: TextStyle(
+                                      fontSize: (MediaQuery.of(context).size.width) * 0.08,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white
+                                  )
+                              ),
+                              Text(
+                                '신장 수정하기',
+                                style: TextStyle(
+                                    fontSize: (MediaQuery.of(context).size.width) * 0.03,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: outPadding,
+                      ),
+                      Flexible(
+                        flex: 3,
+                        child: MyContainer(
+                          link: changeDt(),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                  '$User_dt',
+                                  style: TextStyle(
+                                      fontSize: (MediaQuery.of(context).size.width) * 0.08,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white
+                                  )
+                              ),
+                              SizedBox(
+                                height: (MediaQuery.of(context).size.height) * 0.01,
+                              ),
+                              Text(
+                                '당뇨유형 수정하기',
+                                style: TextStyle(
+                                    fontSize: (MediaQuery.of(context).size.width) * 0.03,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.white
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+            ],
+        ),
+      ),
+      const SizedBox(height: 16)
+                ],
+              ),
+            ),
+        ),
+          ),
+        )
         ],
     );
   }
@@ -334,6 +356,8 @@ class _ActionBtn extends StatelessWidget {
     );
   }
 }
+
+
 
 class _TopCard extends StatelessWidget {
   _TopCard({
