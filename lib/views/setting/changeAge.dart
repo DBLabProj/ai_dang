@@ -128,10 +128,7 @@ class _changeAgeState extends State<changeAge> {
                               (MediaQuery.of(context).size.width) * 0.4,
                           child: ElevatedButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => bodyInfoUpdate())
-                              );
+                              Navigator.pop(context);
                             },
                             child: Text('이전 단계로', style: TextStyle(
                                 color: Color(0xffCF2525),
@@ -186,7 +183,7 @@ class _changeAgeState extends State<changeAge> {
             actions: <Widget>[
               TextButton(
                 onPressed: (){
-                  chage_age(User_age, User_id);
+                  change_age(User_age, User_id);
                   change_User_info_Age(User_email);
                   showDialogPop_done();
                 },

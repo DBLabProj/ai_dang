@@ -104,7 +104,7 @@ class _settingState extends State<setting> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute( 
+                                MaterialPageRoute(
                                     builder: (context) => bodyInfoUpdate()),
                               );
                             },

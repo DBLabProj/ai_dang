@@ -194,11 +194,23 @@ Future change_age(changeAge,id) async{
 }
 
 // 신장 변경
-Future change_height(changeheight, id) async{
+Future change_height(changeHeight, id) async{
   var conn = await ConnHandler.instance.conn;
 
   String sql = '''
-    update user set height = '$changeheight' where id = '$id'
+    update user set height = '$changeHeight' where id = '$id'
+  ''';
+
+  var result = await conn.query(sql);
+  return result;
+}
+
+// 체중 변경
+Future change_weight(changeWeight, id) async{
+  var conn = await ConnHandler.instance.conn;
+
+  String sql = '''
+    update user set weight = '$changeWeight' where id = '$id'
   ''';
 
   var result = await conn.query(sql);

@@ -164,10 +164,7 @@ class _changepassState extends State<changepass> {
                           }
                           else {
                             showDialogPop_check();
-
                           }
-
-
                         },
                         child: Text('변경하기', style: TextStyle(
                             fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26
