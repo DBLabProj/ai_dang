@@ -217,6 +217,19 @@ Future change_weight(changeWeight, id) async{
   return result;
 }
 
+// 당뇨유형 변경
+Future change_dt(changeDt, id) async{
+  var conn = await ConnHandler.instance.conn;
+
+  String sql = '''
+    update user set dt = '$changeDt' where id = '$id'
+  ''';
+
+  var result = await conn.query(sql);
+  return result;
+}
+
+
 // 통계페이지
 Future getConsumeInfo() async {
   var conn = await ConnHandler.instance.conn;
