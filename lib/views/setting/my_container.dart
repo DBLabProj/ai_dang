@@ -1,13 +1,18 @@
 import 'package:ai_dang/views/setting/test.dart';
 import 'package:flutter/material.dart';
 
-class MyContainer extends StatelessWidget {
-  MyContainer({Key? key, required this.child}) : super(key: key);
+class MyContainer extends StatefulWidget {
+  final link;
+  MyContainer({Key? key, required this.child , this.link }) : super(key: key);
 
   final Widget child;
 
-  var colorRed = const Color(0xffCF2525);
+  @override
+  State<MyContainer> createState() => _MyContainerState();
+}
 
+class _MyContainerState extends State<MyContainer> {
+  var colorRed = const Color(0xffCF2525);
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +20,12 @@ class MyContainer extends StatelessWidget {
       onTap: (){
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => test())
+          MaterialPageRoute(builder: (context) => widget.link)
         );
       },
       child: Container(
         padding: EdgeInsets.all(16),
-        child: child,
+        child: widget.child,
         decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             borderRadius: BorderRadius.circular(16),
