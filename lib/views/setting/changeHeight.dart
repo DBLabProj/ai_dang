@@ -1,5 +1,10 @@
+import 'package:ai_dang/dbHandler.dart';
+import 'package:ai_dang/session.dart';
+import 'package:ai_dang/views/setting/profileDetail.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
+
+import '../home.dart';
 
 class changeheight extends StatefulWidget {
   const changeheight({Key? key}) : super(key: key);
@@ -10,7 +15,11 @@ class changeheight extends StatefulWidget {
 
 class _changeheightState extends State<changeheight> {
 
-  int _currentIntValue = 100;
+  // int _currentIntValue = 100;
+
+  var User_height = Session.instance.userInfo['height'];
+  var User_id = Session.instance.userInfo['id'];
+  var User_email = Session.instance.userInfo['email'];
 
 
   @override
@@ -33,7 +42,7 @@ class _changeheightState extends State<changeheight> {
               child: Column(
                 children: <Widget>[
                   Text(
-                    '신장을 선택하세요.',
+                    '수정할 신장을 선택하세요.',
                     style: TextStyle(
                         fontSize:
                         ((MediaQuery.of(context).size.width) * 0.20) *
@@ -54,7 +63,7 @@ class _changeheightState extends State<changeheight> {
                                 child: NumberPicker(
                                     itemHeight: (MediaQuery.of(context).size.height)*0.10,
                                     itemWidth: (MediaQuery.of(context).size.width)*0.6,
-                                    value: _currentIntValue,
+                                    value: User_height,
                                     minValue: 100,
                                     maxValue: 200,
                                     step: 1,
@@ -74,7 +83,7 @@ class _changeheightState extends State<changeheight> {
                                         fontWeight: FontWeight.w300,
                                         color: Color(0xff9E9E9E)),
 
-                                    onChanged: (value) => setState(() => _currentIntValue = value)
+                                    onChanged: (value) => setState(() => User_height = value)
                                 ),
                               ),
                               Container(
@@ -100,13 +109,9 @@ class _changeheightState extends State<changeheight> {
                                 (MediaQuery.of(context).size.width) * 0.4,
                             child: ElevatedButton(
                               onPressed: () {
-
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => weightpage(signUpList:widget.signUpList)),
-                                // );
+                                showDialogPop();
                               },
-                              child: Text('다음 단계로', style: TextStyle(
+                              child: Text('변경하기', style: TextStyle(
                                   fontSize: ((MediaQuery.of(context).size.width) * 0.16) *  0.26
                               ),),
                               style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(
@@ -124,12 +129,7 @@ class _changeheightState extends State<changeheight> {
                                 (MediaQuery.of(context).size.width) * 0.4,
                             child: ElevatedButton(
                               onPressed: () {
-
-
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => agepage(signUpList: widget.signUpList)),
-                                // );
+                                Navigator.pop(context);
                               },
                               child: Text('이전 단계로', style: TextStyle(
                                   color: Color(0xffCF2525),
@@ -152,6 +152,105 @@ class _changeheightState extends State<changeheight> {
           ],
         ),
       ),
+    );
+  }
+
+  void showDialogPop() {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            title: Text(
+                '프로필 변경'
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                      '신장을 수정하시겠습니까?'
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  change_height(User_height, User_id);
+                  change_User_info_height(User_email);
+                  showDialogPop_done();
+                },
+                child: Text(
+                  '수정하기',
+                  style: TextStyle(
+                      color: colorRed
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  '취소',
+                  style: TextStyle(
+                      color: colorRed
+                  ),
+                ),
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  void change_User_info_height(User_email) async{
+    await getUserInfo(User_email);
+  }
+
+  void showDialogPop_done() {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            title: Text(
+                '프로필 변경'
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                      '정상적으로 변경되었습니다.'
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => bodyInfoUpdate())
+                  // );
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => bodyInfoUpdate()));
+                },
+                child: Text(
+                  '확인',
+                  style: TextStyle(
+                      color: colorRed
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
     );
   }
 }
