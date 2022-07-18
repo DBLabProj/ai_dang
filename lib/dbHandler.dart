@@ -155,17 +155,17 @@ Future getNutrient(foodName) async {
 }
 
 // 회원 정보 가져오기
-Future get_userInfo(id) async{
-  var conn = await ConnHandler.instance.conn;
-
-  String sql = '''
-  select * from user where email = '$id'
-  ''';
-
-  var result = await conn.query(sql);
-
-  return result;
-}
+// Future get_userInfo(id) async{
+//   var conn = await ConnHandler.instance.conn;
+//
+//   String sql = '''
+//   select * from user where email = '$id'
+//   ''';
+//
+//   var result = await conn.query(sql);
+//
+//   return result;
+// }
 
 
 
@@ -182,11 +182,23 @@ Future change_pass(changepass,id) async{
 }
 
 // 나이 변경
-Future chage_age(changeAge,id) async{
+Future change_age(changeAge,id) async{
   var conn = await ConnHandler.instance.conn;
 
   String sql ='''
     update user set age = '$changeAge' where id = '$id'
+  ''';
+
+  var result = await conn.query(sql);
+  return result;
+}
+
+// 신장 변경
+Future change_height(changeheight, id) async{
+  var conn = await ConnHandler.instance.conn;
+
+  String sql = '''
+    update user set height = '$changeheight' where id = '$id'
   ''';
 
   var result = await conn.query(sql);
