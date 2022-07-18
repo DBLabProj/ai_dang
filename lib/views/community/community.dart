@@ -153,8 +153,6 @@ class _communityState extends State<community> {
       );
     }
 
-
-
     Widget boardInfo() {
       return Expanded(
         child: Container(
@@ -174,6 +172,7 @@ class _communityState extends State<community> {
       );
     }
 
+    //글쓰기
     Widget addBoard() {
       return SpeedDial(
         icon: Icons.add,
@@ -218,6 +217,7 @@ class _communityState extends State<community> {
   }
 }
 
+//글쓰기 위젯
 class Write extends StatelessWidget {
   var writeBoardList = [];
 
@@ -227,24 +227,6 @@ class Write extends StatelessWidget {
 
   String _title = '';
   String _content = '';
-  
-  // String checkConfirmDialog(_title, _content) {
-  //   String title = _title;
-  //   String content = _content;
-  //
-  //   if(title.isEmpty == true) {
-  //     String message = "제목을 입력해주세요.";
-  //
-  //     return message;
-  //   } else if (title.isNotEmpty && content.isEmpty) {
-  //
-  //     String message = "내용을 입력해주세요.";
-  //     return message;
-  //   } else {
-  //     String message = "등록이 완료되었습니다.";
-  //     return message;
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -313,7 +295,23 @@ class Write extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  ButtonTheme(
+                    minWidth: (MediaQuery.of(context).size.width),
+                      height: (MediaQuery.of(context).size.height) * 0.02,
+                      child: OutlinedButton(
+                        onPressed: () {
+
+                        },
+                        child: Text(
+                          '이미지 첨부하기',
+                          style: TextStyle(
+                            color: colorRed,
+                            fontWeight: FontWeight.w500,
+                            fontSize: (MediaQuery.of(context).size.width)*0.04
+                          ),
+                        ),
+                        )
+                      ),
                   TextField(
                     controller: _contentTextEditController,
                     onChanged: (text) {

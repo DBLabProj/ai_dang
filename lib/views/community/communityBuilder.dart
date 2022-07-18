@@ -17,7 +17,6 @@ Future getBoardList(context, pageStart, loadCommand, reloadCommand, text) async 
   List<Widget> list = [const SizedBox(height: 20)];
 
   if(loadCommand == true && reloadCommand == false) {
-    print("lalalalalalalala" + text);
     await boardList(pageStart).then((sqlRs) {
       for (var row in sqlRs) {
         String boardUid = row[0].toString();
@@ -32,7 +31,6 @@ Future getBoardList(context, pageStart, loadCommand, reloadCommand, text) async 
       }
     });
   } else if (loadCommand == true && reloadCommand == true) {
-    print("lalalalalalalala" + text);
     await getBoard(text).then((sqlRs) {
       for (var row in sqlRs) {
         String boardUid = row[0].toString();
@@ -50,6 +48,34 @@ Future getBoardList(context, pageStart, loadCommand, reloadCommand, text) async 
 
   return list;
 }
+
+Future getComment(boardUid) async {
+
+  List<Widget> list = [const SizedBox(height: 20)];
+
+  await commentList(boardUid).then((sqlRs) {
+    for (var row in sqlRs) {
+      String commentUid = row[0].toString();
+      String commentContent = row[1];
+      String commentReg = DateFormat.jm('ko-KR').format(row[2]);
+      String commentWriter = row[3];
+
+      print("-----------");
+      print(commentUid);
+      print(commentContent);
+      print(commentReg);
+      print(commentWriter);
+      print("-----------");
+
+      list.add(getCommentComponent(commentUid, commentContent, commentReg, commentWriter));
+      list.add(const SizedBox(height: 20));
+    }
+  });
+
+  return list;
+}
+
+
 
 Future getTotalCnt() async {
   var cnt;
@@ -159,10 +185,68 @@ Widget getBoardComponent(context, boardUid, boardTitle, boardContent, boardAdd, 
   );
 }
 
+Widget getCommentComponent(commentUid, commentContent, commentReg, commentWriter) {
+  return Scaffold(
+    body: SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10), color: Colors.white),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              commentWriter,
+                              style: TextStyle(
+                                  color: colorBlack,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            const SizedBox(width: 40),
+                            Text(
+                              commentContent,
+                              style: TextStyle(
+                                  color: colorDarkGray,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          ],
+                        ),
+                        //board_uid
+                        const SizedBox(height: 30),
+                        Text(
+                          commentReg,
+                          style: TextStyle(
+                              color: colorDarkGray,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
+                    ),
+                  )),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
 Widget detailInfo(context, boardUid, boardTitle, boardContent, boardAdd, boardWriter) {
+  List<Widget> _commentList = [];
+  _commentList = getComment(boardUid) as List<Widget>;
+  _commentList[0];
   final _commentTextEditController = TextEditingController();
   String _comment = '';
-
 
   return Scaffold(
     body: SafeArea(
@@ -337,7 +421,7 @@ Widget detailInfo(context, boardUid, boardTitle, boardContent, boardAdd, boardWr
                       margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                       child: ElevatedButton(
                         onPressed: () {
-
+                          insertComment(_comment, boardUid);
                         },
                         child: Text(
                           '작성',
