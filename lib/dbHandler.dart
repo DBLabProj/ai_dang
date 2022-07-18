@@ -105,6 +105,20 @@ Future boardList(pageStart) async {
   return result;
 }
 
+Future commentList(_boardUid) async {
+  var conn = await ConnHandler.instance.conn;
+  var boardUid = _boardUid;
+
+  String sql = '''
+    SELECT * FROM comment
+    WHERE board_uid = ?
+    ORDER BY comment_uid desc
+  ''';
+
+  var result = await conn.query(sql, [boardUid]);
+  return result;
+}
+
 Future insertBoard(_title, _content) async {
   var conn = await ConnHandler.instance.conn;
   var title = _title;
@@ -117,6 +131,22 @@ Future insertBoard(_title, _content) async {
   ''';
 
   var result = await conn.query(sql, [title, content, datetime, writer]);
+
+  return result;
+}
+
+Future insertComment(_commentContent, _boardUid) async {
+  var conn = await ConnHandler.instance.conn;
+  var content = _commentContent;
+  var writer = "user1";
+  var boardUid = _boardUid;
+  DateTime datetime = DateTime.now().toUtc().add(const Duration(hours: 9));
+  String sql = '''
+    INSERT INTO comment (comment_content, comment_reg, comment_writer, board_uid)
+    VALUES (?, ?, ?, ?)
+  ''';
+
+  var result = await conn.query(sql, [content, datetime, writer, boardUid]);
 
   return result;
 }
