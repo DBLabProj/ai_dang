@@ -24,17 +24,17 @@ class _bodyInfoUpdateState extends State<bodyInfoUpdate> {
   @override
 
   // 회원 정보 가져오기
-  Future get_userInfoList(id) async{
-    List UserInfoList = [];
-    await get_userInfo(id).then((sqlRs)
-    {
-      for (var row in sqlRs) {
-        String name = row[1];
-        UserInfoList.add(name);
-      }
-    });
-    return UserInfoList;
-  }
+  // Future get_userInfoList(id) async{
+  //   List UserInfoList = [];
+  //   await get_userInfo(id).then((sqlRs)
+  //   {
+  //     for (var row in sqlRs) {
+  //       String name = row[1];
+  //       UserInfoList.add(name);
+  //     }
+  //   });
+  //   return UserInfoList;
+  // }
 
 
   var User_name = Session.instance.userInfo['name'];
@@ -119,10 +119,14 @@ class _bodyInfoUpdateState extends State<bodyInfoUpdate> {
             SizedBox(
               width: (MediaQuery.of(context).size.width) * 0.03,
             ),
-            const Icon(
-              Icons.account_circle,
-              color: Colors.grey,
-              size: 64,
+            SizedBox(
+              height: (MediaQuery.of(context).size.height) * 0.05,
+              width: (MediaQuery.of(context).size.width) * 0.1,
+              child: const Icon(
+                Icons.account_circle,
+                color: Colors.grey,
+                // size: ,
+              ),
             ),
         ],
       ),
