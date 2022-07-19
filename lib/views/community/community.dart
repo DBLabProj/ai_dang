@@ -44,9 +44,11 @@ class _communityState extends State<community> {
       if (loadCommand == true) {
         if(reloadCommandSearch == false) {
           getBoardList(context, pageStart, loadCommand, reloadCommandSearch, _search).then((boardList) {
-            setState(() {
-              _boardList = boardList;
-            });
+            if(mounted) {
+              setState(() {
+                _boardList = boardList;
+              });
+            }
           });
         }
       }

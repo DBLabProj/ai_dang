@@ -115,9 +115,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               onDaySelected: (selectedDay, focusedDay) {
                 if (!isSameDay(_selectedDay, selectedDay)) {
                   // Call `setState()` when updating the selected day
-                  setState(() {
-                    _selectedDay = selectedDay;
-                  });
+                  if(mounted) {
+                    setState(() {
+                      _selectedDay = selectedDay;
+                    });
+                  }
                 }
               },
               calendarBuilders: CalendarBuilders(
