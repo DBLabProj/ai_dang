@@ -115,7 +115,6 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
       _energyData = _reportList[_reportIdx]['energyData'];
       // 영양소 그래프 갱신
       _nutData = _reportList[_reportIdx]['nutData'];
-      print(_nutData);
     });
   }
 
@@ -326,7 +325,7 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
               RichText(
                 textScaleFactor: 1.1,
                 text: TextSpan(
-                  text: '이전 평균 보다 ',
+                  text: '전체 섭취량 보다 ',
                   style: TextStyle(color: black, fontWeight: FontWeight.w400),
                   children: <TextSpan>[
                     TextSpan(

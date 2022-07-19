@@ -184,58 +184,38 @@ Widget getBoardComponent(
 
 Widget getCommentComponent(
     commentUid, commentContent, commentReg, commentWriter) {
-  return Scaffold(
-    body: SafeArea(
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10), color: Colors.white),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          commentWriter,
-                          style: TextStyle(
-                              color: colorBlack,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(width: 40),
-                        Text(
-                          commentContent,
-                          style: TextStyle(
-                              color: colorDarkGray,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ],
-                    ),
-                    //board_uid
-                    const SizedBox(height: 30),
-                    Text(
-                      commentReg,
-                      style: TextStyle(
-                          color: colorDarkGray,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ],
-                ),
-              )),
-            ],
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Column(
+        children: [
+          Text(
+            commentWriter,
+            style: TextStyle(
+                color: colorBlack,
+                fontSize: 18,
+                fontWeight: FontWeight.w500),
           ),
-        ),
+          const SizedBox(width: 40),
+          Text(
+            commentContent,
+            style: TextStyle(
+                color: colorDarkGray,
+                fontSize: 13,
+                fontWeight: FontWeight.w400),
+          ),
+        ],
       ),
-    ),
+      //board_uid
+      const SizedBox(height: 30),
+      Text(
+        commentReg,
+        style: TextStyle(
+            color: colorDarkGray,
+            fontSize: 13,
+            fontWeight: FontWeight.w400),
+      ),
+    ],
   );
 }
 
@@ -398,6 +378,9 @@ Future<Widget> detailInfo(
                   ),
                 ],
               ),
+              Column(
+                children: _commentList,
+              )
               // Container(
               //   color: Colors.blue,
               //   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
