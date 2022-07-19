@@ -60,13 +60,6 @@ Future getComment(boardUid) async {
     String commentReg = DateFormat.jm('ko-KR').format(row[2]);
     String commentWriter = row[3];
 
-    print("-----------");
-    print(commentUid);
-    print(commentContent);
-    print(commentReg);
-    print(commentWriter);
-    print("-----------");
-
     list.add(getCommentComponent(
         commentUid, commentContent, commentReg, commentWriter));
     list.add(const SizedBox(height: 20));
@@ -188,6 +181,7 @@ Widget getCommentComponent(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
             commentWriter,
@@ -204,16 +198,14 @@ Widget getCommentComponent(
                 fontSize: 13,
                 fontWeight: FontWeight.w400),
           ),
+          Text(
+            commentReg,
+            style: TextStyle(
+                color: colorDarkGray,
+                fontSize: 13,
+                fontWeight: FontWeight.w400),
+          ),
         ],
-      ),
-      //board_uid
-      const SizedBox(height: 30),
-      Text(
-        commentReg,
-        style: TextStyle(
-            color: colorDarkGray,
-            fontSize: 13,
-            fontWeight: FontWeight.w400),
       ),
     ],
   );
@@ -335,7 +327,9 @@ Future<Widget> detailInfo(
                   ],
                 ),
               ),
-
+              Column(
+                children: _commentList,
+              ),
               Row(
                 children: [
                   Container(
@@ -378,9 +372,6 @@ Future<Widget> detailInfo(
                   ),
                 ],
               ),
-              Column(
-                children: _commentList,
-              )
               // Container(
               //   color: Colors.blue,
               //   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
