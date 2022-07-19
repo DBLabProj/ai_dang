@@ -1,5 +1,6 @@
 import 'package:ai_dang/session.dart';
 import 'package:ai_dang/views/predResult.dart';
+import 'package:ai_dang/views/setting/test.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/request.dart';
@@ -352,6 +353,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           label: '앨범에서 추가하기',
           onTap: () {
             predict(context, ImageSource.gallery, _picker);
+          },
+        ),
+        SpeedDialChild(
+          child: const Icon(Icons.bloodtype),
+          backgroundColor: Colors.white,
+          foregroundColor: colorBlack,
+          label: '혈당수치 입력하기',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => test())
+            );
           },
         ),
       ],
