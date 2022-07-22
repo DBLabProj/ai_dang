@@ -117,7 +117,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                         20, 40, 20, 20),
                                     child: const Text(
                                       '얼마나 드셨나요? (제공량 선택)',
-                                      textScaleFactor: 1.2,
+                                      textScaleFactor: 1.1,
                                     )),
                                 // 제공량 선택 영역 -----------------------------------
                                 selectAmount(),
@@ -128,7 +128,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                                         20, 40, 20, 20),
                                     child: const Text(
                                       '음식에 관한 설명을 적어주세요.',
-                                      textScaleFactor: 1.2,
+                                      textScaleFactor: 1.1,
                                     )),
                                 // 설명 텍스트 입력 영역 -------------------------------
                                 inputDesc(),
@@ -221,19 +221,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text('분류 결과,',
-                                  textScaleFactor: 1.2,
+                                  textScaleFactor: 1.1,
                                   style: TextStyle(
                                       color: black,
                                       fontWeight: FontWeight.w500)),
                               Row(
                                 children: [
                                   Text('${widget.predResult['class_name']}',
-                                      textScaleFactor: 1.8,
+                                      textScaleFactor: 1.6,
                                       style: TextStyle(
                                           color: red,
                                           fontWeight: FontWeight.w900)),
                                   Text(' 입니다.',
-                                      textScaleFactor: 1.8,
+                                      textScaleFactor: 1.6,
                                       style: TextStyle(
                                           color: black,
                                           fontWeight: FontWeight.w900))
@@ -278,10 +278,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 0.0),
                     child: Text(
                       '1회제공량(${nut['serving_size']} g) 기준',
-                      textScaleFactor: 1.2,
+                      textScaleFactor: 1.1,
                       style: TextStyle(color: deepGray),
                     ),
                   ),
@@ -293,21 +293,22 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(40.0, 10.0, 40.0, 30.0),
+                padding: const EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 40.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     // 열량 정보  ------------------------------------
                     Container(
                       padding:
-                          const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 10.0),
+                          const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 10.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('열량',
-                              textScaleFactor: 1.2,
+                              textScaleFactor: 1.1,
                               style: TextStyle(color: black)),
                           Text('${nut['energy']}kcal',
-                              textScaleFactor: 1.3,
+                              textScaleFactor: 1.2,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
                         ],
@@ -321,15 +322,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     // 탄수화물 정보 ----------------------------------
                     Container(
                       padding:
-                          const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 10.0),
+                          const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 10.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('탄수화물',
-                              textScaleFactor: 1.2,
+                              textScaleFactor: 1.1,
                               style: TextStyle(color: black)),
                           Text('${nut['hydrate']}g',
-                              textScaleFactor: 1.3,
+                              textScaleFactor: 1.2,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
                         ],
@@ -343,15 +344,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     // 단백질 정보 -----------------------------------
                     Container(
                       padding:
-                          const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 10.0),
+                          const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 10.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('단백질',
-                              textScaleFactor: 1.2,
+                              textScaleFactor: 1.1,
                               style: TextStyle(color: black)),
                           Text('${nut['protein']}g',
-                              textScaleFactor: 1.3,
+                              textScaleFactor: 1.2,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
                         ],
@@ -365,15 +366,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     // 지방 정보 -------------------------------------
                     Container(
                       padding:
-                          const EdgeInsets.fromLTRB(15.0, 20.0, 15.0, 10.0),
+                          const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 10.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text('지방',
-                              textScaleFactor: 1.2,
+                              textScaleFactor: 1.1,
                               style: TextStyle(color: black)),
                           Text('${nut['fat']}g',
-                              textScaleFactor: 1.3,
+                              textScaleFactor: 1.2,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w700))
                         ],
@@ -411,7 +412,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     }
 
     return Container(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.fromLTRB(20, 15, 20, 5),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -423,11 +424,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text('당뇨병에 ', textScaleFactor: 1.4),
+              const Text('당뇨병에 ', textScaleFactor: 1.3),
               Text(dangerText,
-                  textScaleFactor: 1.4,
+                  textScaleFactor: 1.3,
                   style: TextStyle(color: red, fontWeight: FontWeight.w700)),
-              const Text('한 음식입니다.', textScaleFactor: 1.4),
+              const Text('한 음식입니다.', textScaleFactor: 1.3),
             ],
           ),
           // 공백 -----------------------------------------------
@@ -438,7 +439,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             child: StepProgressIndicator(
               totalSteps: 100,
               currentStep: (eatSugarPercent * 100).toInt(),
-              size: 25,
+              size: 20,
               padding: 0,
               selectedColor: Colors.yellow,
               unselectedColor: Colors.cyan,
@@ -498,9 +499,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('총 당류',
-                      textScaleFactor: 1.2, style: TextStyle(color: black)),
+                      textScaleFactor: 1.1, style: TextStyle(color: black)),
                   Text('${nut['total_sugar']}g',
-                      textScaleFactor: 1.4,
+                      textScaleFactor: 1.2,
                       style:
                           TextStyle(color: black, fontWeight: FontWeight.w700))
                 ],
@@ -528,7 +529,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             });
           },
           child: Container(
-            padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
@@ -540,11 +541,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               children: [
                 Text(
                   '1 / 2회 제공량',
-                  textScaleFactor: 1.4,
+                  textScaleFactor: 1.3,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
                 Text('${(nut['serving_size'] * 0.5).toInt()}g',
-                    textScaleFactor: 1.2, style: TextStyle(color: black))
+                    textScaleFactor: 1.1, style: TextStyle(color: black))
               ],
             ),
           ),
@@ -558,7 +559,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             });
           },
           child: Container(
-            padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
@@ -570,11 +571,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               children: [
                 Text(
                   '1회 제공량',
-                  textScaleFactor: 1.4,
+                  textScaleFactor: 1.3,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
                 Text('${nut['serving_size'].toInt()}g',
-                    textScaleFactor: 1.2, style: TextStyle(color: black))
+                    textScaleFactor: 1.1, style: TextStyle(color: black))
               ],
             ),
           ),
@@ -588,7 +589,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             });
           },
           child: Container(
-            padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
@@ -600,11 +601,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               children: [
                 Text(
                   '1과 1 / 2회 제공량',
-                  textScaleFactor: 1.4,
+                  textScaleFactor: 1.3,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
                 Text('${(nut['serving_size'] * 1.5).toInt()}g',
-                    textScaleFactor: 1.2, style: TextStyle(color: black))
+                    textScaleFactor: 1.1, style: TextStyle(color: black))
               ],
             ),
           ),
@@ -619,7 +620,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             });
           },
           child: Container(
-            padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+            padding: const EdgeInsets.fromLTRB(20, 15, 20, 15),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(
@@ -631,11 +632,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               children: [
                 Text(
                   '2회 제공량',
-                  textScaleFactor: 1.4,
+                  textScaleFactor: 1.3,
                   style: TextStyle(color: red, fontWeight: FontWeight.w600),
                 ),
                 Text('${(nut['serving_size'] * 2).toInt()}g',
-                    textScaleFactor: 1.2, style: TextStyle(color: black))
+                    textScaleFactor: 1.1, style: TextStyle(color: black))
               ],
             ),
           ),
@@ -650,12 +651,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.4),
-              blurRadius: 0.8,
-              offset: const Offset(0, 3))
-        ],
       ),
       child: MediaQuery(
         data: MediaQuery.of(context).copyWith(
@@ -666,7 +661,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           onChanged: (text) {
             _desc = text;
           },
-          maxLines: 8, //or null
+          maxLines: 6, //or null
           style: TextStyle(color: black, height: 1.5),
           decoration: const InputDecoration(
             border: OutlineInputBorder(

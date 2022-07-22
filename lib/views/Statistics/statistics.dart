@@ -126,11 +126,11 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
     return FutureBuilder(
       future: _setReportData(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        // if(!snapshot.hasData) {
-        //   EasyLoading.show(status: '로딩 중..');
-        // } else {
-        //   EasyLoading.dismiss();
-        // }
+        if(!snapshot.hasData) {
+          EasyLoading.show(status: '로딩 중..');
+        } else {
+          EasyLoading.dismiss();
+        }
         return DefaultTabController(
           length: 2,
           child: Scaffold(
@@ -450,7 +450,7 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                       ],
                     )),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               infoWidget('탄수화물 섭취량', '${(_nutData[0] * 10).toInt()}%'),
               infoWidget('단백질 섭취량', '${(_nutData[1] * 10).toInt()}%'),
               infoWidget('지방 섭취량', '${(_nutData[2] * 10).toInt()}%'),
