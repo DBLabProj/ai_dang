@@ -32,8 +32,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  final pageNum;
-  const MyHomePage({Key? key, @required this.pageNum}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -54,10 +53,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.pageNum);
-    if (widget.pageNum == 3){
-      selectedIndex = 3;
-    }
     return Scaffold(
       body: Center(
         child: _pages[selectedIndex],
@@ -91,8 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
-      selectedIndex = index;
-      // _switchScreen(selectedindex);
+        selectedIndex = index;
     });
   }
 }

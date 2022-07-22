@@ -87,7 +87,7 @@ class _bodyInfoUpdateState extends State<bodyInfoUpdate> {
             onPressed: () =>
                 Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MyHomePage(pageNum : 3))
+              MaterialPageRoute(builder: (context) => MyHomePage())
             ),
           ),
         ),

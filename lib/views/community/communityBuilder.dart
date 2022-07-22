@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../dbHandler.dart';
+import '../../session.dart';
 
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);
@@ -11,6 +12,8 @@ var colorGray = const Color(0xffE0E0E0);
 var colorDarkGray = const Color(0xffADADBE);
 var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
+
+var User_id = Session.instance.userInfo['email'];
 
 Future getBoardList(
     context, pageStart, loadCommand, reloadCommand, text) async {
@@ -57,15 +60,8 @@ Future getComment(boardUid) async {
   for (var row in sqlRs) {
     String commentUid = row[0].toString();
     String commentContent = row[1];
-    String commentReg = DateFormat.jm('ko-KR').format(row[2]);
+    String commentReg = DateFormat('MM-dd hh:mm').format(row[2]);
     String commentWriter = row[3];
-
-    print("-----------");
-    print(commentUid);
-    print(commentContent);
-    print(commentReg);
-    print(commentWriter);
-    print("-----------");
 
     list.add(getCommentComponent(
         commentUid, commentContent, commentReg, commentWriter));
@@ -184,38 +180,48 @@ Widget getBoardComponent(
 
 Widget getCommentComponent(
     commentUid, commentContent, commentReg, commentWriter) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Column(
-        children: [
-          Text(
-            commentWriter,
-            style: TextStyle(
-                color: colorBlack,
-                fontSize: 18,
-                fontWeight: FontWeight.w500),
-          ),
-          const SizedBox(width: 40),
-          Text(
-            commentContent,
-            style: TextStyle(
-                color: colorDarkGray,
-                fontSize: 13,
-                fontWeight: FontWeight.w400),
-          ),
-        ],
-      ),
-      //board_uid
-      const SizedBox(height: 30),
-      Text(
-        commentReg,
-        style: TextStyle(
-            color: colorDarkGray,
-            fontSize: 13,
-            fontWeight: FontWeight.w400),
-      ),
-    ],
+  return Container(
+    margin: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+    padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+    decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 1.5, color: colorGray),
+        )
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              commentWriter,
+              style: TextStyle(
+                  color: colorBlack,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500),
+            ),
+            // const SizedBox(width: 40),
+            Text(
+              commentContent,
+              style: TextStyle(
+                  color: colorDarkGray,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400),
+            ),
+            Text(
+              commentReg,
+              style: TextStyle(
+                  color: colorDarkGray,
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400),
+            ),
+            SizedBox(height: 20),
+          ],
+        ),
+      ],
+    ),
   );
 }
 
@@ -234,6 +240,7 @@ Future<Widget> detailInfo(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               //header section
+              //아이당 커뮤니
               Container(
                 color: colorRed,
                 child: Padding(
@@ -335,7 +342,14 @@ Future<Widget> detailInfo(
                   ],
                 ),
               ),
-
+              //댓글 리스트
+              Container(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: _commentList,
+                ),
+              ),
               Row(
                 children: [
                   Container(
@@ -361,7 +375,14 @@ Future<Widget> detailInfo(
                     margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                     child: ElevatedButton(
                       onPressed: () {
-                        insertComment(_comment, boardUid);
+                        insertComment(_comment, boardUid, User_id);
+                        detailInfo(context, boardUid, boardTitle, boardContent, boardAdd,
+                            boardWriter)
+                            .then((widget) {
+                          Navigator.push(
+                              context, MaterialPageRoute(builder: (context) => widget));
+                        });
+                        print(User_id);
                       },
                       child: Text(
                         '작성',
@@ -378,9 +399,6 @@ Future<Widget> detailInfo(
                   ),
                 ],
               ),
-              Column(
-                children: _commentList,
-              )
               // Container(
               //   color: Colors.blue,
               //   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
