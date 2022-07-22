@@ -6,6 +6,7 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:ai_dang/dbHandler.dart';
 
+import '../../session.dart';
 import 'communityBuilder.dart';
 
 var colorBlack = const Color(0xff535353);
@@ -15,6 +16,8 @@ var colorGray = const Color(0xffE0E0E0);
 var colorDarkGray = const Color(0xffADADBE);
 var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
+
+var User_id = Session.instance.userInfo['email'];
 
 class community extends StatefulWidget {
 
@@ -249,7 +252,7 @@ class Write extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
-                    insertBoard(_title, _content);
+                    insertBoard(_title, _content, User_id);
                   },
                   child: Text(
                     '확인',
@@ -348,7 +351,7 @@ class Write extends StatelessWidget {
                           )),
                       ElevatedButton(
                           onPressed: () {
-                            insertBoard(_title, _content);
+                            insertBoard(_title, _content, User_id);
                             Navigator.pop(context);
                         },
                           child: Text(
