@@ -132,15 +132,16 @@ class _loginPageState extends State<loginPage> {
                           // title ---------------------------------------------------
                           Text(
                             'AI DANG',
-                            textScaleFactor: 4,
                             style: TextStyle(
+                              fontSize: 48,
                                 fontWeight: FontWeight.w600, color: red),
                           ),
                           // desc ----------------------------------------------------
                           Text(
                             '나만의 스마트한 당뇨관리 영양사',
-                            textScaleFactor: 1.3,
-                            style: TextStyle(color: red),
+                            style: TextStyle(
+                              fontSize: 18,
+                                color: red),
                           ),
                           const SizedBox(
                             height: 70,

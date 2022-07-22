@@ -24,6 +24,7 @@ dependencies:
   syncfusion_flutter_charts: 19.4.55
   multi_charts: ^0.3.0
   async: 2.8.2
+  flutter_picker: ^2.0.5
   flutter_easyloading:
     git:
       url: https://github.com/berkanaslan/flutter_easyloading

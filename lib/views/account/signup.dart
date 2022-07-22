@@ -110,19 +110,18 @@ class _signupState extends State<signup> {
                           children: <Widget>[
                             // title ---------------------------------------------------
                             Text(
-                              '환영합니다.',
-                              textScaleFactor: 4,
+                              '회원 가입하기',
                               style: TextStyle(
+                                fontSize: 36,
                                   fontWeight: FontWeight.w600, color: red),
                             ),
                             // desc ----------------------------------------------------
                             Text(
-                              '회원가입을 위해 기본정보를 입력하세요.',
-                              textScaleFactor: 1.1,
-                              style: TextStyle(color: red),
+                              '기본정보를 입력하세요.',
+                              style: TextStyle(fontSize: 18, color: red),
                             ),
                             const SizedBox(
-                              height: 70,
+                              height: 50,
                             ),
                             // 이메일 필드 -----------------------------------------
                             TextField(
@@ -231,7 +230,7 @@ class _signupState extends State<signup> {
                               constraints: const BoxConstraints(minHeight: 10),
                               child: _passwordLabel,
                             ),
-                            const SizedBox(height: 75),
+                            const SizedBox(height: 80),
                             SizedBox(
                               width: areaWidth * 0.75,
                               height: 50,
@@ -271,22 +270,19 @@ class _signupState extends State<signup> {
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              height:
-                                  (MediaQuery.of(context).size.height) * 0.085,
-                              child: TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => loginPage()),
-                                  );
-                                },
-                                child: Text(
-                                  '이미 계정이 있으신가요? 로그인',
-                                  textScaleFactor: 1.2,
-                                  style: TextStyle(color: red),
-                                ),
+                            const SizedBox(height: 20),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => loginPage()),
+                                );
+                              },
+                              child: Text(
+                                '이미 계정이 있으신가요? 로그인',
+                                textScaleFactor: 1.2,
+                                style: TextStyle(color: red),
                               ),
                             ),
                           ],
