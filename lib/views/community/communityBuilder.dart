@@ -1,3 +1,4 @@
+import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -188,36 +189,69 @@ Widget getCommentComponent(
           bottom: BorderSide(width: 1.5, color: colorGray),
         )
     ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+    child: Row(
       children: [
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
           children: [
-            Text(
-              commentWriter,
-              style: TextStyle(
-                  color: colorBlack,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w500),
+            Container(
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        commentWriter,
+                        style: TextStyle(
+                            color: colorBlack,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      // const SizedBox(width: 40),
+                      Text(
+                        commentContent,
+                        style: TextStyle(
+                            color: colorDarkGray,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      Text(
+                        commentReg,
+                        style: TextStyle(
+                            color: colorDarkGray,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400),
+                      ),
+                      SizedBox(height: 20),
+                    ],
+                  ),
+                ],
+              ),
             ),
-            // const SizedBox(width: 40),
-            Text(
-              commentContent,
-              style: TextStyle(
-                  color: colorDarkGray,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400),
+            SizedBox(width: 165,),
+            Container(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        onPressed: (){},
+                        child: const Center(
+                          child: Text("답글",
+                            style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 10
+                          ),),
+                        ))
+                    ],
+                  ),
+                ],
+              ),
             ),
-            Text(
-              commentReg,
-              style: TextStyle(
-                  color: colorDarkGray,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w400),
-            ),
-            SizedBox(height: 20),
           ],
         ),
       ],
