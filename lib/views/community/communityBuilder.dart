@@ -15,6 +15,7 @@ var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
 var User_id = Session.instance.userInfo['email'];
+var recommentNum = 0;
 
 Future getBoardList(
     context, pageStart, loadCommand, reloadCommand, text) async {
@@ -181,6 +182,8 @@ Widget getBoardComponent(
 
 Widget getCommentComponent(
     commentUid, commentContent, commentReg, commentWriter) {
+  final _recommentTextEditController = TextEditingController();
+  String _recomment = '';
   return Container(
     margin: const EdgeInsets.fromLTRB(30, 0, 30, 0),
     padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
@@ -189,7 +192,7 @@ Widget getCommentComponent(
           bottom: BorderSide(width: 1.5, color: colorGray),
         )
     ),
-    child: Row(
+    child: Column(
       children: [
         Row(
           children: [
@@ -238,7 +241,10 @@ Widget getCommentComponent(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       TextButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          recommentNum = int.parse(commentUid);
+                          print(recommentNum);
+                        },
                         child: const Center(
                           child: Text("답글",
                             style: TextStyle(
@@ -254,6 +260,52 @@ Widget getCommentComponent(
             ),
           ],
         ),
+        Row(
+          children: [
+            if(recommentNum == int.parse(commentUid))...[
+              Container(
+                width: 230,
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                padding:
+                const EdgeInsets.fromLTRB(5.0, 10.0, 5.0, 10.0),
+                child: TextField(
+                    controller: _recommentTextEditController,
+                    onChanged: (text) {
+                      _recomment = text;
+                    },
+                    decoration: const InputDecoration(
+                      labelStyle: TextStyle(
+                          color: Color(0xffCF2525),
+                          fontSize: 10,
+                          height: 3),
+                      labelText: "대댓글을 입력해 주세요.",
+                    )
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    // detailInfo(context, boardUid, boardTitle, boardContent, boardAdd,
+                    //     boardWriter)
+                    //     .then((widget) {
+                    //   Navigator.push(
+                    //       context, MaterialPageRoute(builder: (context) => widget));
+                    },
+                  child: const Text(
+                  '작성',
+                  style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 10,),),
+                  style: ElevatedButton.styleFrom(
+                    primary: colorRed,
+                  ),
+                ),
+              ),
+            ]
+          ],
+        )
       ],
     ),
   );
