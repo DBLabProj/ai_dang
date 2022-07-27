@@ -221,7 +221,11 @@ class _communityDetailState extends State<communityDetail>{
   Future getComment(boardUid) async {
     List<Widget> list = [const SizedBox(height: 20)];
 
+    String recommentContent='';
+    String recommentReg='';
+    String recommentWriter = '';
     var sqlRs = await commentList(boardUid);
+
     print('3');
     for (var row in sqlRs) {
       String commentUid = row[0].toString();
@@ -229,15 +233,43 @@ class _communityDetailState extends State<communityDetail>{
       String commentReg = DateFormat('MM-dd hh:mm').format(row[2]);
       String commentWriter = row[3];
 
+      var sqlRs2 = await reCommentList(commentUid);
+      print(sqlRs2);
+      for (var row2 in sqlRs2) {
+        String recommentUid = row[0].toString();
+        String recommentContent = row[1];
+        String recommentReg = DateFormat('MM-dd hh:mm').format(row[2]);
+        String recommentWriter = row[3];
+
+        list.add(getCommentComponent(
+            commentUid, commentContent, commentReg, commentWriter, recommentContent, recommentReg, recommentWriter));
+        list.add(const SizedBox(height: 20));
+      }
       list.add(getCommentComponent(
-          commentUid, commentContent, commentReg, commentWriter));
+          commentUid, commentContent, commentReg, commentWriter, recommentContent, recommentReg, recommentWriter));
       list.add(const SizedBox(height: 20));
+
     }
     return list;
   }
 
+  // Future getReComment(commentUid) async {
+  //   List<Widget> list = [const SizedBox(height: 20)];
+  //
+  //   var sqlRs = await reCommentList(commentUid);
+  //   print('4');
+  //
+  //   for(var row in sqlRs) {
+  //     String recommentUid = row[0].toString();
+  //     String recommentContent = row[1];
+  //     String recommentReg = DateFormat('MM-dd hh:mm').format(row[2]);
+  //     String recommentWriter = row[3];
+  //
+  //   }
+  // }
+
   Widget getCommentComponent(
-      commentUid, commentContent, commentReg, commentWriter) {
+      commentUid, commentContent, commentReg, commentWriter, recommentContent, recommentWriter, recommentReg) {
     final _recommentTextEditController = TextEditingController();
     String _recomment = '';
     return Container(
@@ -318,6 +350,42 @@ class _communityDetailState extends State<communityDetail>{
               ),
             ],
           ),
+          Container(
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      recommentWriter,
+                      style: TextStyle(
+                          color: colorBlack,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    // const SizedBox(width: 40),
+                    Text(
+                      recommentContent,
+                      style: TextStyle(
+                          color: colorDarkGray,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    Text(
+                      recommentReg,
+                      style: TextStyle(
+                          color: colorDarkGray,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(height: 20),
+                  ],
+                ),
+              ],
+            ),
+          ),
           Row(
             children: [
               if(recommentNum == int.parse(commentUid))...[
@@ -344,7 +412,9 @@ class _communityDetailState extends State<communityDetail>{
                   margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                   child: ElevatedButton(
                     onPressed: () {
-
+                      insertReComment(_recomment, commentUid, User_id);
+                      recommentNum = 0;
+                      setState(() {});
                     },
                     child: const Text(
                       '작성',

@@ -119,6 +119,37 @@ Future commentList(_boardUid) async {
   return result;
 }
 
+// Future commentList(_boardUid, _commentUid) async {
+//   var conn = await ConnHandler.instance.conn;
+//   var boardUid = _boardUid;
+//   var commentUid = _commentUid;
+//
+//   String sql = '''
+//     SELECT * FROM comment
+//     INNER JOIN recomment
+//     ON(comment.comment_uid = ?)
+//     WHERE board_uid = ?
+//     ORDER BY comment.comment_uid
+//   ''';
+//
+//   var result = await conn.query(sql, [boardUid, commentUid]);
+//   return result;
+// }
+
+Future reCommentList(_commentUid) async {
+  var conn = await ConnHandler.instance.conn;
+  var commentUid = _commentUid;
+
+  String sql = '''
+    SELECT * FROM recomment
+    WHERE comment_uid = ?
+    ORDER BY recomment_uid
+  ''';
+
+  var result = await conn.query(sql, [commentUid]);
+  return result;
+}
+
 Future insertBoard(_title, _content, _userId) async {
   var conn = await ConnHandler.instance.conn;
   var title = _title;
@@ -155,14 +186,14 @@ Future insertReComment(_reCommentContent, _commentUid, _userId) async {
   var conn = await ConnHandler.instance.conn;
   var content = _reCommentContent;
   var writer = _userId;
-  var boardUid = _commentUid;
+  var commentUid = _commentUid;
   DateTime datetime = DateTime.now().toUtc().add(const Duration(hours: 9));
   String sql = '''
     INSERT INTO recomment (recomment_content, recomment_reg, recomment_writer, comment_uid)
     VALUES (?, ?, ?, ?)
   ''';
 
-  var result = await conn.query(sql, [content, datetime, writer, boardUid]);
+  var result = await conn.query(sql, [content, datetime, writer, commentUid]);
 
   return result;
 }
