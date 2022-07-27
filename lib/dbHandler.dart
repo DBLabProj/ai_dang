@@ -151,6 +151,22 @@ Future insertComment(_commentContent, _boardUid, _userId) async {
   return result;
 }
 
+Future insertReComment(_reCommentContent, _commentUid, _userId) async {
+  var conn = await ConnHandler.instance.conn;
+  var content = _reCommentContent;
+  var writer = _userId;
+  var boardUid = _commentUid;
+  DateTime datetime = DateTime.now().toUtc().add(const Duration(hours: 9));
+  String sql = '''
+    INSERT INTO recomment (recomment_content, recomment_reg, recomment_writer, comment_uid)
+    VALUES (?, ?, ?, ?)
+  ''';
+
+  var result = await conn.query(sql, [content, datetime, writer, boardUid]);
+
+  return result;
+}
+
 Future getBoard(_search) async {
   var conn = await ConnHandler.instance.conn;
   var search = _search;
