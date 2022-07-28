@@ -9,6 +9,7 @@ import 'package:flutter_picker/flutter_picker.dart';
 
 import '../main.dart';
 import 'Statistics/statistics.dart';
+import 'loginPage.dart';
 
 class bloodCheck extends StatefulWidget {
   const bloodCheck({Key? key}) : super(key: key);
@@ -22,8 +23,24 @@ class _bloodCheckState extends State<bloodCheck> {
   DateTime _selectedDay = DateTime.now().toUtc().add(const Duration(hours: 9));
   var _calendarFormat = CalendarFormat.week;
 
+  var timeString ;
+  final controller = TextEditingController();
+
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    double areaWidth = (MediaQuery.of(context).size.width) * 0.75;
+    if (areaWidth > 300) {
+      areaWidth = 300;
+    }
+    
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
@@ -32,7 +49,7 @@ class _bloodCheckState extends State<bloodCheck> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           centerTitle: true,
-          title: Text(
+          title: const Text(
             '혈당 기록하기',style: TextStyle(
               color: Colors.black
           ),
@@ -52,7 +69,7 @@ class _bloodCheckState extends State<bloodCheck> {
                 ),
           ),
           actions: <Widget>[
-            new TextButton(onPressed: (){
+            TextButton(onPressed: (){
 
             },
                 child: Text(
@@ -74,6 +91,9 @@ class _bloodCheckState extends State<bloodCheck> {
                       height: (MediaQuery.of(context).size.height) * 0.02,
                     ),
                     insert_blood_data(),
+                    time_detail(),
+                    test_button(),
+
 
 
                   ],
@@ -213,8 +233,7 @@ class _bloodCheckState extends State<bloodCheck> {
 
           picker_time(),
           Number_box(),
-          mg_dl()
-
+          mg_dl(),
 
         ],
       ),
@@ -234,45 +253,40 @@ class _bloodCheckState extends State<bloodCheck> {
   ];
 
   Widget picker_time() {
-    return Column(
-      children: [
-        Container(
-          // color: Colors.grey,
-          width: (MediaQuery.of(context).size.width)*0.4,
-          height: (MediaQuery.of(context).size.height)*0.10,
-          // padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-          decoration: BoxDecoration(
+    return Container(
+      width: (MediaQuery.of(context).size.width)*0.4,
+      height: (MediaQuery.of(context).size.height)*0.10,
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+    decoration: const BoxDecoration(
               border: Border(
                   left:BorderSide(width: 1, color: Colors.grey),
                 right: BorderSide(width: 1, color: Colors.grey),
               )
           ),
-          child: CupertinoPicker.builder(
-
-              itemExtent: 40,
-              childCount: time.length,
-              onSelectedItemChanged: (i) {
-                setState(() {
-                  time = time[i] as List<String>;
-                });
-              },
-              itemBuilder: (context, index) {
-                return Center(
-                  child: Text(
-                    time[index],style: TextStyle(
+      child: CupertinoPicker(
+          itemExtent: 40,
+          onSelectedItemChanged: (i) {
+            setState(() {
+              timeString = time[i];
+            });
+          },
+          children: [
+            ...time.map((e) => Center(
+              child: Text(
+                e,
+                style: TextStyle(
                     fontWeight: FontWeight.w500,
-                    color: Colors.red
-                  ),
-                  ),
-                );
-              }),
-        ),
-      ],
+                    color: colorRed
+                ),
+              ),
+            ))
+          ]),
     );
   }
 
-  Widget Number_box() {
 
+
+  Widget Number_box() {
     return Container(
         width: (MediaQuery.of(context).size.width)*0.35,
         height: (MediaQuery.of(context).size.height)*0.2,
@@ -280,7 +294,19 @@ class _bloodCheckState extends State<bloodCheck> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+
+            // TextField(
+            //   onChanged: (test) {
+            //     print("첫 번째 텍스트 : $test");
+            //   },
+            // ),
+            // TextField(
+            //   controller: controller,
+            //
+            // )
+
             TextField(
+              controller: controller,
               decoration: InputDecoration(
               hintText: '120',
               hintStyle: TextStyle(
@@ -288,6 +314,7 @@ class _bloodCheckState extends State<bloodCheck> {
                 fontSize: (MediaQuery.of(context).size.height) * 0.07,
                 color: Colors.grey[300]
               ),
+
               contentPadding: EdgeInsets.only(left:30),
               border: InputBorder.none),
               style: TextStyle(
@@ -310,6 +337,40 @@ class _bloodCheckState extends State<bloodCheck> {
       style: TextStyle(
         color: Colors.grey[400],
         fontSize: (MediaQuery.of(context).size.height) * 0.025
+      ),
+    );
+  }
+
+  Widget time_detail() {
+    return Text(
+      '${controller.text}'
+    );
+  }
+
+
+  Widget test_button() {
+    double areaWidth = (MediaQuery.of(context).size.width) * 0.75;
+    if (areaWidth > 300) {
+      areaWidth = 300;
+    }
+    return SizedBox(
+      width: areaWidth * 0.75,
+      height: 50,
+      child: ElevatedButton(
+        onPressed: () {
+          if(timeString == null ){
+            timeString = time[0];
+          }
+          print(timeString);
+          print(controller.text);
+        },
+        child:
+        const Text('지금 시작하기', textScaleFactor: 1.4),
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0)),
+          primary: red,
+        ),
       ),
     );
   }
