@@ -3,9 +3,11 @@ import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:ai_dang/dbHandler.dart';
 
+import '../../request.dart';
 import '../../session.dart';
 import 'communityBuilder.dart';
 
@@ -107,7 +109,7 @@ class _communityState extends State<community> {
                     onChanged: (text) {
                       _search = text;
                     },
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 15
                     ),
                     decoration: const InputDecoration(
@@ -225,13 +227,15 @@ class _communityState extends State<community> {
 //글쓰기 위젯
 class Write extends StatelessWidget {
   var writeBoardList = [];
+  var imageText;
+  final _picker = ImagePicker();
 
   final _titleTextEditController = TextEditingController();
-
   final _contentTextEditController = TextEditingController();
 
   String _title = '';
   String _content = '';
+
 
   @override
   Widget build(BuildContext context) {
@@ -254,7 +258,7 @@ class Write extends StatelessWidget {
                     Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
                     insertBoard(_title, _content, User_id);
                   },
-                  child: Text(
+                  child: const Text(
                     '확인',
                   ),
                 ),
@@ -263,6 +267,8 @@ class Write extends StatelessWidget {
         },
       );
     }
+
+    print(imageText);
 
     return Scaffold(
       appBar: AppBar(
@@ -302,21 +308,29 @@ class Write extends StatelessWidget {
                   ),
                   ButtonTheme(
                     minWidth: (MediaQuery.of(context).size.width),
-                      height: (MediaQuery.of(context).size.height) * 0.02,
-                      child: OutlinedButton(
-                        onPressed: () {
-
-                        },
-                        child: Text(
-                          '이미지 첨부하기',
-                          style: TextStyle(
-                            color: colorRed,
-                            fontWeight: FontWeight.w500,
-                            fontSize: (MediaQuery.of(context).size.width)*0.04
-                          ),
+                    height: (MediaQuery.of(context).size.height) * 0.02,
+                    child: OutlinedButton(
+                      onPressed: () async {
+                        var imageName = await boardImage(context, ImageSource.gallery, _picker);
+                        print("------");
+                        print(imageName['img_name']);
+                        print("------");
+                        imageText = imageName['img_name'];
+                        print(imageText);
+                      },
+                      child: Text(
+                        '이미지 첨부하기',
+                        style: TextStyle(
+                          color: colorRed,
+                          fontWeight: FontWeight.w500,
+                          fontSize: (MediaQuery.of(context).size.width)*0.04
                         ),
-                        )
                       ),
+                      )
+                    ),
+                  if(imageText != null)...[
+                    Text(imageText),
+                  ],
                   TextField(
                     controller: _contentTextEditController,
                     onChanged: (text) {
@@ -333,7 +347,7 @@ class Write extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -365,7 +379,6 @@ class Write extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           primary: colorRed,
                         ),
-
                       ),
                     ],
                   )
@@ -374,12 +387,6 @@ class Write extends StatelessWidget {
             ),
           ),
         ),
-        // child: RaisedButton(
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        //   child: Text('Go back!'),
-        // ),
       ),
     );
   }

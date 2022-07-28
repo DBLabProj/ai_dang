@@ -320,7 +320,7 @@ class _communityDetailState extends State<communityDetail>{
                   ],
                 ),
               ),
-              SizedBox(width: 165,),
+              const SizedBox(width: 165,),
               Container(
                 child: Column(
                   children: [
