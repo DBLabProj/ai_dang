@@ -1,3 +1,4 @@
+import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -12,6 +13,7 @@ var colorGray = const Color(0xffE0E0E0);
 var colorDarkGray = const Color(0xffADADBE);
 var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
+const IconData subdirectory_arrow_right = IconData(0xe615, fontFamily: 'MaterialIcons');
 
 var User_id = Session.instance.userInfo['email'];
 var recommentNum = 0;
@@ -162,6 +164,15 @@ class _communityDetailState extends State<communityDetail>{
                         children: _commentList,
                       ),
                     ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                      padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          top: BorderSide(width: 1.5, color: colorGray),
+                        ),
+                      ),
+                    ),
                     Row(
                       children: [
                         Container(
@@ -219,7 +230,7 @@ class _communityDetailState extends State<communityDetail>{
   }
 
   Future getComment(boardUid) async {
-    List<Widget> list = [const SizedBox(height: 20)];
+    List<Widget> list = [const SizedBox(height: 10)];
 
     String recommentContent='';
     String recommentReg='';
@@ -233,40 +244,28 @@ class _communityDetailState extends State<communityDetail>{
       String commentReg = DateFormat('MM-dd hh:mm').format(row[2]);
       String commentWriter = row[3];
 
-      var sqlRs2 = await reCommentList(commentUid);
-      print(sqlRs2);
-      for (var row2 in sqlRs2) {
-        String recommentUid = row[0].toString();
-        String recommentContent = row[1];
-        String recommentReg = DateFormat('MM-dd hh:mm').format(row[2]);
-        String recommentWriter = row[3];
-
-        list.add(getCommentComponent(
-            commentUid, commentContent, commentReg, commentWriter, recommentContent, recommentReg, recommentWriter));
-        list.add(const SizedBox(height: 20));
-      }
       list.add(getCommentComponent(
           commentUid, commentContent, commentReg, commentWriter, recommentContent, recommentReg, recommentWriter));
       list.add(const SizedBox(height: 20));
 
+      var sqlRs2 = await reCommentList(commentUid);
+      print("----");
+      print(commentUid);
+      print("----");
+      print(sqlRs2);
+      print("----");
+      for (var row2 in sqlRs2) {
+        String recommentUid = row2[0].toString();
+        String recommentContent = row2[1];
+        String recommentReg = DateFormat('MM-dd hh:mm').format(row2[2]);
+        String recommentWriter = row2[3];
+
+        list.add(getReCommentComponent(commentUid, recommentContent, recommentWriter, recommentReg));
+        list.add(const SizedBox(height:20));
+      }
     }
     return list;
   }
-
-  // Future getReComment(commentUid) async {
-  //   List<Widget> list = [const SizedBox(height: 20)];
-  //
-  //   var sqlRs = await reCommentList(commentUid);
-  //   print('4');
-  //
-  //   for(var row in sqlRs) {
-  //     String recommentUid = row[0].toString();
-  //     String recommentContent = row[1];
-  //     String recommentReg = DateFormat('MM-dd hh:mm').format(row[2]);
-  //     String recommentWriter = row[3];
-  //
-  //   }
-  // }
 
   Widget getCommentComponent(
       commentUid, commentContent, commentReg, commentWriter, recommentContent, recommentWriter, recommentReg) {
@@ -277,8 +276,8 @@ class _communityDetailState extends State<communityDetail>{
       padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
       decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(width: 1.5, color: colorGray),
-          )
+            top: BorderSide(width: 1.5, color: colorGray),
+          ),
       ),
       child: Column(
         children: [
@@ -292,6 +291,7 @@ class _communityDetailState extends State<communityDetail>{
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SizedBox(height: 20),
                         Text(
                           commentWriter,
                           style: TextStyle(
@@ -350,42 +350,6 @@ class _communityDetailState extends State<communityDetail>{
               ),
             ],
           ),
-          Container(
-            child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      recommentWriter,
-                      style: TextStyle(
-                          color: colorBlack,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    // const SizedBox(width: 40),
-                    Text(
-                      recommentContent,
-                      style: TextStyle(
-                          color: colorDarkGray,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    Text(
-                      recommentReg,
-                      style: TextStyle(
-                          color: colorDarkGray,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(height: 20),
-                  ],
-                ),
-              ],
-            ),
-          ),
           Row(
             children: [
               if(recommentNum == int.parse(commentUid))...[
@@ -434,4 +398,89 @@ class _communityDetailState extends State<communityDetail>{
       ),
     );
   }
+
+  Widget getReCommentComponent(
+      commentUid, recommentContent, recommentWriter, recommentReg) {
+    return Container(
+      margin: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+      padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
+      decoration: BoxDecoration(
+          color: lightGray,
+          borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
+                child: Row(
+                  // crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    TextButton(
+                        onPressed: () {},
+                        child: getIconButtonGroup(Icons.subdirectory_arrow_right,
+                            Colors.black, '', '')),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 20),
+                        Text(
+                          recommentWriter,
+                          style: TextStyle(
+                              color: colorBlack,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500),
+                        ),
+                        // const SizedBox(width: 40),
+                        Text(
+                          recommentContent,
+                          style: TextStyle(
+                              color: colorDarkGray,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Text(
+                          recommentReg,
+                          style: TextStyle(
+                              color: colorDarkGray,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getIconButtonGroup(icons, color, label, settingText) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Icon(
+              icons,
+              color: color,
+            ),
+            const SizedBox(width: 20),
+            Text(
+              label,
+              textScaleFactor: 1.1,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500, color: Colors.black),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
 }
+
