@@ -121,7 +121,7 @@ Widget getBoardComponent(
           children: [
             Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(15.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -145,7 +145,7 @@ Widget getBoardComponent(
                         ],
                       ),
                       //board_uid
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 10),
                       Text(
                         boardWriter,
                         style: TextStyle(
