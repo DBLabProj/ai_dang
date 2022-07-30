@@ -104,33 +104,37 @@ class _WritePostState extends State<WritePost> {
                       ),
                     ),
                   ),
-                  ButtonTheme(
-                      minWidth: (MediaQuery.of(context).size.width),
-                      height: (MediaQuery.of(context).size.height) * 0.02,
-                      child: OutlinedButton(
-                        onPressed: () async {
-                          var imageName = await boardImage(context, ImageSource.gallery, _picker);
-                          print("------");
-                          print(imageName['img_name']);
-                          print("------");
-                          setState(() {
-                            imageText = imageName['img_name'];
-                          });
-                          print(imageText);
-                        },
-                        child: Text(
-                          '이미지 첨부하기',
-                          style: TextStyle(
-                              color: colorRed,
-                              fontWeight: FontWeight.w500,
-                              fontSize: (MediaQuery.of(context).size.width)*0.04
-                          ),
-                        ),
-                      )
+                  Row(
+                    children: [
+                      ButtonTheme(
+                          minWidth: (MediaQuery.of(context).size.width),
+                          height: (MediaQuery.of(context).size.height) * 0.02,
+                          child: OutlinedButton(
+                            onPressed: () async {
+                              var imageName = await boardImage(context, ImageSource.gallery, _picker);
+                              print("------");
+                              print(imageName['img_name']);
+                              print("------");
+                              setState(() {
+                                imageText = imageName['img_name'];
+                              });
+                              print(imageText);
+                            },
+                            child: Text(
+                              '이미지 첨부하기',
+                              style: TextStyle(
+                                  color: colorRed,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: (MediaQuery.of(context).size.width)*0.04
+                              ),
+                            ),
+                          )
+                      ),
+                      if(imageText != null)...[
+                        Text(imageText),
+                      ],
+                    ],
                   ),
-                  if(imageText != null)...[
-                    Text(imageText),
-                  ],
                   TextField(
                     controller: _contentTextEditController,
                     onChanged: (text) {
