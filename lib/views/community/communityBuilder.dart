@@ -22,60 +22,7 @@ Future getBoardList(
     context, pageStart, loadCommand, reloadCommand, text) async {
   List<Widget> list = [const SizedBox(height: 20)];
 
-  if (loadCommand == true && reloadCommand == false) {
-    await boardList(pageStart).then((sqlRs) {
-      for (var row in sqlRs) {
-        String boardUid = row[0].toString();
-        String boardTitle = row[1];
-        String boardContent = row[2];
-        String boardAdd = DateFormat.jm('ko-KR').format(row[3]);
-        String boardWriter = row[4];
-        if(row[5] == null) {
-          String boardImage = "default";
-
-          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
-              boardAdd, boardWriter, boardImage));
-        } else {
-          String boardImage = row[5];
-
-          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
-              boardAdd, boardWriter, boardImage));
-        }
-
-
-        list.add(const SizedBox(height: 20));
-      }
-    });
-  } else if (loadCommand == true && reloadCommand == true) {
-    await getBoard(text).then((sqlRs) {
-      for (var row in sqlRs) {
-        String boardUid = row[0].toString();
-        String boardTitle = row[1];
-        String boardContent = row[2];
-        String boardAdd = DateFormat.jm('ko-KR').format(row[3]);
-        String boardWriter = row[4];
-        if(row[5] == null) {
-          String boardImage = "default";
-
-          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
-              boardAdd, boardWriter, boardImage));
-        } else {
-          String boardImage = row[5];
-
-          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
-              boardAdd, boardWriter, boardImage));
-        }
-        list.add(const SizedBox(height: 20));
-      }
-    });
-  }
-
-  return list;
-}
-
-Future getTotalCnt() async {
-  var cnt;
-  List<Widget> list = [const SizedBox(height: 20)];
+  int cnt = 0;
 
   await cntBoardList().then((sqlRs) {
     for (var row in sqlRs) {
@@ -84,40 +31,78 @@ Future getTotalCnt() async {
     }
   });
 
-  for (int i = 1; i < (cnt / 10) + 1; i++) {
-    list.add(getPagingBtn());
+  if (loadCommand == true && reloadCommand == false) {
+    await boardList(pageStart).then((sqlRs) {
+      for (var row in sqlRs) {
+        String boardUid = row[0].toString();
+        String boardNum = cnt.toString();
+        String boardTitle = row[1];
+        String boardContent = row[2];
+        String boardAdd = DateFormat.jm('ko-KR').format(row[3]);
+        String boardWriter = row[4];
+        if(row[5] == null) {
+          String boardImage = "default";
+
+          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
+              boardAdd, boardWriter, boardImage, boardNum));
+        } else {
+          String boardImage = row[5];
+
+          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
+              boardAdd, boardWriter, boardImage, boardNum));
+        }
+
+
+        list.add(const SizedBox(height: 20));
+
+        cnt -= 1;
+      }
+    });
+  } else if (loadCommand == true && reloadCommand == true) {
+    await getBoard(text).then((sqlRs) {
+      for (var row in sqlRs) {
+        String boardUid = row[0].toString();
+        String boardNum = cnt.toString();
+        String boardTitle = row[1];
+        String boardContent = row[2];
+        String boardAdd = DateFormat.jm('ko-KR').format(row[3]);
+        String boardWriter = row[4];
+        if(row[5] == null) {
+          String boardImage = "default";
+
+          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
+              boardAdd, boardWriter, boardImage, boardNum));
+        } else {
+          String boardImage = row[5];
+
+          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
+              boardAdd, boardWriter, boardImage, boardNum));
+        }
+        list.add(const SizedBox(height: 20));
+
+        cnt -= 1;
+      }
+    });
   }
-  list.add(const SizedBox(height: 20));
 
   return list;
 }
 
-Widget getPagingBtn() {
-  return Container(
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10), color: Colors.white),
-    child: Padding(
-      padding: const EdgeInsets.all(20.0),
-      // 식단 컴포넌트 내용 시작
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [],
-            ),
-          )),
-        ],
-      ),
-    ),
-  );
+Future getTotalCnt() async {
+  int cnt = 0;
+
+  await cntBoardList().then((sqlRs) {
+    for (var row in sqlRs) {
+      int totalCnt = row[0];
+      cnt = totalCnt;
+    }
+  });
+
+  return cnt;
 }
 
 Widget getBoardComponent(
-    context, boardUid, boardTitle, boardContent, boardAdd, boardWriter, boardImage) {
+    context, boardUid, boardTitle, boardContent, boardAdd, boardWriter, boardImage, boardNum) {
   return GestureDetector(
     onTap: () {
       print('1');
@@ -146,7 +131,7 @@ Widget getBoardComponent(
                       Row(
                         children: [
                           Text(
-                            boardUid,
+                            boardNum,
                             style: TextStyle(
                                 color: colorBlack,
                                 fontSize: 18,
