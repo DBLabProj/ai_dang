@@ -145,6 +145,17 @@ Widget getBoardComponent(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400),
                           ),
+                          if(boardImage != "default")...[
+                            const SizedBox(width: 40),
+                            ClipRRect(
+                              child: Image.network(
+                                "http://203.252.240.74:5000/static/images/$boardImage.jpg",
+                                fit: BoxFit.fitHeight,
+                                width: MediaQuery.of(context).size.width * 0.05,
+                                height: MediaQuery.of(context).size.width * 0.1,
+                              ),
+                            ),
+                          ],
                         ],
                       ),
                       //board_uid

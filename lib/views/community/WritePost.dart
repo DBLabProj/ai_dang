@@ -107,7 +107,7 @@ class _WritePostState extends State<WritePost> {
                   Row(
                     children: [
                       if(imageText != null)...[
-                        Text(imageText),
+                        Text(imageText+".jpg"),
                       ],
                       ButtonTheme(
                           minWidth: (MediaQuery.of(context).size.width),
