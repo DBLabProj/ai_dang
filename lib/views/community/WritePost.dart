@@ -38,33 +38,33 @@ class _WritePostState extends State<WritePost> {
   @override
   Widget build(BuildContext context) {
 
-    void showConfirmDialog(message) {
-      showDialog(
-        context: context,
-        barrierDismissible: true,
-        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
-        builder: (BuildContext context) {
-          return
-            AlertDialog(
-              title: Text(
-                //제목 정의
-                message,
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
-                    insertBoard(_title, _content, user_id);
-                  },
-                  child: const Text(
-                    '확인',
-                  ),
-                ),
-              ],
-            );
-        },
-      );
-    }
+    // void showConfirmDialog(message) {
+    //   showDialog(
+    //     context: context,
+    //     barrierDismissible: true,
+    //     // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+    //     builder: (BuildContext context) {
+    //       return
+    //         AlertDialog(
+    //           title: Text(
+    //             //제목 정의
+    //             message,
+    //           ),
+    //           actions: <Widget>[
+    //             TextButton(
+    //               onPressed: () {
+    //                 Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
+    //                 insertBoard(_title, _content, user_id, imageText);
+    //               },
+    //               child: const Text(
+    //                 '확인',
+    //               ),
+    //             ),
+    //           ],
+    //         );
+    //     },
+    //   );
+    // }
 
     print(imageText);
 
@@ -106,6 +106,9 @@ class _WritePostState extends State<WritePost> {
                   ),
                   Row(
                     children: [
+                      if(imageText != null)...[
+                        Text(imageText),
+                      ],
                       ButtonTheme(
                           minWidth: (MediaQuery.of(context).size.width),
                           height: (MediaQuery.of(context).size.height) * 0.02,
@@ -130,9 +133,6 @@ class _WritePostState extends State<WritePost> {
                             ),
                           )
                       ),
-                      if(imageText != null)...[
-                        Text(imageText),
-                      ],
                     ],
                   ),
                   TextField(
@@ -169,7 +169,7 @@ class _WritePostState extends State<WritePost> {
                           )),
                       ElevatedButton(
                         onPressed: () {
-                          insertBoard(_title, _content, User_id);
+                          insertBoard(_title, _content, User_id, imageText);
                           Navigator.pop(context);
                         },
                         child: Text(

@@ -30,9 +30,19 @@ Future getBoardList(
         String boardContent = row[2];
         String boardAdd = DateFormat.jm('ko-KR').format(row[3]);
         String boardWriter = row[4];
+        if(row[5] == null) {
+          String boardImage = "default";
 
-        list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
-            boardAdd, boardWriter));
+          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
+              boardAdd, boardWriter, boardImage));
+        } else {
+          String boardImage = row[5];
+
+          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
+              boardAdd, boardWriter, boardImage));
+        }
+
+
         list.add(const SizedBox(height: 20));
       }
     });
@@ -44,9 +54,17 @@ Future getBoardList(
         String boardContent = row[2];
         String boardAdd = DateFormat.jm('ko-KR').format(row[3]);
         String boardWriter = row[4];
+        if(row[5] == null) {
+          String boardImage = "default";
 
-        list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
-            boardAdd, boardWriter));
+          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
+              boardAdd, boardWriter, boardImage));
+        } else {
+          String boardImage = row[5];
+
+          list.add(getBoardComponent(context, boardUid, boardTitle, boardContent,
+              boardAdd, boardWriter, boardImage));
+        }
         list.add(const SizedBox(height: 20));
       }
     });
@@ -99,11 +117,11 @@ Widget getPagingBtn() {
 }
 
 Widget getBoardComponent(
-    context, boardUid, boardTitle, boardContent, boardAdd, boardWriter) {
+    context, boardUid, boardTitle, boardContent, boardAdd, boardWriter, boardImage) {
   return GestureDetector(
     onTap: () {
       print('1');
-      Navigator.push(context, MaterialPageRoute(builder: (context) => communityDetail(context: context, boardUid: boardUid, boardTitle: boardTitle, boardContent: boardContent, boardAdd: boardAdd, boardWriter: boardWriter)));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => communityDetail(context: context, boardUid: boardUid, boardTitle: boardTitle, boardContent: boardContent, boardAdd: boardAdd, boardWriter: boardWriter, boardImage: boardImage)));
       // detailInfo(context, boardUid, boardTitle, boardContent, boardAdd,
       //     boardWriter)
       //     .then((widget) {

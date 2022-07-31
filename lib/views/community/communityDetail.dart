@@ -19,11 +19,12 @@ var User_id = Session.instance.userInfo['email'];
 var recommentNum = 0;
 
 class communityDetail extends StatefulWidget {
-  final context, boardUid, boardTitle, boardContent, boardAdd, boardWriter;
+  final context, boardUid, boardTitle, boardContent, boardAdd, boardWriter, boardImage;
   final commentUid, commentContent, commentReg, commentWriter;
   const communityDetail({Key? key,
   @required this.context, @required this.boardUid, @required this.boardTitle,
   @required this.boardContent, @required this.boardAdd, @required this.boardWriter,
+  @required this.boardImage,
   @required this.commentUid, @required this.commentContent, @required this.commentReg,
   @required this.commentWriter})
       : super(key: key);
@@ -35,8 +36,10 @@ class communityDetail extends StatefulWidget {
 class _communityDetailState extends State<communityDetail>{
   List<Widget> _commentList = [];
 
+
   @override
   Widget build(BuildContext context) {
+    var boardImage = widget.boardImage;
     return FutureBuilder(
       future: getComment(widget.boardUid),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
@@ -127,13 +130,30 @@ class _communityDetailState extends State<communityDetail>{
 
                     Container(
                       margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
-                      padding: const EdgeInsets.fromLTRB(15.0, 170.0, 15.0, 170.0),
+                      padding: const EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 50.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(widget.boardContent,
-                              textScaleFactor: 1.1,
-                              style: const TextStyle(color: Colors.black)),
+                          Column(
+                            children: [
+                              if(boardImage != "default")...[
+                                ClipRRect(
+                                  child: Image.network(
+                                    "http://203.252.240.74:5000/static/images/$boardImage.jpg",
+                                    fit: BoxFit.fitHeight,
+                                    width: MediaQuery.of(context).size.width * 0.75,
+                                    height: MediaQuery.of(context).size.width,
+                                  ),
+                                ),
+                                const SizedBox(height: 20,),
+                              ],
+
+                              Text(widget.boardContent,
+                                  textScaleFactor: 1.1,
+                                  style: const TextStyle(color: Colors.black)),
+                            ],
+                          ),
+
                         ],
                       ),
                       decoration: BoxDecoration(
