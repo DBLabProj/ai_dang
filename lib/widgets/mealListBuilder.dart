@@ -61,7 +61,7 @@ Future getSelectedDayMeal(context, selectedDay) async {
   var sqlResult = await buildMealList(context, selectedDay);
   List<Widget> mealList = await sqlResult['meal_list'];
   Map eatInfo = await sqlResult['eat_info'];
-  return [mealList, eatInfo];
+  return [[const SizedBox(height: 20)], {}];
 }
 
 Widget getMealComponent(

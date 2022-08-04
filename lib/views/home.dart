@@ -1,7 +1,6 @@
 import 'package:ai_dang/session.dart';
 import 'package:ai_dang/views/predResult.dart';
 import 'package:ai_dang/views/setting/test.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/request.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -45,21 +44,29 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   var _calendarFormat = CalendarFormat.week;
   final _picker = ImagePicker();
 
-  Map _eatInfo = {};
-  List<Widget> _mealList = [];
+  Map _eatInfo = {
+    'cal': 0,
+    'protein': 0,
+    'fat': 0,
+    'cbHydra': 0,
+    'cbHydra_per': 0.0,
+    'protein_per': 0.0,
+    'fat_per': 0.0
+  };
+  List<Widget> _mealList = [const SizedBox(height: 20)];
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: getSelectedDayMeal(context, _selectedDay),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if(!snapshot.hasData) {
-          EasyLoading.show(status: '로딩 중..');
-        } else {
-          _eatInfo = snapshot.data[1];
-          _mealList = snapshot.data[0];
-          EasyLoading.dismiss();
-        }
+        // if(!snapshot.hasData) {
+        //   EasyLoading.show(status: '로딩 중..');
+        // } else {
+        //   _eatInfo = snapshot.data[1];
+        //   _mealList = snapshot.data[0];
+        //   EasyLoading.dismiss();
+        // }
         return WillPopScope(
           onWillPop: () {
             return Future(() => false);

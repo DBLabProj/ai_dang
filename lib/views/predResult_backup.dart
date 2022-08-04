@@ -52,7 +52,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final Icon _arrowUp = const Icon(Icons.keyboard_arrow_up);
 
   final _descTextCon = TextEditingController();
-
   Map nut = {
     'serving_size': 0,
     'energy': 0,
@@ -76,93 +75,111 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return nut;
   }
 
-
   @override
   Widget build(BuildContext context) {
-    print(widget.predResult);
-    return Scaffold(
-      body: SafeArea(
-        child: Column(children: [
-          foodImage(),
-        ]),
-      ),
+
+    return FutureBuilder(
+      future: get(),
+      builder: (context, AsyncSnapshot<Map> snapshot) {
+        if(!snapshot.hasData) {
+          EasyLoading.show(status: '로딩 중..');
+        } else {
+          EasyLoading.dismiss();
+        }
+        return Scaffold(
+          body: SafeArea(
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              slivers: <Widget>[
+                foodImage(),
+                SliverFillRemaining(
+                  child: Column(
+                    children: [
+                      // 측정 결과, 영양정보 영역 --------------------------------------
+                      predictResult(),
+                      // 하단 스크롤 영역 ---------------------------------------------
+                      Expanded(
+                        child: Container(
+                          color: lightGray,
+                          padding: const EdgeInsets.fromLTRB(25, 2, 25, 0),
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 25),
+                                // 총 당류 인디케이터 영역 -----------------------------
+                                sugarInfo(),
+                                // 제공량 선택 라벨 영역 -------------------------------
+                                Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 40, 20, 20),
+                                    child: const Text(
+                                      '얼마나 드셨나요? (제공량 선택)',
+                                      textScaleFactor: 1.1,
+                                    )),
+                                // 제공량 선택 영역 -----------------------------------
+                                selectAmount(),
+                                // 설명 라벨 영역 -------------------------------------
+                                Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 40, 20, 20),
+                                    child: const Text(
+                                      '음식에 관한 설명을 적어주세요.',
+                                      textScaleFactor: 1.1,
+                                    )),
+                                // 설명 텍스트 입력 영역 -------------------------------
+                                inputDesc(),
+                                const SizedBox(
+                                  height: 40,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          // 입력완료 버튼 앱 바 -------------------------------------------------------
+          bottomNavigationBar: confirmButtonBar(),
+        );
+      },
     );
   }
 
   Widget foodImage() {
-    var predNo = widget.predResult['predict_no'];
-    var detections = widget.predResult['detection'];
-    List rects = [];
-    
-    // 음식 이미지 원본 사이즈
-    double sourceWidth = widget.predResult['image_width'].toDouble();
-    double sourceHeight = widget.predResult['image_height'].toDouble();
-
-    // 음식 이미지 사이즈
-    double imageHeight = MediaQuery.of(context).size.height * 0.4;
-
-    // 실계산을 위해 현재 사이즈와 원본 사이즈 비율 산정
-    double ratio = imageHeight / sourceHeight;
-
-    for (var detection in detections) {
-      Map rect = {};
-      rect['name'] = detection['name'].toString();
-      rect['x'] = detection['xmin'].toDouble() * ratio;
-      rect['y'] = detection['ymin'].toDouble() * ratio;
-      rect['w'] = (detection['xmax'].toDouble() * ratio) - rect['x'];
-      rect['h'] = (detection['ymax'].toDouble() * ratio) - rect['y'];
-      rects.add(rect);
-    }
-
-    return Container(
-      height: imageHeight,
-      color: gray,
-      child: Center(
-        child: Stack(
+    return SliverAppBar(
+      stretch: true,
+      onStretchTrigger: () {
+        // Function callback for stretch
+        return Future<void>.value();
+      },
+      backgroundColor: Colors.white,
+      expandedHeight: MediaQuery.of(context).size.height * 0.3,
+      flexibleSpace: FlexibleSpaceBar(
+        stretchModes: const <StretchMode>[
+          StretchMode.zoomBackground,
+          StretchMode.blurBackground,
+          StretchMode.fadeTitle,
+        ],
+        // 음식 사진 -------------------------------------------------------
+        background: Stack(
+          fit: StackFit.expand,
           children: <Widget>[
-            Image.network("http://203.252.240.74:5000/static/images/$predNo.jpg",
-                fit: BoxFit.fitHeight),
-            for (var rect in rects)...[
-              // 바운딩 박스
-              Positioned(
-                  left: rect['x'],
-                  top: rect['y'],
-                  child: Container(
-                    width: rect['w'],
-                    height: rect['h'],
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 3,
-                        color: red,
-                      ),
-                    ),
-                  )),
-              // 감지 라벨
-              // 만약 라벨이 잘리는 경우 처리
-              if (rect['y'] < ((sourceHeight * ratio) * 0.3))... [
-                Positioned(
-                    left: rect['x'],
-                    top: rect['y'] + rect['h'],
-                    child: Container(
-                      color: red,
-                      padding: const EdgeInsets.fromLTRB(4, 1, 4, 1),
-                      child: Text(rect['name'],
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white)),
-                    ))
-              ] else ... [
-                Positioned(
-                    left: rect['x'],
-                    bottom: (sourceHeight * ratio) - rect['y'],
-                    child: Container(
-                      color: red,
-                      padding: const EdgeInsets.fromLTRB(4, 1, 4, 1),
-                      child: Text(rect['name'],
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white)),
-                    ))
-              ]
-
-            ]
-
+            // Image.file(
+            //   widget.image,
+            //   fit: BoxFit.fitWidth,
+            // ),
+            Image.network(
+              "http://203.252.240.74:5000/static/images/${widget.predResult['predict_no']}.jpg",
+              fit: BoxFit.fitWidth
+            )
           ],
         ),
       ),
@@ -201,25 +218,55 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ),
                       ),
                       // 측정결과 역역 ----------------------------------------------
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('식단 분류 결과입니다.',
-                              textScaleFactor: 1.1,
-                              style: TextStyle(
-                                  color: black, fontWeight: FontWeight.w500)),
-                          Container(
-                            height: 150,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('분류 결과,',
+                                  textScaleFactor: 1.1,
+                                  style: TextStyle(
+                                      color: black,
+                                      fontWeight: FontWeight.w500)),
+                              Row(
+                                children: [
+                                  Text('${widget.predResult['class_name']}',
+                                      textScaleFactor: 1.6,
+                                      style: TextStyle(
+                                          color: red,
+                                          fontWeight: FontWeight.w900)),
+                                  Text(' 입니다.',
+                                      textScaleFactor: 1.6,
+                                      style: TextStyle(
+                                          color: black,
+                                          fontWeight: FontWeight.w900))
+                                ],
+                              ),
+                            ],
+                          ),
+                          Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Container(
-                                  width: 150,
-                                  color: red,
-                                )
-                              ],
-                            ),
-                          )
+                                // 영양정보 펼치기 버튼
+                                IconButton(
+                                  iconSize: 36,
+                                  padding: EdgeInsets.zero, // 패딩 설정
+                                  constraints:
+                                      const BoxConstraints(), // constraints
+                                  icon: (_expanded) ? _arrowUp : _arrowDown,
+                                  onPressed: () {
+                                    setState(() {
+                                      _expanded = !_expanded;
+                                    });
+                                  },
+                                ),
+                                Text((_expanded) ? '영양정보 접기' : '영양정보 펼치기',
+                                    textScaleFactor: 0.8,
+                                    style: TextStyle(
+                                        color: black,
+                                        fontWeight: FontWeight.w500)),
+                              ]),
                         ],
                       ),
                     ],
@@ -360,9 +407,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     String dangerText = '';
     if (eatSugarPercent < 0.1) {
       dangerText = '안전';
-    } else if (eatSugarPercent < 0.3) {
+    } else if(eatSugarPercent < 0.3) {
       dangerText = '약간 위험';
-    } else if (eatSugarPercent < 0.5) {
+    } else if(eatSugarPercent < 0.5) {
       dangerText = '위험';
     } else {
       dangerText = '매우 위험';
@@ -415,18 +462,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           // 인디케이터 밑 퍼센트 라벨 ------------------------------
           const SizedBox(height: 6),
           Stack(children: [
-            (eatSugarPercent > 0.1)
-                ? Align(
-                    alignment: Alignment.lerp(
-                        Alignment.topLeft, Alignment.topRight, 0.02)!,
-                    child: Text(
-                      '0%',
-                      textScaleFactor: 1.2,
-                      style:
-                          TextStyle(color: black, fontWeight: FontWeight.w700),
-                    ),
-                  )
-                : const Align(),
+            (eatSugarPercent > 0.1) ?
+              Align(
+                alignment:
+                Alignment.lerp(Alignment.topLeft, Alignment.topRight, 0.02)!,
+                child: Text(
+                  '0%',
+                  textScaleFactor: 1.2,
+                  style: TextStyle(color: black, fontWeight: FontWeight.w700),
+                ),
+              ) : const Align(),
 
             Align(
               alignment: Alignment.lerp(
@@ -438,18 +483,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               ),
             ),
             // 85% 밑에 나오면 100% 라벨 출력 ------------------------------------
-            (eatSugarPercent < 0.85)
-                ? Align(
-                    alignment: Alignment.lerp(
-                        Alignment.topLeft, Alignment.topRight, 0.98)!,
-                    child: Text(
-                      '100%',
-                      textScaleFactor: 1.2,
-                      style:
-                          TextStyle(color: black, fontWeight: FontWeight.w700),
-                    ),
-                  )
-                : const Align(),
+            (eatSugarPercent < 0.85) ?
+            Align(
+              alignment:
+                  Alignment.lerp(Alignment.topLeft, Alignment.topRight, 0.98)!,
+              child: Text(
+                '100%',
+                textScaleFactor: 1.2,
+                style: TextStyle(color: black, fontWeight: FontWeight.w700),
+              ),
+            ) : const Align(),
           ]),
           // 총 당류 정보 ----------------------------------------
           Padding(
@@ -652,11 +695,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   String userId = Session.instance.userInfo['email'].toString();
                   insertMeal(userId, _amount.toString(), predNo, _desc)
                       .then((mealNo) {
+
+
                     setState(() {
                       EasyLoading.dismiss();
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => MyHomePage()),
+                        MaterialPageRoute(
+                            builder: (context) =>  MyHomePage()),
                       );
                     });
                   });
