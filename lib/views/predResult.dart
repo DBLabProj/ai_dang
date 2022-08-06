@@ -1,5 +1,6 @@
 import 'package:ai_dang/session.dart';
 import 'package:ai_dang/views/home.dart';
+import 'package:ai_dang/widgets/detections.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
@@ -10,6 +11,7 @@ import 'dart:io';
 import '../dbHandler.dart';
 import '../main.dart';
 import '../request.dart';
+import '../widgets/colors.dart';
 
 var lightGray = const Color(0xffF3F3F3);
 var black = const Color(0xff393939);
@@ -50,9 +52,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   String _desc = '';
   final Icon _arrowDown = const Icon(Icons.keyboard_arrow_down);
   final Icon _arrowUp = const Icon(Icons.keyboard_arrow_up);
-
+  Detections detections = Detections([], 0);
   final _descTextCon = TextEditingController();
-
+  BoundingBoxColors boundColors = BoundingBoxColors();
   Map nut = {
     'serving_size': 0,
     'energy': 0,
@@ -62,7 +64,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     'total_sugar': 0
   };
 
-  Future<Map> get() async {
+  double imageHeight = 0;
+
+  Future<Map> preProcess() async {
     var sqlRs = await getNutrient(widget.predResult['class_name']);
 
     for (var row in sqlRs) {
@@ -73,56 +77,57 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       nut['hydrate'] = row[7];
       nut['total_sugar'] = row[8];
     }
-    return nut;
-  }
 
+    // 음식 이미지 원본 사이즈
+    double sourceHeight = widget.predResult['image_height'].toDouble();
+    // 음식 이미지 사이즈
+    double imageHeight = MediaQuery.of(context).size.height * 0.4;
+
+    print(widget.predResult['detection']);
+    // 실계산을 위해 현재 사이즈와 원본 사이즈 비율 산정
+    double ratio = imageHeight / sourceHeight;
+    Detections detections = Detections(widget.predResult['detection'], ratio);
+    return {'nut': nut, 'detect': detections, 'imageHeight': imageHeight};
+  }
 
   @override
   Widget build(BuildContext context) {
-    print(widget.predResult);
-    return Scaffold(
-      body: SafeArea(
-        child: Column(children: [
-          foodImage(),
-        ]),
-      ),
+    return FutureBuilder(
+      future: preProcess(),
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (snapshot.hasData) {
+          nut = snapshot.data['nut'];
+          imageHeight = snapshot.data['imageHeight'];
+          detections = snapshot.data['detect'];
+        }
+        return Scaffold(
+          body: SafeArea(
+            child: Column(children: [
+              foodImage(),
+              predictResult(),
+            ]),
+          ),
+        );
+      },
     );
   }
 
   Widget foodImage() {
     var predNo = widget.predResult['predict_no'];
-    var detections = widget.predResult['detection'];
-    List rects = [];
-    
-    // 음식 이미지 원본 사이즈
-    double sourceWidth = widget.predResult['image_width'].toDouble();
-    double sourceHeight = widget.predResult['image_height'].toDouble();
 
-    // 음식 이미지 사이즈
     double imageHeight = MediaQuery.of(context).size.height * 0.4;
 
-    // 실계산을 위해 현재 사이즈와 원본 사이즈 비율 산정
-    double ratio = imageHeight / sourceHeight;
-
-    for (var detection in detections) {
-      Map rect = {};
-      rect['name'] = detection['name'].toString();
-      rect['x'] = detection['xmin'].toDouble() * ratio;
-      rect['y'] = detection['ymin'].toDouble() * ratio;
-      rect['w'] = (detection['xmax'].toDouble() * ratio) - rect['x'];
-      rect['h'] = (detection['ymax'].toDouble() * ratio) - rect['y'];
-      rects.add(rect);
-    }
-
     return Container(
-      height: imageHeight,
-      color: gray,
+      color: lightGray,
       child: Center(
         child: Stack(
           children: <Widget>[
-            Image.network("http://203.252.240.74:5000/static/images/$predNo.jpg",
-                fit: BoxFit.fitHeight),
-            for (var rect in rects)...[
+            Image.network(
+              "http://203.252.240.74:5000/static/images/$predNo.jpg",
+              fit: BoxFit.fitHeight,
+              height: imageHeight,
+            ),
+            for (var rect in detections.getRectInfo()) ...[
               // 바운딩 박스
               Positioned(
                   left: rect['x'],
@@ -133,36 +138,40 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 3,
-                        color: red,
+                        color: rect['color'],
                       ),
                     ),
                   )),
               // 감지 라벨
               // 만약 라벨이 잘리는 경우 처리
-              if (rect['y'] < ((sourceHeight * ratio) * 0.3))... [
+              if (rect['y'] < (imageHeight * 0.1)) ...[
                 Positioned(
                     left: rect['x'],
                     top: rect['y'] + rect['h'],
                     child: Container(
-                      color: red,
+                      color: rect['color'],
                       padding: const EdgeInsets.fromLTRB(4, 1, 4, 1),
                       child: Text(rect['name'],
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white)),
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white)),
                     ))
-              ] else ... [
+              ] else ...[
                 Positioned(
                     left: rect['x'],
-                    bottom: (sourceHeight * ratio) - rect['y'],
+                    bottom: imageHeight - rect['y'],
                     child: Container(
-                      color: red,
+                      color: rect['color'],
                       padding: const EdgeInsets.fromLTRB(4, 1, 4, 1),
                       child: Text(rect['name'],
-                          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white)),
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white)),
                     ))
               ]
-
             ]
-
           ],
         ),
       ),
@@ -170,6 +179,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   Widget predictResult() {
+    var predNo = widget.predResult['predict_no'];
+
     return MyExpansionPanelList(
       animationDuration: const Duration(milliseconds: 300),
       expandedHeaderPadding: const EdgeInsets.all(0),
@@ -208,15 +219,66 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               textScaleFactor: 1.1,
                               style: TextStyle(
                                   color: black, fontWeight: FontWeight.w500)),
-                          Container(
+                          SizedBox(
                             height: 150,
                             child: ListView(
-                              scrollDirection: Axis.horizontal,
                               children: [
-                                Container(
-                                  width: 150,
-                                  color: red,
-                                )
+                                for (var rect in detections.getRectInfo()) ...[
+                                  Container(
+                                    padding: EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        bottom:
+                                            BorderSide(width: 1.5, color: gray),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Center(
+                                          child: Container(
+                                            width: 150,
+                                            child: AspectRatio(
+                                              aspectRatio: (rect['x'] / rect['y']),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    image: DecorationImage(
+                                                      fit: BoxFit.fitWidth,
+                                                      alignment: FractionalOffset.topCenter,
+                                                      image: NetworkImage("http://203.252.240.74:5000/static/images/$predNo.jpg",),
+                                                    )
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        // Container(
+                                        //   width: 25,
+                                        //   height: 25,
+                                        //   decoration: BoxDecoration(
+                                        //     borderRadius:
+                                        //         BorderRadius.circular(9999),
+                                        //     color: rect['color'],
+                                        //   ),
+                                        //   child: Center(
+                                        //     child: Text(
+                                        //       rect['index'].toString(),
+                                        //       style: const TextStyle(
+                                        //           color: Colors.white,
+                                        //           fontSize: 18,
+                                        //           fontWeight: FontWeight.w600),
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        Text(
+                                          rect['name'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 24),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ]
                               ],
                             ),
                           )
