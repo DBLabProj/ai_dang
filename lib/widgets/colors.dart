@@ -1,8 +1,9 @@
-
 import 'dart:ui';
+import 'dart:math';
 
 class BoundingBoxColors {
-  List _colorList = const [Color(0xFFFF3838), Color(0xFFFF9D97), Color(0xFFFF701F),
+  final List _colorList =
+      const [Color(0xFFFF3838), Color(0xFFFF9D97), Color(0xFFFF701F),
      Color(0xFFFFB21D), Color(0xFFCFD231), Color(0xFF48F90A), Color(0xFF92CC17),
      Color(0xFF3DDB86), Color(0xFF1A9334), Color(0xFF00D4BB), Color(0xFF2C99A8),
      Color(0xFF00C2FF), Color(0xFF344593), Color(0xFF6473FF), Color(0xFF0018EC),

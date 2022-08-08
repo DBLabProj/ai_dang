@@ -8,7 +8,6 @@ import '../main.dart';
 import '../utils/request.dart';
 import '../widgets/colors.dart';
 
-
 class PredResultPage extends StatelessWidget {
   final image;
   final predResult;
@@ -41,7 +40,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   final Icon _arrowDown = const Icon(Icons.keyboard_arrow_down);
   final Icon _arrowUp = const Icon(Icons.keyboard_arrow_up);
   final _descTextCon = TextEditingController();
-  BoundingBoxColors boundColors = BoundingBoxColors();
   Map nut = {
     'serving_size': 0,
     'energy': 0,
@@ -56,25 +54,26 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   List rects = [];
 
   Future<List> getRectInfo(detectInfo, resizeHeight, ratio) async {
+    BoundingBoxColors boundColors = BoundingBoxColors();
     List rects = [];
     var predNo = widget.predResult['predict_no'];
     String imageUrl = "http://203.252.240.74:5000/static/images/$predNo.jpg";
     int index = 1;
-
     for (var detection in detectInfo) {
       Map rect = {};
-      rect['index'] = index ++;
+      rect['index'] = index++;
       rect['name'] = detection['name'].toString();
       rect['x'] = detection['xmin'].toDouble() * ratio;
       rect['y'] = detection['ymin'].toDouble() * ratio;
       rect['w'] = (detection['xmax'].toDouble() * ratio) - rect['x'];
       rect['h'] = (detection['ymax'].toDouble() * ratio) - rect['y'];
-
-      rect['thumbnail'] = await cropNetworkImage(imageUrl, resizeHeight.toInt(), rect);
+      rect['acc'] =
+          (detection['confidence'].toDouble() * 100).toInt().toString();
+      rect['thumbnail'] =
+          await cropNetworkImage(imageUrl, resizeHeight.toInt(), rect);
       rect['color'] = boundColors.get();
       rects.add(rect);
     }
-    print(rects);
     return rects;
   }
 
@@ -97,8 +96,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
     // 실계산을 위해 현재 사이즈와 원본 사이즈 비율 산정
     double ratio = imageHeight / sourceHeight;
-    List rects = await getRectInfo(widget.predResult['detection'], imageHeight, ratio);
-    print(rects);
+    List rects =
+        await getRectInfo(widget.predResult['detection'], imageHeight, ratio);
     return {'nut': nut, 'rects': rects, 'imageHeight': imageHeight};
   }
 
@@ -197,28 +196,73 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           style: TextStyle(color: black, fontWeight: FontWeight.w500)),
       Container(
         padding: const EdgeInsets.all(20),
-        height: 150,
+        height: 400,
         child: ListView(
           children: [
             for (var rect in rects) ...[
               Container(
-                padding: EdgeInsets.all(10),
+                padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   border: Border(
                     bottom: BorderSide(width: 1, color: grey),
                   ),
                 ),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // SizedBox(
-                    //   width: 150,
-                    //   height: 150,
-                    //   child: rect['thumbnail'],
+                    // Center(
+                    //   child: Container(
+                    //     width: 20, height: 20,
+                    //     decoration: BoxDecoration(
+                    //       color: rect['color'],
+                    //       borderRadius: BorderRadius.circular(9999)
+                    //     ),
+                    //     child: Center(child: Text(rect['index'].toString(), style: TextStyle(color: Colors.white),)),
+                    //   )
                     // ),
-                    Text(
-                      rect['name'],
-                      style: TextStyle(
-                          fontWeight: FontWeight.w600, fontSize: 24),
+
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: SizedBox(
+                        width: 120,
+                        height: 120,
+                        child: rect['thumbnail'],
+                      ),
+                    ),
+
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  rect['name'],
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600, fontSize: 26),
+                                ),
+                                const SizedBox(width: 3),
+                                Container(
+                                  padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+                                  decoration: BoxDecoration(
+                                  color: rect['color'],
+                                  borderRadius: BorderRadius.circular(6)),
+                                  child: Center(
+                                  child: Text(
+                                "${rect['acc']}%일치",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600, fontSize: 10, color: Colors.white),
+                                  )),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            Text('혹시 이 음식이 아니신가요?'),
+                          ],
+                        ),
+                      ),
                     )
                   ],
                 ),
