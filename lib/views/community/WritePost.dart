@@ -106,9 +106,6 @@ class _WritePostState extends State<WritePost> {
                   ),
                   Row(
                     children: [
-                      if(imageText != null)...[
-                        Text(imageText+".jpg"),
-                      ],
                       ButtonTheme(
                           minWidth: (MediaQuery.of(context).size.width),
                           height: (MediaQuery.of(context).size.height) * 0.02,
@@ -133,6 +130,10 @@ class _WritePostState extends State<WritePost> {
                             ),
                           )
                       ),
+                      const SizedBox(width: 20,),
+                      if(imageText != null)...[
+                        Text(imageText+".jpg"),
+                      ],
                     ],
                   ),
                   TextField(
