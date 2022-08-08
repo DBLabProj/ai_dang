@@ -1,4 +1,4 @@
-import 'package:ai_dang/dbHandler.dart';
+import 'package:ai_dang/utils/dbHandler.dart';
 import 'package:ai_dang/views/account/heightpage.dart';
 import 'package:ai_dang/views/loginPage.dart';
 import 'package:ai_dang/views/setting/changeAge.dart';
@@ -8,7 +8,7 @@ import 'package:ai_dang/views/setting/changeDt.dart';
 import 'package:ai_dang/views/setting/setting.dart';
 import 'package:ai_dang/views/setting/test.dart';
 import 'package:flutter/material.dart';
-import 'package:ai_dang/session.dart';
+import 'package:ai_dang/utils/session.dart';
 
 import '../../main.dart';
 import 'circular_border_avatar.dart';

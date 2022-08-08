@@ -1,17 +1,14 @@
-import 'package:ai_dang/session.dart';
+import 'package:ai_dang/utils/session.dart';
 import 'package:ai_dang/views/account/signup.dart';
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:ai_dang/widgets/mealListBuilder.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ai_dang/dbHandler.dart';
+import 'package:ai_dang/utils/dbHandler.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../main.dart';
 import '../widgets/myTextField.dart';
-
-Color red = const Color(0xffCF2525);
-Color gray = const Color(0xffD6D6D6);
-Color darKGray = const Color(0xff3E3E3E);
 
 class loginPage extends StatefulWidget {
   const loginPage({Key? key}) : super(key: key);

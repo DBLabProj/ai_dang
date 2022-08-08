@@ -22,3 +22,11 @@ class BoundingBoxColors {
     return color;
   }
 }
+
+var lightGrey = const Color(0xffF3F3F3);
+var black = const Color(0xff393939);
+var red = const Color(0xffCF2525);
+var redAccent = const Color(0xffFF0701);
+var lime = const Color(0xff91FF00);
+var grey = const Color(0xffDADADA);
+var darkGrey = const Color(0xff535353);

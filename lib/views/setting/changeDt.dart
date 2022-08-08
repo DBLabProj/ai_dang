@@ -1,8 +1,9 @@
-import 'package:ai_dang/session.dart';
+import 'package:ai_dang/utils/session.dart';
 import 'package:ai_dang/views/setting/profileDetail.dart';
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:flutter/material.dart';
 
-import '../../dbHandler.dart';
+import '../../utils/dbHandler.dart';
 import '../home.dart';
 
 class changeDt extends StatefulWidget {
@@ -251,7 +252,7 @@ class _changeDtState extends State<changeDt> {
                 child: Text(
                   '수정하기',
                   style: TextStyle(
-                      color: colorRed
+                      color: red
                   ),
                 ),
               ),
@@ -262,7 +263,7 @@ class _changeDtState extends State<changeDt> {
                 child: Text(
                   '취소',
                   style: TextStyle(
-                      color: colorRed
+                      color: red
                   ),
                 ),
               )
@@ -305,7 +306,7 @@ class _changeDtState extends State<changeDt> {
                 child: Text(
                   '확인',
                   style: TextStyle(
-                      color: colorRed
+                      color: red
                   ),
                 ),
               ),

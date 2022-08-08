@@ -1,5 +1,6 @@
-import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/material.dart';
+
+import 'colors.dart';
 
 Widget infoWidget(label, value, {var labelColor = const Color(0xff535353)}) {
   return Container(
@@ -17,7 +18,7 @@ Widget infoWidget(label, value, {var labelColor = const Color(0xff535353)}) {
     ),
     decoration: BoxDecoration(
       border: Border(
-        bottom: BorderSide(width: 1.5, color: gray),
+        bottom: BorderSide(width: 1.5, color: grey),
       ),
     ),
   );

@@ -1,25 +1,13 @@
-import 'package:ai_dang/session.dart';
-import 'package:ai_dang/views/home.dart';
-import 'package:ai_dang/widgets/detections.dart';
+import 'package:ai_dang/utils/cropImage.dart';
+import 'package:ai_dang/utils/session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
-import 'package:loading_overlay/loading_overlay.dart';
-
-import 'package:ai_dang/widgets/myExpansionPanel.dart';
-import 'dart:io';
-import '../dbHandler.dart';
+import '../utils/dbHandler.dart';
 import '../main.dart';
-import '../request.dart';
+import '../utils/request.dart';
 import '../widgets/colors.dart';
 
-var lightGray = const Color(0xffF3F3F3);
-var black = const Color(0xff393939);
-var red = const Color(0xffCF2525);
-var redAccent = const Color(0xffFF0701);
-var lime = const Color(0xff91FF00);
-var gray = const Color(0xffDADADA);
-var deepGray = const Color(0xff535353);
 
 class PredResultPage extends StatelessWidget {
   final image;
@@ -52,7 +40,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   String _desc = '';
   final Icon _arrowDown = const Icon(Icons.keyboard_arrow_down);
   final Icon _arrowUp = const Icon(Icons.keyboard_arrow_up);
-  Detections detections = Detections([], 0);
   final _descTextCon = TextEditingController();
   BoundingBoxColors boundColors = BoundingBoxColors();
   Map nut = {
@@ -65,6 +52,31 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   };
 
   double imageHeight = 0;
+
+  List rects = [];
+
+  Future<List> getRectInfo(detectInfo, resizeHeight, ratio) async {
+    List rects = [];
+    var predNo = widget.predResult['predict_no'];
+    String imageUrl = "http://203.252.240.74:5000/static/images/$predNo.jpg";
+    int index = 1;
+
+    for (var detection in detectInfo) {
+      Map rect = {};
+      rect['index'] = index ++;
+      rect['name'] = detection['name'].toString();
+      rect['x'] = detection['xmin'].toDouble() * ratio;
+      rect['y'] = detection['ymin'].toDouble() * ratio;
+      rect['w'] = (detection['xmax'].toDouble() * ratio) - rect['x'];
+      rect['h'] = (detection['ymax'].toDouble() * ratio) - rect['y'];
+
+      rect['thumbnail'] = await cropNetworkImage(imageUrl, resizeHeight.toInt(), rect);
+      rect['color'] = boundColors.get();
+      rects.add(rect);
+    }
+    print(rects);
+    return rects;
+  }
 
   Future<Map> preProcess() async {
     var sqlRs = await getNutrient(widget.predResult['class_name']);
@@ -83,11 +95,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     // 음식 이미지 사이즈
     double imageHeight = MediaQuery.of(context).size.height * 0.4;
 
-    print(widget.predResult['detection']);
     // 실계산을 위해 현재 사이즈와 원본 사이즈 비율 산정
     double ratio = imageHeight / sourceHeight;
-    Detections detections = Detections(widget.predResult['detection'], ratio);
-    return {'nut': nut, 'detect': detections, 'imageHeight': imageHeight};
+    List rects = await getRectInfo(widget.predResult['detection'], imageHeight, ratio);
+    print(rects);
+    return {'nut': nut, 'rects': rects, 'imageHeight': imageHeight};
   }
 
   @override
@@ -98,7 +110,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         if (snapshot.hasData) {
           nut = snapshot.data['nut'];
           imageHeight = snapshot.data['imageHeight'];
-          detections = snapshot.data['detect'];
+          rects = snapshot.data['rects'];
         }
         return Scaffold(
           body: SafeArea(
@@ -118,7 +130,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     double imageHeight = MediaQuery.of(context).size.height * 0.4;
 
     return Container(
-      color: lightGray,
+      color: lightGrey,
       child: Center(
         child: Stack(
           children: <Widget>[
@@ -127,7 +139,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               fit: BoxFit.fitHeight,
               height: imageHeight,
             ),
-            for (var rect in detections.getRectInfo()) ...[
+            for (var rect in rects) ...[
               // 바운딩 박스
               Positioned(
                   left: rect['x'],
@@ -179,239 +191,43 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   Widget predictResult() {
-    var predNo = widget.predResult['predict_no'];
-
-    return MyExpansionPanelList(
-      animationDuration: const Duration(milliseconds: 300),
-      expandedHeaderPadding: const EdgeInsets.all(0),
-      expansionCallback: (panelIndex, isExpanded) {
-        _expanded = !_expanded;
-        setState(() {});
-      },
-      children: [
-        MyExpansionPanel(
-          hasIcon: false,
-          isExpanded: _expanded,
-          headerBuilder: (context, isExpanded) {
-            return Container(
-              color: Colors.white,
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                  padding: const EdgeInsets.all(25.0),
-                  child: Column(
-                    children: [
-                      // 인디게이터바 ----------------------------------------------
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                        child: Container(
-                          width: 80,
-                          height: 5,
-                          decoration: BoxDecoration(
-                              color: lightGray,
-                              borderRadius: BorderRadius.circular(10)),
-                        ),
-                      ),
-                      // 측정결과 역역 ----------------------------------------------
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('식단 분류 결과입니다.',
-                              textScaleFactor: 1.1,
-                              style: TextStyle(
-                                  color: black, fontWeight: FontWeight.w500)),
-                          SizedBox(
-                            height: 150,
-                            child: ListView(
-                              children: [
-                                for (var rect in detections.getRectInfo()) ...[
-                                  Container(
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        bottom:
-                                            BorderSide(width: 1.5, color: gray),
-                                      ),
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Center(
-                                          child: Container(
-                                            width: 150,
-                                            child: AspectRatio(
-                                              aspectRatio: (rect['x'] / rect['y']),
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    image: DecorationImage(
-                                                      fit: BoxFit.fitWidth,
-                                                      alignment: FractionalOffset.topCenter,
-                                                      image: NetworkImage("http://203.252.240.74:5000/static/images/$predNo.jpg",),
-                                                    )
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        // Container(
-                                        //   width: 25,
-                                        //   height: 25,
-                                        //   decoration: BoxDecoration(
-                                        //     borderRadius:
-                                        //         BorderRadius.circular(9999),
-                                        //     color: rect['color'],
-                                        //   ),
-                                        //   child: Center(
-                                        //     child: Text(
-                                        //       rect['index'].toString(),
-                                        //       style: const TextStyle(
-                                        //           color: Colors.white,
-                                        //           fontSize: 18,
-                                        //           fontWeight: FontWeight.w600),
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        Text(
-                                          rect['name'],
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 24),
-                                        )
-                                      ],
-                                    ),
-                                  )
-                                ]
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  )),
-            );
-          },
-          // 영양정보 영역 (펼쳐질때)
-          body: Column(
-            children: [
-              // 구분선, 1회제공량
-              Padding(
-                padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 0.0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10.0, 10.0, 0.0, 0.0),
-                    child: Text(
-                      '1회제공량(${nut['serving_size']} g) 기준',
-                      textScaleFactor: 1.1,
-                      style: TextStyle(color: deepGray),
-                    ),
-                  ),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      top: BorderSide(width: 1.5, color: gray),
-                    ),
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text('식단 분류 결과입니다.',
+          textScaleFactor: 1.1,
+          style: TextStyle(color: black, fontWeight: FontWeight.w500)),
+      Container(
+        padding: const EdgeInsets.all(20),
+        height: 150,
+        child: ListView(
+          children: [
+            for (var rect in rects) ...[
+              Container(
+                padding: EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 1, color: grey),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 40.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    // 열량 정보  ------------------------------------
-                    Container(
-                      padding:
-                          const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('열량',
-                              textScaleFactor: 1.1,
-                              style: TextStyle(color: black)),
-                          Text('${nut['energy']}kcal',
-                              textScaleFactor: 1.2,
-                              style: TextStyle(
-                                  color: black, fontWeight: FontWeight.w700))
-                        ],
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 1.5, color: gray),
-                        ),
-                      ),
-                    ),
-                    // 탄수화물 정보 ----------------------------------
-                    Container(
-                      padding:
-                          const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('탄수화물',
-                              textScaleFactor: 1.1,
-                              style: TextStyle(color: black)),
-                          Text('${nut['hydrate']}g',
-                              textScaleFactor: 1.2,
-                              style: TextStyle(
-                                  color: black, fontWeight: FontWeight.w700))
-                        ],
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 1.5, color: gray),
-                        ),
-                      ),
-                    ),
-                    // 단백질 정보 -----------------------------------
-                    Container(
-                      padding:
-                          const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('단백질',
-                              textScaleFactor: 1.1,
-                              style: TextStyle(color: black)),
-                          Text('${nut['protein']}g',
-                              textScaleFactor: 1.2,
-                              style: TextStyle(
-                                  color: black, fontWeight: FontWeight.w700))
-                        ],
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 1.5, color: gray),
-                        ),
-                      ),
-                    ),
-                    // 지방 정보 -------------------------------------
-                    Container(
-                      padding:
-                          const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 10.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('지방',
-                              textScaleFactor: 1.1,
-                              style: TextStyle(color: black)),
-                          Text('${nut['fat']}g',
-                              textScaleFactor: 1.2,
-                              style: TextStyle(
-                                  color: black, fontWeight: FontWeight.w700))
-                        ],
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(width: 1.5, color: gray),
-                        ),
-                      ),
-                    ),
+                child: Row(
+                  children: [
+                    // SizedBox(
+                    //   width: 150,
+                    //   height: 150,
+                    //   child: rect['thumbnail'],
+                    // ),
+                    Text(
+                      rect['name'],
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, fontSize: 24),
+                    )
                   ],
                 ),
-              ),
-            ],
-          ),
+              )
+            ]
+          ],
         ),
-      ],
-    );
+      )
+    ]);
   }
 
   Widget sugarInfo() {
@@ -470,7 +286,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               unselectedGradientColor: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [gray, gray],
+                colors: [grey, grey],
               ),
             ),
           ),
@@ -531,7 +347,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               ),
               decoration: BoxDecoration(
                 border: Border(
-                  top: BorderSide(width: 1.5, color: gray),
+                  top: BorderSide(width: 1.5, color: darkGrey),
                 ),
               ),
             ),

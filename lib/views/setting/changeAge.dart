@@ -1,9 +1,10 @@
-import 'package:ai_dang/session.dart';
+import 'package:ai_dang/utils/session.dart';
 import 'package:ai_dang/views/community/community.dart';
 import 'package:ai_dang/views/setting/profileDetail.dart';
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:ai_dang/dbHandler.dart';
+import 'package:ai_dang/utils/dbHandler.dart';
 
 
 class changeAge extends StatefulWidget {
@@ -190,7 +191,7 @@ class _changeAgeState extends State<changeAge> {
                 child: Text(
                   '수정하기',
                   style: TextStyle(
-                    color: colorRed
+                    color: red
                   ),
                 ),
               ),
@@ -201,7 +202,7 @@ class _changeAgeState extends State<changeAge> {
                 child: Text(
                   '취소',
                   style: TextStyle(
-                      color: colorRed
+                      color: red
                   ),
                 ),
               )
@@ -244,7 +245,7 @@ class _changeAgeState extends State<changeAge> {
                 child: Text(
                   '확인',
                   style: TextStyle(
-                      color: colorRed
+                      color: red
                   ),
                 ),
               ),

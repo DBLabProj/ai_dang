@@ -1,5 +1,6 @@
-import 'package:ai_dang/session.dart';
+import 'package:ai_dang/utils/session.dart';
 import 'package:ai_dang/views/home.dart';
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
@@ -7,17 +8,9 @@ import 'package:loading_overlay/loading_overlay.dart';
 
 import 'package:ai_dang/widgets/myExpansionPanel.dart';
 import 'dart:io';
-import '../dbHandler.dart';
+import '../utils/dbHandler.dart';
 import '../main.dart';
-import '../request.dart';
-
-var lightGray = const Color(0xffF3F3F3);
-var black = const Color(0xff393939);
-var red = const Color(0xffCF2525);
-var redAccent = const Color(0xffFF0701);
-var lime = const Color(0xff91FF00);
-var gray = const Color(0xffDADADA);
-var deepGray = const Color(0xff535353);
+import '../utils/request.dart';
 
 class PredResultPage extends StatelessWidget {
   final image;
@@ -101,7 +94,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       // 하단 스크롤 영역 ---------------------------------------------
                       Expanded(
                         child: Container(
-                          color: lightGray,
+                          color: lightGrey,
                           padding: const EdgeInsets.fromLTRB(25, 2, 25, 0),
                           child: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
@@ -213,7 +206,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           width: 80,
                           height: 5,
                           decoration: BoxDecoration(
-                              color: lightGray,
+                              color: lightGrey,
                               borderRadius: BorderRadius.circular(10)),
                         ),
                       ),
@@ -286,12 +279,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     child: Text(
                       '1회제공량(${nut['serving_size']} g) 기준',
                       textScaleFactor: 1.1,
-                      style: TextStyle(color: deepGray),
+                      style: TextStyle(color: darkGrey),
                     ),
                   ),
                   decoration: BoxDecoration(
                     border: Border(
-                      top: BorderSide(width: 1.5, color: gray),
+                      top: BorderSide(width: 1.5, color: grey),
                     ),
                   ),
                 ),
@@ -319,7 +312,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       ),
                       decoration: BoxDecoration(
                         border: Border(
-                          bottom: BorderSide(width: 1.5, color: gray),
+                          bottom: BorderSide(width: 1.5, color: grey),
                         ),
                       ),
                     ),
@@ -341,7 +334,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       ),
                       decoration: BoxDecoration(
                         border: Border(
-                          bottom: BorderSide(width: 1.5, color: gray),
+                          bottom: BorderSide(width: 1.5, color: grey),
                         ),
                       ),
                     ),
@@ -363,7 +356,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       ),
                       decoration: BoxDecoration(
                         border: Border(
-                          bottom: BorderSide(width: 1.5, color: gray),
+                          bottom: BorderSide(width: 1.5, color: grey),
                         ),
                       ),
                     ),
@@ -385,7 +378,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       ),
                       decoration: BoxDecoration(
                         border: Border(
-                          bottom: BorderSide(width: 1.5, color: gray),
+                          bottom: BorderSide(width: 1.5, color: grey),
                         ),
                       ),
                     ),
@@ -455,7 +448,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               unselectedGradientColor: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [gray, gray],
+                colors: [grey, grey],
               ),
             ),
           ),
@@ -512,7 +505,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               ),
               decoration: BoxDecoration(
                 border: Border(
-                  top: BorderSide(width: 1.5, color: gray),
+                  top: BorderSide(width: 1.5, color: grey),
                 ),
               ),
             ),

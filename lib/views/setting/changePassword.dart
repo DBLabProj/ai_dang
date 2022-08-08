@@ -1,6 +1,7 @@
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:ai_dang/session.dart';
-import 'package:ai_dang/dbHandler.dart';
+import 'package:ai_dang/utils/session.dart';
+import 'package:ai_dang/utils/dbHandler.dart';
 import 'package:ai_dang/views/loginPage.dart';
 import '../loginPage.dart';
 
@@ -84,11 +85,11 @@ class _changepassState extends State<changepass> {
                         controller: _nowpassword,
                         decoration: InputDecoration(
                           labelText: '현재 비밀번호 입력',
-                          labelStyle: TextStyle(color: darKGray),
-                          prefixIcon: Icon(Icons.vpn_key, color: darKGray),
+                          labelStyle: TextStyle(color: darkGrey),
+                          prefixIcon: Icon(Icons.vpn_key, color: darkGrey),
                           focusColor: red,
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(width: 2, color: gray),
+                            borderSide: BorderSide(width: 2, color: grey),
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(width: 2, color: red),
@@ -108,11 +109,11 @@ class _changepassState extends State<changepass> {
                         controller: _changepassword,
                         decoration: InputDecoration(
                           labelText: '변경할 비밀번호',
-                          labelStyle: TextStyle(color: darKGray),
-                          prefixIcon: Icon(Icons.vpn_key, color: darKGray),
+                          labelStyle: TextStyle(color: darkGrey),
+                          prefixIcon: Icon(Icons.vpn_key, color: darkGrey),
                           focusColor: red,
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(width: 2, color: gray),
+                            borderSide: BorderSide(width: 2, color: grey),
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(width: 2, color: red),
@@ -132,11 +133,11 @@ class _changepassState extends State<changepass> {
                         controller: _changepassword_check,
                         decoration: InputDecoration(
                           labelText: '변경할 비밀번호 확인',
-                          labelStyle: TextStyle(color: darKGray),
-                          prefixIcon: Icon(Icons.vpn_key, color: darKGray),
+                          labelStyle: TextStyle(color: darkGrey),
+                          prefixIcon: Icon(Icons.vpn_key, color: darkGrey),
                           focusColor: red,
                           enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(width: 2, color: gray),
+                            borderSide: BorderSide(width: 2, color: grey),
                           ),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(width: 2, color: red),

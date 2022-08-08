@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../dbHandler.dart';
-import '../session.dart';
+import '../utils/dbHandler.dart';
+import '../utils/session.dart';
 
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);
