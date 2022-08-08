@@ -41,7 +41,6 @@ class communityDetail extends StatefulWidget {
 class _communityDetailState extends State<communityDetail>{
   List<Widget> _commentList = [];
 
-
   @override
   Widget build(BuildContext context) {
     var boardImage = widget.boardImage;
@@ -92,8 +91,8 @@ class _communityDetailState extends State<communityDetail>{
                                               color: Colors.black,
                                               fontSize: 15),
                                         ),
-                                        onPressed: () {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => const modifyPost(context: context, boardTitle: widget.boardTitle, boardContent: widget.boardContent, boardImage: widget.boardImage)));
+                                        onPressed: (context) {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => modifyPost(context: context, boardTitle: widget.boardTitle, boardContent: widget.boardContent, boardImage: widget.boardImage)));
                                         },
                                       ),
                                       BottomSheetAction(
