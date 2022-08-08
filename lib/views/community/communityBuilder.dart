@@ -149,7 +149,7 @@ Widget getBoardComponent(
                             const SizedBox(width: 40),
                             ClipRRect(
                               child: Image.network(
-                                "http://203.252.240.74:5000/static/images/$boardImage.jpg",
+                                "http://203.252.240.74:5000/static/images/board/$boardImage.jpg",
                                 fit: BoxFit.fitHeight,
                                 width: MediaQuery.of(context).size.width * 0.05,
                                 height: MediaQuery.of(context).size.width * 0.1,
