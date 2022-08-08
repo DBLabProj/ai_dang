@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:ai_dang/utils/cropImage.dart';
 import 'package:ai_dang/utils/session.dart';
+import 'package:ai_dang/widgets/nutInfoIndicator.dart';
+import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
@@ -35,6 +39,7 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   bool _expanded = false;
 
+  final AsyncMemoizer _memoizer = AsyncMemoizer();
   int _amount = 1;
   String _desc = '';
   final Icon _arrowDown = const Icon(Icons.keyboard_arrow_down);
@@ -71,34 +76,36 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           (detection['confidence'].toDouble() * 100).toInt().toString();
       rect['thumbnail'] =
           await cropNetworkImage(imageUrl, resizeHeight.toInt(), rect);
+      rect['servingSelected'] = [false, true, false, false];
       rect['color'] = boundColors.get();
       rects.add(rect);
     }
     return rects;
   }
 
-  Future<Map> preProcess() async {
-    var sqlRs = await getNutrient(widget.predResult['class_name']);
+  Future preProcess() async {
+    return _memoizer.runOnce(() async {
+      // var sqlRs = await getNutrient(widget.predResult['class_name']);
+      //
+      // for (var row in sqlRs) {
+      //   nut['serving_size'] = row[1];
+      //   nut['energy'] = row[3];
+      //   nut['protein'] = row[5];
+      //   nut['fat'] = row[6];
+      //   nut['hydrate'] = row[7];
+      //   nut['total_sugar'] = row[8];
+      // }
 
-    for (var row in sqlRs) {
-      nut['serving_size'] = row[1];
-      nut['energy'] = row[3];
-      nut['protein'] = row[5];
-      nut['fat'] = row[6];
-      nut['hydrate'] = row[7];
-      nut['total_sugar'] = row[8];
-    }
-
-    // 음식 이미지 원본 사이즈
-    double sourceHeight = widget.predResult['image_height'].toDouble();
-    // 음식 이미지 사이즈
-    double imageHeight = MediaQuery.of(context).size.height * 0.4;
-
-    // 실계산을 위해 현재 사이즈와 원본 사이즈 비율 산정
-    double ratio = imageHeight / sourceHeight;
-    List rects =
-        await getRectInfo(widget.predResult['detection'], imageHeight, ratio);
-    return {'nut': nut, 'rects': rects, 'imageHeight': imageHeight};
+      // 음식 이미지 원본 사이즈
+      double sourceHeight = widget.predResult['image_height'].toDouble();
+      // 음식 이미지 사이즈
+      double imageHeight = MediaQuery.of(context).size.height * 0.4;
+      // 실계산을 위해 현재 사이즈와 원본 사이즈 비율 산정
+      double ratio = imageHeight / sourceHeight;
+      List rects =
+          await getRectInfo(widget.predResult['detection'], imageHeight, ratio);
+      return {'nut': nut, 'rects': rects, 'imageHeight': imageHeight};
+    });
   }
 
   @override
@@ -199,7 +206,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         height: 400,
         child: ListView(
           children: [
-            for (var rect in rects) ...[
+            for (int i = 0; i < rects.length; i++) ...[
               Container(
                 padding: EdgeInsets.all(12),
                 decoration: BoxDecoration(
@@ -224,9 +231,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: SizedBox(
-                        width: 120,
-                        height: 120,
-                        child: rect['thumbnail'],
+                        width: 140,
+                        height: 160,
+                        child: rects[i]['thumbnail'],
                       ),
                     ),
 
@@ -239,27 +246,96 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                             Row(
                               children: [
                                 Text(
-                                  rect['name'],
+                                  rects[i]['name'],
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w600, fontSize: 26),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 26),
                                 ),
                                 const SizedBox(width: 3),
                                 Container(
-                                  padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(4, 4, 4, 4),
                                   decoration: BoxDecoration(
-                                  color: rect['color'],
-                                  borderRadius: BorderRadius.circular(6)),
+                                      color: rects[i]['color'],
+                                      borderRadius: BorderRadius.circular(6)),
                                   child: Center(
-                                  child: Text(
-                                "${rect['acc']}%일치",
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w600, fontSize: 10, color: Colors.white),
+                                      child: Text(
+                                    "${rects[i]['acc']}%일치",
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 10,
+                                        color: Colors.white),
                                   )),
                                 ),
                               ],
                             ),
                             const SizedBox(height: 5),
-                            Text('혹시 이 음식이 아니신가요?'),
+                            Text('먹은 양을 선택해주세요. (제공량)'),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              height: 30,
+                              child: ToggleButtons(
+                                selectedColor: red,
+                                splashColor: red.withOpacity(0.2),
+                                fillColor: red.withOpacity(0.2),
+                                highlightColor: red.withOpacity(0.4),
+                                children: const <Widget>[
+                                  SizedBox(
+                                      width: 60,
+                                      child: Center(
+                                          child: Text(
+                                        '1/2회',
+                                        style: TextStyle(fontSize: 13),
+                                      ))),
+                                  SizedBox(
+                                      width: 60,
+                                      child: Center(
+                                          child: Text(
+                                        '1회',
+                                        style: TextStyle(fontSize: 13),
+                                      ))),
+                                  SizedBox(
+                                      width: 60,
+                                      child: Center(
+                                          child: Text(
+                                        '1과1/2회',
+                                        style: TextStyle(fontSize: 13),
+                                      ))),
+                                  SizedBox(
+                                      width: 60,
+                                      child: Center(
+                                          child: Text(
+                                        '2회',
+                                        style: TextStyle(fontSize: 13),
+                                      ))),
+                                ],
+                                onPressed: (int index) {
+                                  setState(() {
+                                    for (int buttonIndex = 0;
+                                        buttonIndex <
+                                            rects[i]['servingSelected'].length;
+                                        buttonIndex++) {
+                                      if (buttonIndex == index) {
+                                        rects[i]['servingSelected']
+                                                [buttonIndex] =
+                                            !rects[i]['servingSelected']
+                                                [buttonIndex];
+                                      } else {
+                                        rects[i]['servingSelected']
+                                            [buttonIndex] = false;
+                                      }
+                                    }
+                                  });
+                                },
+                                isSelected: rects[i]['servingSelected'],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            // 영양 인디게이터
+                            nutInfoIndicator([12, 14, 6, 5])
+
                           ],
                         ),
                       ),
