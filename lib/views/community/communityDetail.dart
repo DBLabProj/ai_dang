@@ -41,7 +41,6 @@ class communityDetail extends StatefulWidget {
 class _communityDetailState extends State<communityDetail>{
   List<Widget> _commentList = [];
 
-
   @override
   Widget build(BuildContext context) {
     var boardImage = widget.boardImage;

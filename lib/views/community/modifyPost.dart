@@ -1,9 +1,10 @@
+import 'package:ai_dang/utils/dbHandler.dart';
+import 'package:ai_dang/utils/request.dart';
+import 'package:ai_dang/utils/session.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../utils/dbHandler.dart';
-import '../../utils/request.dart';
-import '../../utils/session.dart';
+
 import 'community.dart';
 
 var colorBlack = const Color(0xff535353);
@@ -43,8 +44,14 @@ class _modifyPostState extends State<modifyPost> {
   @override
   Widget build(BuildContext context) {
 
-    print(imageText);
+    var boardTitle = widget.boardTitle;
+    var boardContent = widget.boardContent;
+    var boardLoadImage = widget.boardImage;
 
+    // print(imageText);
+    // print(widget.boardTitle);
+    // print(widget.boardContent);
+    // print(widget.boardImage);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -72,11 +79,11 @@ class _modifyPostState extends State<modifyPost> {
                     onChanged: (text) {
                       _title = text;
                     },
-                    decoration: const InputDecoration(
-                      labelStyle: TextStyle(color: Color(0xffCF2525)),
-                      border: OutlineInputBorder(),
-                      labelText: "제목",
-                      focusedBorder: OutlineInputBorder(
+                    decoration: InputDecoration(
+                      labelStyle: const TextStyle(color: Color(0xffCF2525)),
+                      border: const OutlineInputBorder(),
+                      hintText: boardTitle,
+                      focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
                       ),
