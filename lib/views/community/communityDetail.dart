@@ -1,10 +1,14 @@
+import 'package:ai_dang/main.dart';
+import 'package:ai_dang/views/community/modifyPost.dart';
 import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 
 import '../../dbHandler.dart';
 import '../../session.dart';
+import 'community.dart';
 
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);
@@ -61,9 +65,10 @@ class _communityDetailState extends State<communityDetail>{
                     Container(
                       color: colorRed,
                       child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        padding: const EdgeInsets.fromLTRB(20, 20, 0, 20),
+                        child: Row(
+                          // crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               '아이당 커뮤니티',
@@ -73,7 +78,48 @@ class _communityDetailState extends State<communityDetail>{
                                   fontSize:
                                   (MediaQuery.of(context).size.width) * 0.04),
                             ),
-                          ],
+                            if(User_id == widget.boardWriter)...[
+                              ElevatedButton(
+                                onPressed: () {
+                                  showAdaptiveActionSheet(
+                                    context: context,
+                                    actions: <BottomSheetAction>[
+                                      BottomSheetAction(
+                                        title: const Text(
+                                          '수정',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => const modifyPost(context: context, boardTitle: widget.boardTitle, boardContent: widget.boardContent, boardImage: widget.boardImage)));
+                                        },
+                                      ),
+                                      BottomSheetAction(
+                                        title: const Text(
+                                            '삭제',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 15)),
+                                        onPressed: (BuildContext context) {
+                                          deleteDialogCheck();
+                                        },
+                                      ),
+                                    ],
+                                    cancelAction: CancelAction(title: const Text(
+                                        '취소',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15))),
+                                  );
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                                  elevation: MaterialStateProperty.all(0.0),
+                                ),
+                                child: const Icon(Icons.more_vert, color: Colors.white,),
+                              ),]
+                            ]
                         ),
                       ),
                     ),
@@ -127,7 +173,6 @@ class _communityDetailState extends State<communityDetail>{
                         ),
                       ],
                     ),
-
                     Container(
                       margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
                       padding: const EdgeInsets.fromLTRB(15.0, 50.0, 15.0, 50.0),
@@ -500,6 +545,85 @@ class _communityDetailState extends State<communityDetail>{
           ],
         ),
       ],
+    );
+  }
+
+  void deleteDialogCheck() {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+                '게시글 삭제'
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text(
+                      '게시글을 삭제하시겠습니까?'
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  deleteBoard(widget.boardUid);
+                  Navigator.of(context).pop();
+                  deleteDialogConfirm();
+                },
+                child: const Text(
+                  '삭제',
+                ),
+              ),
+              TextButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  '취소',
+                ),
+              )
+            ],
+          );
+        }
+    );
+  }
+
+  void deleteDialogConfirm() {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+                '게시글 삭제'
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text(
+                      '삭제가 완료되었습니다.'
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage()));
+                },
+                child: const Text(
+                  '확인',
+                ),
+              ),
+            ],
+          );
+        }
     );
   }
 }

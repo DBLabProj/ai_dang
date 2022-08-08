@@ -182,6 +182,19 @@ Future insertReComment(_reCommentContent, _commentUid, _userId) async {
   return result;
 }
 
+Future deleteBoard(_boardUid) async {
+  var conn = await ConnHandler.instance.conn;
+  var boardUid = _boardUid;
+
+  String sql = '''
+    DELETE FROM board WHERE board_uid = ?
+  ''';
+
+  var result = await conn.query(sql, [boardUid]);
+
+  return result;
+}
+
 Future getBoard(_search) async {
   var conn = await ConnHandler.instance.conn;
   var search = _search;

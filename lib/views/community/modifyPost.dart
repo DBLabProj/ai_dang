@@ -14,15 +14,20 @@ var colorDarkGray = const Color(0xffADADBE);
 var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
-class WritePost extends StatefulWidget {
+class modifyPost extends StatefulWidget {
+  final boardTitle, boardImage, boardContent, context;
 
-  const WritePost({Key? key}) : super(key: key);
+  const modifyPost({
+    Key? key,
+    @required this.boardTitle, @required this.boardContent,
+    @required this.boardImage, @required this.context})
+      : super(key: key);
 
   @override
-  State<WritePost> createState() => _WritePostState();
+  State<modifyPost> createState() => _modifyPostState();
 }
 
-class _WritePostState extends State<WritePost> {
+class _modifyPostState extends State<modifyPost> {
   var writeBoardList = [];
   var imageText;
   final _picker = ImagePicker();
@@ -37,34 +42,6 @@ class _WritePostState extends State<WritePost> {
 
   @override
   Widget build(BuildContext context) {
-
-    // void showConfirmDialog(message) {
-    //   showDialog(
-    //     context: context,
-    //     barrierDismissible: true,
-    //     // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
-    //     builder: (BuildContext context) {
-    //       return
-    //         AlertDialog(
-    //           title: Text(
-    //             //제목 정의
-    //             message,
-    //           ),
-    //           actions: <Widget>[
-    //             TextButton(
-    //               onPressed: () {
-    //                 Navigator.of(context).pop(); // 현재 화면을 종료하고 이전 화면으로 돌아가기
-    //                 insertBoard(_title, _content, user_id, imageText);
-    //               },
-    //               child: const Text(
-    //                 '확인',
-    //               ),
-    //             ),
-    //           ],
-    //         );
-    //     },
-    //   );
-    // }
 
     print(imageText);
 
@@ -175,7 +152,7 @@ class _WritePostState extends State<WritePost> {
                           Navigator.pop(context);
                         },
                         child: Text(
-                          '작 성 하 기',
+                          '수 정 하 기',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.w500,

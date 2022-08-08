@@ -40,9 +40,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-
   int selectedIndex = 0;
-
 
   final List _pages = [
     const HomePage(),
