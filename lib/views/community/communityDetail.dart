@@ -1,18 +1,19 @@
 import 'package:ai_dang/main.dart';
 import 'package:ai_dang/views/community/modifyPost.dart';
 import 'package:ai_dang/views/predResult.dart';
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 
-import '../../dbHandler.dart';
-import '../../session.dart';
 import 'community.dart';
+import '../../utils/dbHandler.dart';
+import '../../utils/session.dart';
 
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);
-var colorLightGray = const Color(0xffF3F3F3);
+var colorlightGrey = const Color(0xffF3F3F3);
 var colorGray = const Color(0xffE0E0E0);
 var colorDarkGray = const Color(0xffADADBE);
 var colorOrange = const Color(0xffFBAA47);
@@ -470,7 +471,7 @@ class _communityDetailState extends State<communityDetail>{
       margin: const EdgeInsets.fromLTRB(50, 0, 50, 0),
       padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 0.0),
       decoration: BoxDecoration(
-          color: lightGray,
+          color: lightGrey,
           borderRadius: BorderRadius.circular(10),
       ),
       child: Column(

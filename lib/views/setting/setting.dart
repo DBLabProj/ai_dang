@@ -3,7 +3,7 @@ import 'package:ai_dang/views/setting/profileDetail.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../session.dart';
+import '../../utils/session.dart';
 import '../loginPage.dart';
 
 class setting extends StatefulWidget {

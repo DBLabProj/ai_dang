@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../dbHandler.dart';
-import '../../request.dart';
-import '../../session.dart';
+import '../../utils/dbHandler.dart';
+import '../../utils/request.dart';
+import '../../utils/session.dart';
 import 'community.dart';
 
 var colorBlack = const Color(0xff535353);

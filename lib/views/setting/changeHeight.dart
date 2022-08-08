@@ -1,6 +1,7 @@
-import 'package:ai_dang/dbHandler.dart';
-import 'package:ai_dang/session.dart';
+import 'package:ai_dang/utils/dbHandler.dart';
+import 'package:ai_dang/utils/session.dart';
 import 'package:ai_dang/views/setting/profileDetail.dart';
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -186,7 +187,7 @@ class _changeheightState extends State<changeheight> {
                 child: Text(
                   '수정하기',
                   style: TextStyle(
-                      color: colorRed
+                      color: red
                   ),
                 ),
               ),
@@ -197,7 +198,7 @@ class _changeheightState extends State<changeheight> {
                 child: Text(
                   '취소',
                   style: TextStyle(
-                      color: colorRed
+                      color: red
                   ),
                 ),
               )
@@ -244,7 +245,7 @@ class _changeheightState extends State<changeheight> {
                 child: Text(
                   '확인',
                   style: TextStyle(
-                      color: colorRed
+                      color: red
                   ),
                 ),
               ),

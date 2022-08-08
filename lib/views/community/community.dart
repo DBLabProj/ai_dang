@@ -1,24 +1,17 @@
 
 import 'package:ai_dang/views/predResult.dart';
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
-import 'package:ai_dang/dbHandler.dart';
+import 'package:ai_dang/utils/dbHandler.dart';
 
-import '../../request.dart';
-import '../../session.dart';
+import '../../utils/request.dart';
+import '../../utils/session.dart';
 import 'WritePost.dart';
 import 'communityBuilder.dart';
-
-var colorBlack = const Color(0xff535353);
-var colorRed = const Color(0xffCF2525);
-var colorLightGray = const Color(0xffF3F3F3);
-var colorGray = const Color(0xffE0E0E0);
-var colorDarkGray = const Color(0xffADADBE);
-var colorOrange = const Color(0xffFBAA47);
-var colorGreen = const Color(0xff8AD03C);
 
 var User_id = Session.instance.userInfo['email'];
 
@@ -68,7 +61,7 @@ class _communityState extends State<community> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
-                color: colorRed,
+                color: red,
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
@@ -95,7 +88,7 @@ class _communityState extends State<community> {
     //검색창
    Widget searchBoard() {
       return Container(
-        color: lightGray,
+        color: lightGrey,
         padding: const EdgeInsets.fromLTRB(20, 2, 20 ,2),
         child: Column(
         children: [
@@ -150,7 +143,7 @@ class _communityState extends State<community> {
                   ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  primary: colorRed,
+                  primary: red,
                 ),
               ),
             ],
@@ -164,7 +157,7 @@ class _communityState extends State<community> {
     Widget boardInfo() {
       return Expanded(
         child: Container(
-          color: lightGray,
+          color: lightGrey,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(40, 2, 40, 0),
             child: SingleChildScrollView(
@@ -188,7 +181,7 @@ class _communityState extends State<community> {
         iconTheme: const IconThemeData(size: 32),
         spacing: 10,
         spaceBetweenChildren: 4,
-        backgroundColor: colorRed,
+        backgroundColor: red,
         onPress: () {
           Navigator.push(
             context,

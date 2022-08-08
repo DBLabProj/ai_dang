@@ -1,6 +1,7 @@
 import 'package:ai_dang/views/account/age.dart';
 import 'package:ai_dang/views/account/signup.dart';
 import 'package:ai_dang/views/predResult.dart';
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:flutter/material.dart';
 
 class genderpage extends StatefulWidget {

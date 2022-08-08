@@ -1,6 +1,7 @@
-import 'package:ai_dang/dbHandler.dart';
+import 'package:ai_dang/utils/dbHandler.dart';
 import 'package:ai_dang/views/account/genderpage.dart';
 import 'package:ai_dang/views/loginPage.dart';
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:ai_dang/widgets/myTextField.dart';
 import 'package:flutter/material.dart';
 
@@ -157,11 +158,11 @@ class _signupState extends State<signup> {
                               decoration: InputDecoration(
                                 labelText: '이메일',
                                 hintText: '이메일을 입력하세요.',
-                                labelStyle: TextStyle(color: darKGray),
-                                prefixIcon: Icon(Icons.email, color: darKGray),
+                                labelStyle: TextStyle(color: darkGrey),
+                                prefixIcon: Icon(Icons.email, color: darkGrey),
                                 focusColor: red,
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(width: 2, color: gray),
+                                  borderSide: BorderSide(width: 2, color: grey),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(width: 2, color: red),
@@ -213,11 +214,11 @@ class _signupState extends State<signup> {
                               decoration: InputDecoration(
                                 labelText: '비밀번호 확인',
                                 hintText: '비밀번호를 다시 입력하세요.',
-                                labelStyle: TextStyle(color: darKGray),
-                                prefixIcon: Icon(Icons.vpn_key, color: darKGray),
+                                labelStyle: TextStyle(color: darkGrey),
+                                prefixIcon: Icon(Icons.vpn_key, color: darkGrey),
                                 focusColor: red,
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(width: 2, color: gray),
+                                  borderSide: BorderSide(width: 2, color: grey),
                                 ),
                                 focusedBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(width: 2, color: red),

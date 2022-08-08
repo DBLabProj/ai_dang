@@ -1,14 +1,15 @@
 import 'package:ai_dang/views/Statistics/statisticsBuilder.dart';
 import 'package:ai_dang/views/home.dart';
 import 'package:ai_dang/views/predResult.dart';
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:ai_dang/widgets/infoWidget.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:multi_charts/multi_charts.dart' as multi_charts;
 import 'package:syncfusion_flutter_charts/charts.dart';
-import '../../dbHandler.dart';
-import '../../session.dart';
+import '../../utils/dbHandler.dart';
+import '../../utils/session.dart';
 
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);

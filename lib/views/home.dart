@@ -1,8 +1,8 @@
-import 'package:ai_dang/session.dart';
+import 'package:ai_dang/utils/session.dart';
 import 'package:ai_dang/views/predResult.dart';
 import 'package:ai_dang/views/setting/test.dart';
 import 'package:flutter/material.dart';
-import 'package:ai_dang/request.dart';
+import 'package:ai_dang/utils/request.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -11,14 +11,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
 import '../widgets/mealListBuilder.dart';
-
-var colorBlack = const Color(0xff535353);
-var colorRed = const Color(0xffCF2525);
-var colorLightGray = const Color(0xffF3F3F3);
-var colorGray = const Color(0xffE0E0E0);
-var colorDarkGray = const Color(0xffADADBE);
-var colorOrange = const Color(0xffFBAA47);
-var colorGreen = const Color(0xff8AD03C);
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

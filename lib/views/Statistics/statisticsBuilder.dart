@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:ai_dang/session.dart';
+import 'package:ai_dang/utils/session.dart';
 import 'package:intl/intl.dart';
 
-import '../../dbHandler.dart';
+import '../../utils/dbHandler.dart';
 import 'dart:math';
 
 class SugarData {
