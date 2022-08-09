@@ -55,7 +55,7 @@ class _bloodCheckState extends State<bloodCheck> {
               color: Colors.black
           ),
           ),
-          elevation: 2,
+          elevation: 1,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           leading: IconButton(
@@ -87,16 +87,16 @@ class _bloodCheckState extends State<bloodCheck> {
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: [
-                    calendar(),
+                    date_time(),
+                    Divider(
+                      thickness: 1,
+                    ),
                     SizedBox(
-                      height: (MediaQuery.of(context).size.height) * 0.02,
+                      height: (MediaQuery.of(context).size.height) * 0.07,
                     ),
                     insert_blood_data(),
                     time_detail(),
                     test_button(),
-
-
-
                   ],
                 ),
               ),
@@ -107,120 +107,30 @@ class _bloodCheckState extends State<bloodCheck> {
     );
   }
 
-  Widget calendar() {
+  Widget date_time(){
     return Padding(
-        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        child: Column(
+      padding: const EdgeInsets.fromLTRB(10, 10, 10, 7),
+      child: Container(
+        height: 30,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // 캘린더
-            TableCalendar(
-              locale: 'ko_KR',
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2030, 3, 14),
-              daysOfWeekHeight: 23,
-              focusedDay: _selectedDay,
-              calendarFormat: _calendarFormat,
-              calendarStyle: const CalendarStyle(
-                isTodayHighlighted: false,
-              ),
-              headerStyle: const HeaderStyle(
-                  headerPadding: EdgeInsets.all(15),
-                  formatButtonVisible: false,
-                  rightChevronVisible: false,
-                  leftChevronVisible: false),
-              selectedDayPredicate: (day) {
-                return isSameDay(_selectedDay, day);
-              },
-              onDaySelected: (selectedDay, focusedDay) {
-                if (!isSameDay(_selectedDay, selectedDay)) {
-                  // Call `setState()` when updating the selected day
-                  if(mounted) {
-                    setState(() {
-                      _selectedDay = selectedDay;
-                    });
-                  }
-                }
-              },
-              calendarBuilders: CalendarBuilders(
-                defaultBuilder: (context, day, focusedDay) {
-                  var strDay = DateFormat.d().format(day);
-                  return Center(
-                      child: Text(
-                        strDay,
-                        textScaleFactor: 1.2,
-                      ));
-                },
-                outsideBuilder: (context, day, focusedDay) {
-                  var strDay = DateFormat.d().format(day);
-                  return Center(
-                      child: Text(
-                        strDay,
-                        textScaleFactor: 1.2,
-                        style: TextStyle(color: Colors.grey.shade400),
-                      ));
-                },
-                dowBuilder: (context, day) {
-                  final text = DateFormat('E', 'ko_KR').format(day);
-                  var style = const TextStyle();
-                  if (day.weekday == DateTime.sunday) {
-                    style = const TextStyle(color: Colors.red);
-                  }
-                  return Center(
-                      child: Text(text, textScaleFactor: 1.2, style: style));
-                },
-                selectedBuilder: (context, day, focusedDay) {
-                  var strDay = DateFormat.d().format(day);
-                  return Center(
-                    child: Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                            color: colorRed, shape: BoxShape.circle),
-                        child: Center(
-                            child: Text(
-                              strDay,
-                              textScaleFactor: 1.2,
-                              style: const TextStyle(color: Colors.white),
-                            ))),
-                  );
-                },
-                headerTitleBuilder: (context, day) {
-                  var strDay = DateFormat("yyyy년 M월").format(day);
-                  var iconBtn;
-                  if (_calendarFormat == CalendarFormat.week) {
-                    iconBtn = IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _calendarFormat = CalendarFormat.month;
-                          });
-                        },
-                        icon: const Icon(Icons.keyboard_arrow_down, size: 32));
-                  } else {
-                    iconBtn = IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _calendarFormat = CalendarFormat.week;
-                          });
-                        },
-                        icon: const Icon(Icons.keyboard_arrow_up, size: 32));
-                  }
-                  return Row(
-                    children: [
-                      Text(strDay,
-                          textScaleFactor: 1.6,
-                          style: TextStyle(
-                              color: colorRed, fontWeight: FontWeight.w600)),
-                      Center(child: iconBtn)
-                    ],
-                  );
-                },
-              ),
-            ),
-            Divider(),
+            Text('${_selectedDay}'.substring(0,4)+'년 '+'${_selectedDay}'.substring(5,7)+'월 '+'${_selectedDay}'.substring(8,10)+'일',
+            textScaleFactor: 1.3,
+              style: TextStyle(
+            ),),
 
+
+            Text('${_selectedDay}'.substring(11,13)+'시 '+'${_selectedDay}'.substring(14,16)+'분 ',
+            textScaleFactor: 1.3,
+              style: TextStyle(
+            ),),
           ],
-        ));
+        ),
+      ),
+    );
   }
+
 
   Widget insert_blood_data(){
     return Container(
@@ -275,6 +185,7 @@ class _bloodCheckState extends State<bloodCheck> {
             ...time.map((e) => Center(
               child: Text(
                 e,
+                textScaleFactor: 1,
                 style: TextStyle(
                     fontWeight: FontWeight.w500,
                     color: colorRed

@@ -182,6 +182,26 @@ Future insertReComment(_reCommentContent, _commentUid, _userId) async {
   return result;
 }
 
+Future modifyBoard(_title, _content, _userId, _imageText, _boardUid) async {
+  var conn = await ConnHandler.instance.conn;
+  var title = _title;
+  var content = _content;
+  var writer = _userId;
+  var image = _imageText;
+  var boardUid = _boardUid;
+
+  DateTime datetime = DateTime.now().toUtc().add(const Duration(hours: 9));
+
+  String sql = '''
+    UPDATE board SET board_title = ? , board_content = ?, board_add = ?, board_image = ?
+    WHERE board_uid = ?
+  ''';
+
+  var result = await conn.query(sql, [title, content, datetime, image, boardUid]);
+
+  return result;
+}
+
 Future deleteBoard(_boardUid) async {
   var conn = await ConnHandler.instance.conn;
   var boardUid = _boardUid;
