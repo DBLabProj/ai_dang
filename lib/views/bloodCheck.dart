@@ -89,7 +89,12 @@ class _bloodCheckState extends State<bloodCheck> {
 
             },
                 child: Text(
-                  '저장'
+                  '저장',
+
+                  style: TextStyle(
+                  color: colorRed,
+                    fontSize: 18
+                ),
                 ))
           ],
         ),
