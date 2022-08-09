@@ -12,10 +12,10 @@ import '../utils/dbHandler.dart';
 import '../main.dart';
 import '../utils/request.dart';
 
-class PredResultPage extends StatelessWidget {
+class PredResultPage3 extends StatelessWidget {
   final image;
   final predResult;
-  const PredResultPage(
+  const PredResultPage3(
       {Key? key, @required this.image, @required this.predResult})
       : super(key: key);
 

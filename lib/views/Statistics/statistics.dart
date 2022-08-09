@@ -1,6 +1,6 @@
 import 'package:ai_dang/views/Statistics/statisticsBuilder.dart';
 import 'package:ai_dang/views/home.dart';
-import 'package:ai_dang/views/predResult.dart';
+import 'package:ai_dang/views/predResult_back2.dart';
 import 'package:ai_dang/widgets/colors.dart';
 import 'package:ai_dang/widgets/infoWidget.dart';
 import 'package:async/async.dart';

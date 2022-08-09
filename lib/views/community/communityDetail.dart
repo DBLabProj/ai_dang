@@ -1,6 +1,6 @@
 import 'package:ai_dang/main.dart';
 import 'package:ai_dang/views/community/modifyPost.dart';
-import 'package:ai_dang/views/predResult.dart';
+import 'package:ai_dang/views/predResult_back2.dart';
 import 'package:ai_dang/widgets/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +92,7 @@ class _communityDetailState extends State<communityDetail>{
                                               fontSize: 15),
                                         ),
                                         onPressed: (context) {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => modifyPost(context: context, boardTitle: widget.boardTitle, boardContent: widget.boardContent, boardImage: widget.boardImage)));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => modifyPost(context: context, boardTitle: widget.boardTitle, boardContent: widget.boardContent, boardImage: widget.boardImage, boardUid: widget.boardUid,)));
                                         },
                                       ),
                                       BottomSheetAction(

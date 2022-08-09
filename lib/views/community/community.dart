@@ -1,5 +1,5 @@
 
-import 'package:ai_dang/views/predResult.dart';
+import 'package:ai_dang/views/predResult_back2.dart';
 import 'package:ai_dang/widgets/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
