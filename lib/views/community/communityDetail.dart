@@ -92,7 +92,7 @@ class _communityDetailState extends State<communityDetail>{
                                               fontSize: 15),
                                         ),
                                         onPressed: (context) {
-                                          Navigator.push(context, MaterialPageRoute(builder: (context) => modifyPost(context: context, boardTitle: widget.boardTitle, boardContent: widget.boardContent, boardImage: widget.boardImage)));
+                                          Navigator.push(context, MaterialPageRoute(builder: (context) => modifyPost(context: context, boardTitle: widget.boardTitle, boardContent: widget.boardContent, boardImage: widget.boardImage, boardUid: widget.boardUid,)));
                                         },
                                       ),
                                       BottomSheetAction(

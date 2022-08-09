@@ -16,12 +16,13 @@ var colorOrange = const Color(0xffFBAA47);
 var colorGreen = const Color(0xff8AD03C);
 
 class modifyPost extends StatefulWidget {
-  final boardTitle, boardImage, boardContent, context;
+  final boardTitle, boardImage, boardContent, context, boardUid;
 
   const modifyPost({
     Key? key,
     @required this.boardTitle, @required this.boardContent,
-    @required this.boardImage, @required this.context})
+    @required this.boardImage, @required this.boardUid,
+    @required this.context})
       : super(key: key);
 
   @override
@@ -33,8 +34,7 @@ class _modifyPostState extends State<modifyPost> {
   var imageText;
   final _picker = ImagePicker();
 
-  final _titleTextEditController = TextEditingController();
-  final _contentTextEditController = TextEditingController();
+
 
   var user_id = Session.instance.userInfo['email'];
   String _title = '';
@@ -47,11 +47,16 @@ class _modifyPostState extends State<modifyPost> {
     var boardTitle = widget.boardTitle;
     var boardContent = widget.boardContent;
     var boardLoadImage = widget.boardImage;
+    var boardUid = widget.boardUid;
+
+    final _titleTextEditController = TextEditingController();
+    final _contentTextEditController = TextEditingController(text: boardContent);
 
     print(imageText);
     print(widget.boardTitle);
     print(widget.boardContent);
     print(widget.boardImage);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -75,15 +80,15 @@ class _modifyPostState extends State<modifyPost> {
               child: Column(
                 children: <Widget>[
                   TextField(
-                    controller: _titleTextEditController,
+                    controller: _titleTextEditController..text = boardTitle,
                     onChanged: (text) {
                       _title = text;
                     },
-                    decoration: InputDecoration(
-                      labelStyle: const TextStyle(color: Color(0xffCF2525)),
-                      border: const OutlineInputBorder(),
-                      hintText: boardTitle,
-                      focusedBorder: const OutlineInputBorder(
+                    decoration: const InputDecoration(
+                      labelStyle: TextStyle(color: Color(0xffCF2525)),
+                      border: OutlineInputBorder(),
+                      labelText: '제 목',
+                     focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
                       ),
@@ -116,25 +121,24 @@ class _modifyPostState extends State<modifyPost> {
                           )
                       ),
                       const SizedBox(width: 20,),
-                      if(imageText != null)...[
+                      if(boardLoadImage != null && imageText != null)...[
                         Text(imageText+".jpg"),
-                      ],
-                      if(boardLoadImage != 'default')...[
+                      ] else if(boardLoadImage != 'default')...[
                         Text(boardLoadImage+".jpg"),
-                      ],
+                      ]
                     ],
                   ),
-                  TextField(
+                  TextFormField(
                     controller: _contentTextEditController,
                     onChanged: (text) {
                       _content = text;
                     },
-                    decoration: InputDecoration(
-                      labelStyle: TextStyle(color: const Color(0xffCF2525)),
-                      contentPadding: const EdgeInsets.symmetric(vertical: 200.0, horizontal: 10),
-                      border: const OutlineInputBorder(),
-                      hintText: boardContent,
-                      focusedBorder: const OutlineInputBorder(
+                    decoration: const InputDecoration(
+                      labelStyle: TextStyle(color: Color(0xffCF2525)),
+                      contentPadding: EdgeInsets.symmetric(vertical: 200.0, horizontal: 10),
+                      border: OutlineInputBorder(),
+                      labelText: "내 용",
+                      focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
                       ),
@@ -158,7 +162,7 @@ class _modifyPostState extends State<modifyPost> {
                           )),
                       ElevatedButton(
                         onPressed: () {
-                          insertBoard(_title, _content, User_id, imageText);
+                          modifyBoard(_title, _content, User_id, imageText, boardUid);
                           Navigator.pop(context);
                         },
                         child: Text(
