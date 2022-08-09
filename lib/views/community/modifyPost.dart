@@ -48,10 +48,10 @@ class _modifyPostState extends State<modifyPost> {
     var boardContent = widget.boardContent;
     var boardLoadImage = widget.boardImage;
 
-    // print(imageText);
-    // print(widget.boardTitle);
-    // print(widget.boardContent);
-    // print(widget.boardImage);
+    print(imageText);
+    print(widget.boardTitle);
+    print(widget.boardContent);
+    print(widget.boardImage);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -119,6 +119,9 @@ class _modifyPostState extends State<modifyPost> {
                       if(imageText != null)...[
                         Text(imageText+".jpg"),
                       ],
+                      if(boardLoadImage != 'default')...[
+                        Text(boardLoadImage+".jpg"),
+                      ],
                     ],
                   ),
                   TextField(
@@ -126,12 +129,12 @@ class _modifyPostState extends State<modifyPost> {
                     onChanged: (text) {
                       _content = text;
                     },
-                    decoration: const InputDecoration(
-                      labelStyle: TextStyle(color: Color(0xffCF2525)),
+                    decoration: InputDecoration(
+                      labelStyle: TextStyle(color: const Color(0xffCF2525)),
                       contentPadding: const EdgeInsets.symmetric(vertical: 200.0, horizontal: 10),
-                      border: OutlineInputBorder(),
-                      labelText: "내용",
-                      focusedBorder: OutlineInputBorder(
+                      border: const OutlineInputBorder(),
+                      hintText: boardContent,
+                      focusedBorder: const OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(width: 1, color: Color(0xffCF2525)),
                       ),
