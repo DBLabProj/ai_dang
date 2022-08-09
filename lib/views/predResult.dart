@@ -65,7 +65,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     var predNo = widget.predResult['predict_no'];
     String imageUrl = "http://203.252.240.74:5000/static/images/$predNo.jpg";
     int index = 1;
+
     for (var detection in detectInfo) {
+      if (detection['confidence'] < 0.5) {
+        continue;
+      }
       Map food = {};
       food['index'] = index++;
       food['name'] = detection['name'].toString();

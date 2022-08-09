@@ -40,23 +40,31 @@ class _modifyPostState extends State<modifyPost> {
   String _title = '';
   String _content = '';
 
+  var boardTitle = '';
+  var boardContent = '';
+  var boardLoadImage = '';
+  var boardUid = '';
+  var _titleTextEditController;
+  var _contentTextEditController;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+
+      boardTitle = widget.boardTitle;
+      boardContent = widget.boardContent;
+      boardLoadImage = widget.boardImage;
+      boardUid = widget.boardUid;
+      _titleTextEditController = TextEditingController(text: boardTitle);
+      _contentTextEditController = TextEditingController(text: boardContent);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
-    var boardTitle = widget.boardTitle;
-    var boardContent = widget.boardContent;
-    var boardLoadImage = widget.boardImage;
-    var boardUid = widget.boardUid;
-
-    final _titleTextEditController = TextEditingController();
-    final _contentTextEditController = TextEditingController(text: boardContent);
-
-    print(imageText);
-    print(widget.boardTitle);
-    print(widget.boardContent);
-    print(widget.boardImage);
-
+    print(_title);
+    print(_content);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -80,9 +88,11 @@ class _modifyPostState extends State<modifyPost> {
               child: Column(
                 children: <Widget>[
                   TextField(
-                    controller: _titleTextEditController..text = boardTitle,
+                    controller: _titleTextEditController,
                     onChanged: (text) {
-                      _title = text;
+                      setState(() {
+                        _title = text;
+                      });
                     },
                     decoration: const InputDecoration(
                       labelStyle: TextStyle(color: Color(0xffCF2525)),
