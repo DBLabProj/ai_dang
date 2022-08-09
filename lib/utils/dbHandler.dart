@@ -149,6 +149,25 @@ Future insertBoard(_title, _content, _userId, _imageText) async {
 
   return result;
 }
+Future insertBloodCheck(_email, _date_time, _bloodsugar_level, _content) async{
+  var conn = await ConnHandler.instance.conn;
+  var email = _email;
+  var date_time = _date_time;
+  var bloodsugar_level = _bloodsugar_level;
+  var content = _content;
+  DateTime write_time = DateTime.now().toUtc().add(const Duration(hours: 9));
+  String sql = '''
+    INSERT INTO blood (email, date_time, bloodsugar_level, content,write_time)
+    VALUES (?,?,?,?,?)
+  ''';
+
+  var result = await conn.query(sql, [email, date_time, bloodsugar_level, content, write_time]);
+
+  return result;
+}
+
+
+
 
 Future insertComment(_commentContent, _boardUid, _userId) async {
   var conn = await ConnHandler.instance.conn;
