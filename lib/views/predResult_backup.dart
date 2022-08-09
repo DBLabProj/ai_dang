@@ -40,10 +40,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   bool _expanded = false;
 
   int _amount = 1;
-  String _desc = '';
   final Icon _arrowDown = const Icon(Icons.keyboard_arrow_down);
   final Icon _arrowUp = const Icon(Icons.keyboard_arrow_up);
 
+  String _desc = '';
   final _descTextCon = TextEditingController();
   Map nut = {
     'serving_size': 0,
@@ -688,7 +688,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   String userId = Session.instance.userInfo['email'].toString();
                   insertMeal(userId, _amount.toString(), predNo, _desc)
                       .then((mealNo) {
-
 
                     setState(() {
                       EasyLoading.dismiss();
