@@ -1,4 +1,5 @@
 import 'package:ai_dang/utils/session.dart';
+import 'package:ai_dang/views/bloodCheck.dart';
 import 'package:ai_dang/views/predResult.dart';
 import 'package:ai_dang/views/setting/test.dart';
 import 'package:flutter/material.dart';
@@ -362,7 +363,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => test())
+              MaterialPageRoute(builder: (context) => bloodCheck())
             );
           },
         ),
