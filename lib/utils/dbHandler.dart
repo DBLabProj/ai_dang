@@ -220,11 +220,11 @@ Future getNutrient(foodName) async {
   // ''';
 
   String sql = '''
-    SELECT  * FROM main_food_info
-    WHERE   food_name = ?
+    SELECT  * FROM food_info
+    WHERE   food_name like ?
   ''';
 
-  var result = await conn.query(sql, [foodName]);
+  var result = await conn.query(sql, ['%$foodName%']);
   return result;
 }
 

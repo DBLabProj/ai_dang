@@ -1,5 +1,5 @@
 import 'package:ai_dang/utils/session.dart';
-import 'package:ai_dang/views/predResult.dart';
+import 'package:ai_dang/views/predResult_back2.dart';
 import 'package:ai_dang/views/setting/test.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_dang/utils/request.dart';
