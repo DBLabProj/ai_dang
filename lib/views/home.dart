@@ -53,13 +53,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     return FutureBuilder(
       future: getSelectedDayMeal(context, _selectedDay),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        // if(!snapshot.hasData) {
+        if(!snapshot.hasData) {
         //   EasyLoading.show(status: '로딩 중..');
-        // } else {
-        //   _eatInfo = snapshot.data[1];
-        //   _mealList = snapshot.data[0];
+        } else {
+          _mealList = snapshot.data[0];
+          _eatInfo = snapshot.data[1];
         //   EasyLoading.dismiss();
-        // }
+        }
         return WillPopScope(
           onWillPop: () {
             return Future(() => false);

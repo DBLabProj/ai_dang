@@ -22,46 +22,45 @@ Future buildMealList(context, selectedDay) async {
     'cbHydra': 0,
     'cbHydra_per': 0.0,
     'protein_per': 0.0,
-    'fat_per': 0.0
+    'fat_per': 0.0,
+    'total_sugar': 0.0
   };
   String userId = Session.instance.userInfo['email'].toString();
-  var sqlRs = await selectDayMeal(selectedDay, userId);
-  for (var row in sqlRs) {
-    String mealName = row[0];
-    String datetime = DateFormat.jm('ko_KR').format(row[1]);
-    int amount = row[2];
-    String desc = row[3];
-    String imageName = row[4];
+  var mealList = await selectDayMeal(selectedDay, userId);
+  for (var meal in mealList) {
+    String mealName = meal['foodList'][0]['name'];
+    String datetime = DateFormat.jm('ko_KR').format(meal['datetime']);
+    String desc = meal['description'];
+    String imageName = meal['image_name'];
 
-    double totalSugar = row[5];
-    double cal = row[6];
-    double protein = row[7];
-    double fat = row[8];
-    double cbHydra = row[9];
-
-    eatInfo['cal'] += (cal * (amount / 2)).toInt();
-    eatInfo['cbHydra'] += (cbHydra * (amount / 2)).toInt();
-    eatInfo['protein'] += (protein * (amount / 2)).toInt();
-    eatInfo['fat'] += (fat * (amount / 2)).toInt();
-
+    for(var food in meal['foodList']) {
+      var amount = food['amount'];
+      eatInfo['cal'] += (food['nutrient']['energy'] * (amount / 2)).toInt();
+      eatInfo['cbHydra'] += (food['nutrient']['carbohydrate'] * (amount / 2)).toInt();
+      eatInfo['protein'] += (food['nutrient']['protein'] * (amount / 2)).toInt();
+      eatInfo['fat'] += (food['nutrient']['fat'] * (amount / 2)).toInt();
+      eatInfo['total_sugar'] += (food['nutrient']['total_sugar'] * (amount / 2)).toInt();
+    }
     eatInfo['cbHydra_per'] =
     (eatInfo['cbHydra'] / Session.instance.dietInfo['recom_hydrate']);
     eatInfo['protein_per'] =
     (eatInfo['protein'] / Session.instance.dietInfo['recom_protein']);
     eatInfo['fat_per'] =
     (eatInfo['fat'] / Session.instance.dietInfo['recom_fat']);
-    list.add(getMealComponent(context, mealName, datetime, amount.toString(),
-        desc, imageName, totalSugar));
+
+    list.add(getMealComponent(context, mealName, datetime, '',
+        desc, imageName, eatInfo['total_sugar']));
     list.add(const SizedBox(height: 20));
   }
   return {'meal_list': list, 'eat_info': eatInfo};
 }
 
 Future getSelectedDayMeal(context, selectedDay) async {
+
   var sqlResult = await buildMealList(context, selectedDay);
   List<Widget> mealList = await sqlResult['meal_list'];
   Map eatInfo = await sqlResult['eat_info'];
-  return [[const SizedBox(height: 20)], {}];
+  return [mealList, eatInfo];
 }
 
 Widget getMealComponent(
@@ -107,8 +106,8 @@ Widget getMealComponent(
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: Image.network(
-              "http://203.252.240.74:5000/static/images/$imageName",
-              fit: BoxFit.fitHeight,
+              "http://203.252.240.74:5000/static/images/$imageName.jpg",
+              fit: BoxFit.cover,
               width: MediaQuery.of(context).size.width * 0.35,
               height: MediaQuery.of(context).size.width * 0.35,
             ),
@@ -116,17 +115,17 @@ Widget getMealComponent(
           // 식단 정보
           Expanded(
               child: Padding(
-            padding: const EdgeInsets.all(15.0),
+            padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // 식단 이름
                 Text(
                   mealName,
-                  textScaleFactor: 1.6,
                   style: TextStyle(
                       color: colorBlack,
-                      fontWeight: FontWeight.w500),
+                      fontWeight: FontWeight.w600,
+                  fontSize: 18),
                 ),
                 // 시간 및 식사종류
                 const SizedBox(height: 7),

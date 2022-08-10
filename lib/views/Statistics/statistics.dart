@@ -10,6 +10,7 @@ import 'package:multi_charts/multi_charts.dart' as multi_charts;
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../utils/dbHandler.dart';
 import '../../utils/session.dart';
+import 'dart:math';
 
 var colorBlack = const Color(0xff535353);
 var colorRed = const Color(0xffCF2525);
@@ -127,11 +128,11 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
     return FutureBuilder(
       future: _setReportData(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if(!snapshot.hasData) {
-          EasyLoading.show(status: '로딩 중..');
-        } else {
-          EasyLoading.dismiss();
-        }
+        // if(!snapshot.hasData) {
+        //   EasyLoading.show(status: '로딩 중..');
+        // } else {
+        //   EasyLoading.dismiss();
+        // }
         return DefaultTabController(
           length: 2,
           child: Scaffold(
@@ -429,7 +430,7 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
                     "나트륨",
                     "콜레스트롤",
                   ],
-                  maxValue: 15,
+                  maxValue: _nutData.reduce(max),
                   fillColor: colorRed,
                   strokeColor: colorDarkGray,
                   chartRadiusFactor: 0.8,

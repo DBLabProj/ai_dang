@@ -334,7 +334,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               height: 15,
                             ),
                             // 영양 인디게이터
-                            nutInfoIndicator([12, 14, 6, 5])
+                            // nutInfoIndicator([12, 14, 6, 5])
 
                           ],
                         ),
@@ -646,19 +646,19 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             child: ElevatedButton(
               onPressed: () {
                 setState(() {
-                  EasyLoading.show(status: '로딩중...');
-                  String predNo = widget.predResult['predict_no'];
-                  String userId = Session.instance.userInfo['email'].toString();
-                  insertMeal(userId, _amount.toString(), predNo, _desc)
-                      .then((mealNo) {
-                    setState(() {
-                      EasyLoading.dismiss();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MyHomePage()),
-                      );
-                    });
-                  });
+                  // EasyLoading.show(status: '로딩중...');
+                  // String predNo = widget.predResult['predict_no'];
+                  // String userId = Session.instance.userInfo['email'].toString();
+                  // insertMeal(userId, _amount.toString(), predNo, _desc)
+                  //     .then((mealNo) {
+                  //   setState(() {
+                  //     EasyLoading.dismiss();
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(builder: (context) => MyHomePage()),
+                  //     );
+                  //   });
+                  // });
                 });
               },
               style: ButtonStyle(

@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
-Widget nutInfoIndicator(List<double> values) {
+Widget nutInfoIndicator(double width, List<double> values, int servingSize) {
   List<Widget> list = [];
   List<String> words = ['탄수화물', '단백질', '지방', '총당류'];
-  double _size = 40;
+
+  double _size = width / 4;
   List recommValues = [
     Session.instance.dietInfo['recom_hydrate'],
     Session.instance.dietInfo['recom_protein'],
@@ -16,6 +17,7 @@ Widget nutInfoIndicator(List<double> values) {
   ];
 
   for (int i = 0; i < 4; i ++) {
+    int value = (values[i] * (0.5 + (servingSize * 0.5))).toInt();
     Widget elm =
     SizedBox(
       width: 46,
@@ -35,14 +37,14 @@ Widget nutInfoIndicator(List<double> values) {
                         color: red,
                         strokeWidth: 6,
                         backgroundColor: red.withOpacity(0.2),
-                        value: (values[i] / recommValues[i]),
+                        value: ( value / recommValues[i]),
                       ),
                     ),
                   ),
                   Center(
                     child: Text(
-                      '${values[i].toInt().toString()}g',
-                      style: TextStyle(fontSize: 14),
+                      '${ value.toInt().toString()}g',
+                      style: TextStyle(fontSize: 13),
                       textAlign: TextAlign.center,
                     ),
                   )
@@ -54,7 +56,7 @@ Widget nutInfoIndicator(List<double> values) {
           ],
         ));
     list.add(elm);
-    list.add(const SizedBox(width: 10.5));
+    list.add(const SizedBox(width: 7));
   }
   return Row(children: list);
 }

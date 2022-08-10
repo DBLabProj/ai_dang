@@ -18,5 +18,7 @@ class Session {
     _dietInfo['recom_protein'] = ((_dietInfo['recom_cal'] * 0.2) / 4).toInt();
     _dietInfo['recom_fat'] = ((_dietInfo['recom_cal'] * 0.25) / 9).toInt();
     _dietInfo['recom_sugar'] = ((_dietInfo['recom_cal'] * 0.1) / 4).toInt();
+    _dietInfo['recom_salt'] = 2300;
+    _dietInfo['recom_cholesterol'] = 300;
   }
 }

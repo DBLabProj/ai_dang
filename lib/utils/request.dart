@@ -26,16 +26,16 @@ Future predict(context, imageSource, picker) async {
 
 }
 
-Future insertMeal(user, amount, predictNo, desc)  async{
-  http.Response response = await http.post(
-    Uri.parse('http://203.252.240.74:5000/add_meal'),
-    body: {
-      'user': user, 'amount': amount, 'pred_no': predictNo, 'desc': desc
-    }
-  );
-
-  return response;
-}
+// Future insertMeal(user, foodList, desc)  async{
+//   http.Response response = await http.post(
+//     Uri.parse('http://203.252.240.74:5000/add_meal'),
+//     body: {
+//       'user': user, 'foodList': foodList.toString(), 'desc': desc
+//     }
+//   );
+//
+//   return response;
+// }
 
 Future boardImage(context, imageSource, picker) async {
   XFile? image = await picker.pickImage(source: imageSource);

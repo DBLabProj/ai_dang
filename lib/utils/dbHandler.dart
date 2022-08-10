@@ -1,6 +1,7 @@
 import 'package:ai_dang/utils/session.dart';
 import 'package:mysql1/mysql1.dart';
 import 'dart:async';
+import 'dart:convert';
 
 class ConnHandler {
   static final ConnHandler _connHandler = ConnHandler._internal();
@@ -32,20 +33,53 @@ class ConnHandler {
 }
 
 Future selectDayMeal(selectedDay, userName) async {
+  List mealList = [];
   var conn = await ConnHandler.instance.conn;
   String sql = '''
-    SELECT  P.result, M.datetime, M.amount, M.description, P.image_name, 
-            F.total_sugar, F.energy, F.protein, F.fat, F.carbohydrate
-    FROM    meal M
-            INNER JOIN predict P
-            ON (M.predict_no = P.no)
-            INNER JOIN main_food_info F
-            ON (P.result = F.food_name)
-    WHERE   (date_format(M.datetime, '%Y%m%d') = date_format(?, '%Y%m%d'))
-    AND     (M.user = ?)
+    SELECT  *
+    FROM    meal 
+    WHERE   (date_format(datetime, '%Y%m%d') = date_format(?, '%Y%m%d'))
+    AND     (user = ?)
   ''';
   var result = await conn.query(sql, [selectedDay, userName]);
-  return result;
+  for(var row in result) {
+    List foodList = jsonDecode(row['foods']);
+    for (var food in foodList) {
+      Map nutrient = {
+        'serving_size': 0.0,
+        'energy': 0.0,
+        'protein': 0.0,
+        'fat': 0.0,
+        'carbohydrate': 0.0,
+        'total_sugar': 0.0,
+        'salt': 0.0,
+        'cholesterol': 0.0
+      };
+      result = await conn.query('''
+    SELECT * FROM food_info WHERE food_name = ?
+    ''', [food['name']]);
+      for (var row in result) {
+        nutrient['serving_size'] = row['serving_size'] ?? 0.0;
+        nutrient['energy'] = row['energy'] ?? 0.0;
+        nutrient['protein'] = row['protein'] ?? 0.0;
+        nutrient['fat'] = row['fat'] ?? 0.0;
+        nutrient['carbohydrate'] = row['carbohydrate'] ?? 0.0;
+        nutrient['total_sugar'] = row['total_sugar'] ?? 0.0;
+        nutrient['salt'] = row['salt'] ?? 0.0;
+        nutrient['cholesterol'] = row['cholesterol'] ?? 0.0;
+      }
+      food['nutrient'] = nutrient;
+    }
+    Map meal = {};
+    meal['datetime'] = row['datetime'];
+    meal['description'] = row['description'];
+    meal['foodList'] = foodList;
+    meal['image_name'] = row['image_name'];
+    mealList.add(meal);
+  }
+
+
+  return mealList;
 }
 
 
@@ -69,6 +103,29 @@ Future getUserInfo(email) async {
   }
 
   return result;
+}
+Future insertMeal(user, foodList, desc, imageName) async {
+  var conn = await ConnHandler.instance.conn;
+  var result = await conn.query( '''
+			SELECT	concat(today_date, concat('-', serial_no)) as meal_no
+			FROM	(SELECT	concat('M', date_format(now(), "%Y%m%d")) as today_date,
+							right(concat('00', row_count + 1), 3) as serial_no
+					FROM	(SELECT count(*) as row_count
+							FROM	meal
+							WHERE	date_format(datetime, '%Y%m%d') = date_format(now(), '%Y%m%d')) in_tb) out_tb
+		''');
+  String mealNo = '';
+  for(var row in result) {
+    mealNo = row['meal_no'];
+  }
+
+  DateTime datetime = DateTime.now().toUtc().add(const Duration(hours: 9));
+
+  var result2 = await conn.query(
+      'INSERT INTO meal VALUES(?, ?, ?, ?, ?, ?)',
+      [mealNo, datetime, user, desc, jsonEncode(foodList), imageName]
+  );
+  return result2;
 }
 
 Future insertUsers(signUpList) async {
@@ -347,22 +404,27 @@ Future change_dt(changeDt, id) async{
 Future getConsumeInfo() async {
   var conn = await ConnHandler.instance.conn;
   String sql = '''
-    SELECT	concat(YEAR(M.datetime), '/', MONTH(M.datetime), '/',
-            (WEEK(M.datetime) - WEEK(DATE_SUB(M.datetime, INTERVAL DAYOFMONTH(M.datetime)-1 DAY)) + 1)) as week,
-        date_format(M.datetime, '%Y%m%d') as date,
-        sum((energy * (amount/2))) as energy_SUM, sum((carbohydrate * (amount/2))) as cbhydra_SUM,
-        sum((protein * (amount/2))) as protein_SUM, sum((fat * (amount/2))) as fat_SUM,
-            sum((total_sugar * (amount/2))) as sugar_SUM
-    FROM    meal M
-        INNER JOIN predict P
-        ON (M.predict_no = P.no)
-        INNER JOIN main_food_info F
-        ON (P.result = F.food_name)
-    WHERE 	M.user = ?
-    GROUP BY week, date WITH ROLLUP;
+      SELECT	concat(YEAR(M.datetime), '/', MONTH(M.datetime), '/',
+          (WEEK(M.datetime) - WEEK(DATE_SUB(M.datetime, INTERVAL DAYOFMONTH(M.datetime)-1 DAY)) + 1)) as week,
+          date_format(M.datetime, '%Y%m%d') as date,
+          sum((energy * (amount/2))) as energy_SUM, sum((carbohydrate * (amount/2))) as cbhydra_SUM,
+          sum((protein * (amount/2))) as protein_SUM, sum((fat * (amount/2))) as fat_SUM,
+          sum((total_sugar * (amount/2))) as sugar_SUM, sum((salt * (amount/2))) as salt_SUM,
+          sum((cholesterol * (amount/2))) as cholesterol_SUM
+      FROM    meal M,
+          JSON_TABLE(M.foods, "\$[*]"
+            COLUMNS ( 
+              name varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci PATH "\$.name",
+              amount int PATH "\$.amount"
+            )
+          ) F INNER JOIN food_info FI
+          ON	F.name = FI.food_name
+      WHERE 	M.user = 'test'
+      GROUP BY week, date WITH ROLLUP;
   ''';
-
+  print(1);
   String userId = Session.instance.userInfo['email'].toString();
-  var result = await conn.query(sql, [userId]);
+  var result = await conn.query(sql);
+  print(result);
   return result;
 }
