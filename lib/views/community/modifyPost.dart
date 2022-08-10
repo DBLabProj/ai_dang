@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 
+import '../../main.dart';
 import 'community.dart';
 
 var colorBlack = const Color(0xff535353);
@@ -51,7 +52,6 @@ class _modifyPostState extends State<modifyPost> {
   void initState() {
     super.initState();
     setState(() {
-
       boardTitle = widget.boardTitle;
       boardContent = widget.boardContent;
       boardLoadImage = widget.boardImage;
@@ -141,7 +141,9 @@ class _modifyPostState extends State<modifyPost> {
                   TextFormField(
                     controller: _contentTextEditController,
                     onChanged: (text) {
-                      _content = text;
+                      setState(() {
+                        _content = text;
+                      });
                     },
                     decoration: const InputDecoration(
                       labelStyle: TextStyle(color: Color(0xffCF2525)),
@@ -172,8 +174,27 @@ class _modifyPostState extends State<modifyPost> {
                           )),
                       ElevatedButton(
                         onPressed: () {
-                          modifyBoard(_title, _content, User_id, imageText, boardUid);
-                          Navigator.pop(context);
+                          print("-----------");
+                          print(_title);
+                          print(_content);
+                          print(imageText);
+                          print(boardUid);
+                          print("-----------");
+                          if(_content == "") {
+                            _content = boardContent;
+                          }
+                          if(_title == "") {
+                            _title = boardTitle;
+                          }
+                          print("_title : " + _title);
+                          print("_content : " + _content);
+
+                          if(imageText == null) {
+                            modifyBoard(_title, _content, User_id, boardLoadImage, boardUid);
+                          } else {
+                            modifyBoard(_title, _content, User_id, imageText, boardUid);
+                          }
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage()));
                         },
                         child: Text(
                           '수 정 하 기',

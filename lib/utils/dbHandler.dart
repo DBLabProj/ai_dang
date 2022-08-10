@@ -223,9 +223,6 @@ Future insertBloodCheck(_email, _date_time, _bloodsugar_level, _content) async{
   return result;
 }
 
-
-
-
 Future insertComment(_commentContent, _boardUid, _userId) async {
   var conn = await ConnHandler.instance.conn;
   var content = _commentContent;
@@ -262,7 +259,6 @@ Future modifyBoard(_title, _content, _userId, _imageText, _boardUid) async {
   var conn = await ConnHandler.instance.conn;
   var title = _title;
   var content = _content;
-  var writer = _userId;
   var image = _imageText;
   var boardUid = _boardUid;
 
