@@ -32,15 +32,26 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  final int index;
+  const MyHomePage({
+    Key? key,
+    this.index = 0,
+  }) : super(key: key);
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   int selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      selectedIndex = widget.index;
+    });
+  }
 
   final List _pages = [
     const HomePage(),
@@ -84,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
-        selectedIndex = index;
+      selectedIndex = index;
     });
   }
 }

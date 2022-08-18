@@ -787,7 +787,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         EasyLoading.dismiss();
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MyHomePage()),
+                          MaterialPageRoute(builder: (context) => const MyHomePage()),
                         );
                       });
                     });
