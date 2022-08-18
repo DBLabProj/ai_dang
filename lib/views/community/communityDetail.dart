@@ -385,7 +385,7 @@ class _communityDetailState extends State<communityDetail>{
                   ],
                 ),
               ),
-              const SizedBox(width: 165,),
+              const SizedBox(width: 105,),
               Container(
                 child: Column(
                   children: [
@@ -400,14 +400,43 @@ class _communityDetailState extends State<communityDetail>{
                                 print(recommentNum);
                               });
                             },
-                            child: const Center(
-                              child: Text("답글",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 10
-                                ),),
-                            ))
+                            child: const Text("답글",
+                             textAlign: TextAlign.end,
+                             style: TextStyle(
+                                 color: Colors.black,
+                                 fontWeight: FontWeight.w600,
+                                 fontSize: 10
+                             ),)),
+                        if(User_id == commentWriter)...[
+                          ElevatedButton(
+                            onPressed: () {
+                              showAdaptiveActionSheet(
+                                context: context,
+                                actions: <BottomSheetAction>[
+                                  BottomSheetAction(
+                                    title: const Text(
+                                        '삭제',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15)),
+                                    onPressed: (BuildContext context) {
+                                      deleteCommentDialogCheck(commentUid);
+                                    },
+                                  ),
+                                ],
+                                cancelAction: CancelAction(title: const Text(
+                                    '취소',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 15))),
+                              );
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                              elevation: MaterialStateProperty.all(0.0),
+                            ),
+                            child: const Icon(Icons.more_vert, color: Colors.black,),
+                          ),]
                       ],
                     ),
                   ],
@@ -592,6 +621,50 @@ class _communityDetailState extends State<communityDetail>{
     );
   }
 
+  void deleteCommentDialogCheck(commentUid) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+                '댓글 삭제'
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text(
+                      '댓글을 삭제하시겠습니까?'
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  deleteComment(commentUid);
+                  Navigator.of(context).pop();
+                  deleteDialogConfirm();
+                },
+                child: const Text(
+                  '삭제',
+                ),
+              ),
+              TextButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                },
+                child: const Text(
+                  '취소',
+                ),
+              )
+            ],
+          );
+        }
+    );
+  }
+
   void deleteDialogConfirm() {
     showDialog(
         context: context,
@@ -615,7 +688,7 @@ class _communityDetailState extends State<communityDetail>{
               TextButton(
                 onPressed: (){
                   Navigator.of(context).pop();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage(index: 2,)));
                 },
                 child: const Text(
                   '확인',

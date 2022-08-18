@@ -194,7 +194,7 @@ class _modifyPostState extends State<modifyPost> {
                           } else {
                             modifyBoard(_title, _content, User_id, imageText, boardUid);
                           }
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage(index: 2,)));
                         },
                         child: Text(
                           '수 정 하 기',
