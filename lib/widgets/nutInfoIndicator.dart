@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
-Widget nutInfoIndicator(List<double> values, int servingSize) {
+List<Widget> nutInfoIndicator(List<double> values, int servingSize) {
   List<Widget> list = [];
   List<String> words = ['탄수화물', '단백질', '지방', '총당류'];
-  double _size = 38;
+  double _size = 48;
   List recommValues = [
     Session.instance.dietInfo['recom_hydrate'],
     Session.instance.dietInfo['recom_protein'],
@@ -19,7 +19,7 @@ Widget nutInfoIndicator(List<double> values, int servingSize) {
     int value = (values[i] * (0.5 + (servingSize * 0.5))).toInt();
     Widget elm =
     SizedBox(
-      width: 46,
+      width: 52,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -34,7 +34,8 @@ Widget nutInfoIndicator(List<double> values, int servingSize) {
                       height: _size,
                       child: CircularProgressIndicator(
                         color: red,
-                        strokeWidth: 6,
+                        
+                        strokeWidth: 7,
                         backgroundColor: red.withOpacity(0.2),
                         value: ( value / recommValues[i]),
                       ),
@@ -43,19 +44,22 @@ Widget nutInfoIndicator(List<double> values, int servingSize) {
                   Center(
                     child: Text(
                       '${ value.toInt().toString()}g',
-                      style: TextStyle(fontSize: 13),
+                      textScaleFactor: 1.2,
                       textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: red,
+                        fontWeight: FontWeight.w600
+                      ),
                     ),
                   )
                 ],
               ),
             ),
-            const SizedBox(height: 4),
-            SizedBox(width: 46,child: Center(child:Text(words[i], style: const TextStyle(fontSize: 12),)))
+            const SizedBox(height: 5),
+            Text(words[i], textScaleFactor: 0.9,),
           ],
         ));
     list.add(elm);
-    list.add(const SizedBox(width: 3));
   }
-  return Row(children: list, mainAxisAlignment: MainAxisAlignment.center,);
+  return list;
 }

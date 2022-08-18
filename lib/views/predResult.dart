@@ -1,21 +1,18 @@
-import 'package:ai_dang/utils/session.dart';
-import 'package:ai_dang/views/home.dart';
-import 'package:ai_dang/widgets/colors.dart';
-import 'package:async/async.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:async/async.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:marquee_widget/marquee_widget.dart';
 
-import 'package:ai_dang/widgets/myExpansionPanel.dart';
-import 'dart:io';
+import '../main.dart';
+import '../utils/session.dart';
 import '../utils/cropImage.dart';
 import '../utils/dbHandler.dart';
-import '../main.dart';
 import '../utils/levenshteinDistance.dart';
-import '../utils/request.dart';
+
 import '../widgets/nutInfoIndicator.dart';
+import '../widgets/colors.dart';
 
 class PredResultPage extends StatelessWidget {
   final image;
@@ -297,13 +294,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           Text('${foodList.length}개의 음식',
                               textScaleFactor: 1.6,
                               style: TextStyle(
-                                  color: red,
-                                  fontWeight: FontWeight.w900,)),
+                                color: red,
+                                fontWeight: FontWeight.w900,
+                              )),
                           Text('이 있습니다.',
-                              textScaleFactor: 1.6, 
+                              textScaleFactor: 1.6,
                               style: TextStyle(
-                                  color: black,
-                                  fontWeight: FontWeight.w900,))
+                                color: black,
+                                fontWeight: FontWeight.w900,
+                              ))
                         ],
                       ),
                     ],
@@ -363,25 +362,37 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   Widget foodInfoContainer(food) {
-    return
-    Container(
-      constraints: const BoxConstraints(
-        maxWidth: 400,
-      ),
-        padding: const EdgeInsets.all(11),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.white),
-        child: Column(
-          children: [
+    List<String> valueList = [
+      '0.5회 제공량,(${(food['nutrient']['serving_size'] * 0.5).toInt()}g)',
+      '1회 제공량,(${(food['nutrient']['serving_size']).toInt()}g)',
+      '1.5회 제공량,(${(food['nutrient']['serving_size'] * 1.5).toInt()}g)',
+      '2회 제공량,(${(food['nutrient']['serving_size'] * 2).toInt()}g)',
+    ];
+    bool expanded = false;
+
+    if (MediaQuery.of(context).size.width > 500 || food['name'].length < 10) {
+      expanded = true;
+    }
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10)),
+      constraints: const BoxConstraints(maxWidth: 450),
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!expanded) ...[
             // 음식 이름 ----------------------------------------------
             Text(
               food['name'],
-              textAlign: TextAlign.center,
-              textScaleFactor: 1.7,
-              style: const TextStyle(
-                  fontWeight: FontWeight.w600),
+              textScaleFactor: 1.6,
+              style: const TextStyle(fontWeight: FontWeight.w600),
             ),
+            //
+            // IconButton(
+            //     onPressed: () {}, icon: Icon(Icons.delete, color: red))
+            const SizedBox(height: 15),
             // Row(
             //   children: [
             //     const SizedBox(width: 3),
@@ -401,113 +412,140 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             //     ),
             //   ],
             // ),
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 165,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: SizedBox(
-                        child: food['thumbnail'],
-                      ),
-                    ),
+          ],
+          Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            Expanded(
+              flex: 4,
+              child: SizedBox(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: SizedBox(
+                    child: food['thumbnail'],
                   ),
                 ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+                flex: 6,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                  if (expanded) ...[
+                    // 음식 이름 ----------------------------------------------
+                    Text(
+                      food['name'],
+                      textScaleFactor: 1.6,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
                     const SizedBox(height: 15),
-                    SizedBox(
-                      height: 40,
-                      child: ToggleButtons(
-                        selectedColor: red,
-                        splashColor: red.withOpacity(0.2),
-                        fillColor: red.withOpacity(0.2),
-                        highlightColor: red.withOpacity(0.4),
-                        children: <Widget>[
-                          Text(
-                            '0.5회\n${(food['nutrient']['serving_size'] * 0.5).toInt()}g',
-                            textScaleFactor: 1.0,
-                            textAlign: TextAlign.center,
+                    // Row(
+                    //   children: [
+                    //     const SizedBox(width: 3),
+                    //     Container(
+                    //       padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+                    //       decoration: BoxDecoration(
+                    //           color: food['rect']['color'],
+                    //           borderRadius: BorderRadius.circular(6)),
+                    //       child: Center(
+                    //           child: Text(
+                    //             "${food['acc']}%일치",
+                    //             style: const TextStyle(
+                    //                 fontWeight: FontWeight.w600,
+                    //                 fontSize: 10,
+                    //                 color: Colors.white),
+                    //           )),
+                    //     ),
+                    //   ],
+                    // ),
+                  ],
+                  const Text(
+                    '먹은 양을 선택하세요.',
+                    textScaleFactor: 1.1,
+                  ),
+                  DropdownButton(
+                      isExpanded: true,
+                      value: valueList[food['servingSelected'].indexOf(true)],
+                      items: valueList.map((String item) {
+                        List items = item.split(',');
+                        return DropdownMenuItem<String>(
+                          child: Marquee(
+                            textDirection: TextDirection.ltr,
+                            animationDuration: Duration(seconds: 1),
+                            child: Row(
+                              children: [
+                                Text(items[0],
+                                    textScaleFactor: 1.2,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: black)), 
+                                const Text(''),
+                                Text(items[1],
+                                    textScaleFactor: 1.2,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        color: red)),
+                              ],
+                            ),
                           ),
-                          Text(
-                            '1회\n${(food['nutrient']['serving_size']).toInt()}g',
-                            textScaleFactor: 1.0,
-                            textAlign: TextAlign.center,
-                          ), 
-                          Text(
-                            '1.5회\n${(food['nutrient']['serving_size'] * 1.5).toInt()}g',
-                            textScaleFactor: 1.0,
-                            textAlign: TextAlign.center,
-                          ),
-                          Text(
-                            '2회\n${(food['nutrient']['serving_size'] * 2).toInt()}g',
-                            textScaleFactor: 1.0,
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                        onPressed: (int index) {
-                          setState(() {
-                            for (int buttonIndex = 0;
-                            buttonIndex < food['servingSelected'].length;
-                            buttonIndex++) {
-                              if (buttonIndex == index) {
-                                food['servingSelected'][buttonIndex] =
-                                !food['servingSelected'][buttonIndex];
-                              } else {
-                                food['servingSelected'][buttonIndex] = false;
-                              }
+                          // RichText(text: TextSpan(children: [
+                          //   TextSpan(text: items[0]),
+                          //   TextSpan(text: items[1]),
+                          // ])),
+                          value: item,
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          for (int i = 0; i < valueList.length; i++) {
+                            if (valueList[i] == value.toString()) {
+                              food['servingSelected'][i] = true;
+                            } else {
+                              food['servingSelected'][i] = false;
                             }
-                          });
-                        },
-                        isSelected: food['servingSelected'],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    // 영양 인디게이터
-                    nutInfoIndicator([
-                      food['nutrient']['carbohydrate'],
-                      food['nutrient']['protein'],
-                      food['nutrient']['fat'],
-                      food['nutrient']['total_sugar']
-                    ], food['servingSelected'].indexOf(true)),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          }
+                        });
+                      }),
+                      const SizedBox(height: 5),
+                      Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          width: 90,
-                          height: 40,
-                          child: TextButton(
-                            onPressed: () {},
-                            child: Text('편집하기'),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 90,
-                          height: 40,
-                          child: TextButton(
+                        Expanded(child: OutlinedButton(onPressed: () {}, child: Text('수정하기'))),
+                        SizedBox(width: 10),
+                        Expanded(child:
+                        OutlinedButton(
                             onPressed: () {},
                             child: Text(
                               '삭제하기',
                               style: TextStyle(color: red),
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ],
+                            ))),
+                      ]),
+                ])),
+          ]),
+          // 인디케이터, 버튼 -----------------------------------------------------
+          const SizedBox(height: 15),
+          // 영양 인디게이터
+          Container(
+            decoration: BoxDecoration(
+                color: Colors.grey.shade50,
+                borderRadius: BorderRadius.circular(10)),
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: nutInfoIndicator([
+                food['nutrient']['carbohydrate'],
+                food['nutrient']['protein'],
+                food['nutrient']['fat'],
+                food['nutrient']['total_sugar']
+              ], food['servingSelected'].indexOf(true)),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
+
   Widget searchFoodDialog(title) {
     double width = MediaQuery.of(context).size.width * 0.8;
     double height = MediaQuery.of(context).size.width * 0.6;
