@@ -1,5 +1,7 @@
 import 'package:ai_dang/views/setting/changePassword.dart';
 import 'package:ai_dang/views/setting/profileDetail.dart';
+import 'package:ai_dang/views/setting/secession.dart';
+import 'package:ai_dang/widgets/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -21,6 +23,8 @@ class _settingState extends State<setting> {
   var User_dt = Session.instance.userInfo['dt'];
   var User_sex = Session.instance.userInfo['sex'];
   var lightGray = const Color(0xffEEEEEE);
+
+
 
   Widget getIconButtonGroup(icons, color, label, settingText) {
     return Row(
@@ -63,6 +67,14 @@ class _settingState extends State<setting> {
       ],
     );
   }
+
+  final _EmailController = TextEditingController();
+  final _PasswordController = TextEditingController();
+
+
+  bool isChecked = false;
+  bool _checkBoxValue2 = false;
+  bool _checkBoxValue3 = false;
 
   @override
   Widget build(BuildContext context) {
@@ -247,7 +259,11 @@ class _settingState extends State<setting> {
                             color: lightGray),
                         // 서비스 탈퇴 버튼 ---------------------------------------
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showDialogPop('서비스 탈퇴','정말로 서비스 탈퇴를 하시겠습니까?');
+
+
+                            },
                             child: getIconButtonGroup(Icons.person_off,
                                 Colors.red[300], '서비스 탈퇴', '')),
                       ],
@@ -396,4 +412,61 @@ class _settingState extends State<setting> {
       // bottomNavigationBar:  navbartest()
     );
   }
+
+
+  void showDialogPop(title, content) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0)),
+            title: Text(
+                '$title'
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(
+                      '$content'
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => secession()),
+                  );
+                },
+                child: Text(
+                  '확인',
+                  style: TextStyle(
+                      color: red
+                  ),
+                ),
+              ),
+              TextButton(
+                onPressed: (){
+
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  '취소',
+                  style: TextStyle(
+                      color: red
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
+    );
+  }
+
 }

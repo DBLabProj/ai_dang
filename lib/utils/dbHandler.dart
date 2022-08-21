@@ -1,4 +1,5 @@
 import 'package:ai_dang/utils/session.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:mysql1/mysql1.dart';
 import 'dart:async';
 import 'dart:convert';
@@ -137,6 +138,16 @@ Future insertUsers(signUpList) async {
   return result;
 }
 
+Future deleteUser(_email) async{
+  var conn = await ConnHandler.instance.conn;
+  String sql ='''
+    DELETE FROM USER WHERE email = '$_email' 
+  ''';
+
+  var result = await conn.query(sql);
+  return result;
+}
+
 Future cntBoardList() async {
   var conn = await ConnHandler.instance.conn;
 
@@ -222,6 +233,7 @@ Future insertBloodCheck(_email, _date_time, _bloodsugar_level, _content) async{
 
   return result;
 }
+
 
 Future insertComment(_commentContent, _boardUid, _userId) async {
   var conn = await ConnHandler.instance.conn;
