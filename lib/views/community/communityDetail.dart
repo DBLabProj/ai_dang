@@ -264,6 +264,7 @@ class _communityDetailState extends State<communityDetail>{
                           child: ElevatedButton(
                             onPressed: () {
                               insertComment(_comment, widget.boardUid, User_id);
+                              FocusManager.instance.primaryFocus?.unfocus();
                               setState(() {});
                               print(User_id);
                             },
@@ -689,6 +690,44 @@ class _communityDetailState extends State<communityDetail>{
                 onPressed: (){
                   Navigator.of(context).pop();
                   Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage(index: 2,)));
+                },
+                child: const Text(
+                  '확인',
+                ),
+              ),
+            ],
+          );
+        }
+    );
+  }
+
+  void deleteCommentDialogConfirm() {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        // false, //다이얼로그 바깥을 터치 시에 닫히도록 하는지 여부 (true: 닫힘, false: 닫히지않음)
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text(
+                '댓글 삭제'
+            ),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text(
+                      '삭제가 완료되었습니다.'
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: (){
+                  Navigator.of(context).pop();
+                  // setState(() {
+                  //
+                  // });
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) => const MyHomePage(index: 2,)));
                 },
                 child: const Text(
                   '확인',
