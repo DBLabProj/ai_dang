@@ -54,7 +54,7 @@ class _genderpageState extends State<genderpage> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      sex = "male";
+                                      sex = "남성";
                                     });
                                   },
                                   child: const Image(
@@ -69,7 +69,7 @@ class _genderpageState extends State<genderpage> {
                                           borderRadius:
                                               BorderRadius.circular(600)),
                                       side:
-                                          (sex == "male" ? redSide : greySide)),
+                                          (sex == "남성" ? redSide : greySide)),
                                 ),
                               ),
                               const Padding(
@@ -82,7 +82,7 @@ class _genderpageState extends State<genderpage> {
                                 child: ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      sex = "female";
+                                      sex = "여성";
                                     });
                                   },
                                   child: const Image(
@@ -96,7 +96,7 @@ class _genderpageState extends State<genderpage> {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(500)),
-                                      side: (sex == "female"
+                                      side: (sex == "여성"
                                           ? redSide
                                           : greySide)),
                                 ),
