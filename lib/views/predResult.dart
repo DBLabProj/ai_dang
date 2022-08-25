@@ -58,11 +58,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     int index = 1;
 
     for (var detection in detectInfo) {
-      if (detection['confidence'] < 0.5) {
-        continue;
-      }
       Map food = {};
-      food['index'] = index++;
       food['name'] = detection['name'].toString();
 
       Map rect = {};
@@ -71,8 +67,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       rect['w'] = (detection['xmax'].toDouble() * ratio) - rect['x'];
       rect['h'] = (detection['ymax'].toDouble() * ratio) - rect['y'];
       rect['color'] = boundColors.get();
-      food['acc'] =
-          (detection['confidence'].toDouble() * 100).toInt().toString();
+      // food['acc'] =
+      //     (detection['confidence'].toDouble() * 100).toInt().toString();
 
       food['rect'] = rect;
 
@@ -125,17 +121,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   Future preProcess() async {
-    return _memoizer.runOnce(() async {
-      // 음식 이미지 원본 사이즈
-      double sourceHeight = widget.predResult['image_height'].toDouble();
-      // 음식 이미지 사이즈
-      double imageHeight = MediaQuery.of(context).size.height * 0.4;
-      // 실계산을 위해 현재 사이즈와 원본 사이즈 비율 산정
-      double ratio = imageHeight / sourceHeight;
-      List foodList =
-          await getFoodInfo(widget.predResult['detection'], imageHeight, ratio);
-      return {'foodList': foodList, 'imageHeight': imageHeight};
-    });
+
+    // 음식 이미지 원본 사이즈
+    double sourceHeight = widget.predResult['image_height'].toDouble();
+    // 음식 이미지 사이즈
+    double imageHeight = MediaQuery.of(context).size.height * 0.4;
+    // 실계산을 위해 현재 사이즈와 원본 사이즈 비율 산정
+    double ratio = imageHeight / sourceHeight;
+    List foodList =
+    await getFoodInfo(widget.predResult['detection'], imageHeight, ratio);
+    return {'foodList': foodList, 'imageHeight': imageHeight};
+    // return _memoizer.runOnce(() async {
+    // });
   }
 
   @override
@@ -144,11 +141,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       future: preProcess(),
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          EasyLoading.dismiss();
+          // EasyLoading.dismiss();
           imageHeight = snapshot.data['imageHeight'];
           foodList = snapshot.data['foodList'];
         } else {
-          EasyLoading.show(status: '로딩중...');
+          // EasyLoading.show(status: '로딩중...');
         }
         return Scaffold(
           body: SafeArea(
