@@ -32,6 +32,7 @@ dependencies:
       ref: feature/#111-blur-mask-type
   adaptive_action_sheet: ^2.0.0
   marquee_widget: ^1.2.0
+  flutter_launcher_icons: ^0.10.0
 
 dev_dependencies:
   flutter_test:
