@@ -35,7 +35,6 @@ class StatisticsDataBuilder {
     List fatList = [];
     List saltList = [];
     List cholesterolList = [];
-
     for (var row in cosumeInfo) {
       // 전체 합계인 경우
       if (row['week'] == null) {
@@ -73,7 +72,6 @@ class StatisticsDataBuilder {
         nutData.add(((row['cbhydra_SUM'] ?? 0.0 / weekRowCnt) / Session.instance.dietInfo['recom_hydrate']) * 10);
         nutData.add(((row['protein_SUM'] ?? 0.0 / weekRowCnt) / Session.instance.dietInfo['recom_protein']) * 10);
         nutData.add(((row['fat_SUM'] ?? 0.0 / weekRowCnt) / Session.instance.dietInfo['recom_fat']) * 10);
-        // 나트륨, 콜레스트롤은 일단 더미
         nutData.add(((row['salt_SUM'] ?? 0.0 / weekRowCnt) /  Session.instance.dietInfo['recom_salt']) * 10);
         nutData.add((((row['cholesterol_SUM'] ?? 0.0) / weekRowCnt) / Session.instance.dietInfo['recom_cholesterol']) * 10);
         reportList.add({'week': weekStr, 'sugarData': sugarData, 'energyData': energyData, 'nutData': nutData});
@@ -92,6 +90,7 @@ class StatisticsDataBuilder {
       }
     }
 
+    print(reportList);
     return [reportList, entireSugarInfo];
   }
 

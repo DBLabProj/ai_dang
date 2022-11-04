@@ -424,12 +424,14 @@ Future change_dt(changeDt, id) async{
 // 통계페이지
 Future getConsumeInfo() async {
   var conn = await ConnHandler.instance.conn;
+  String userId = Session.instance.userInfo['email'].toString();
+
   String sql = '''
-      SELECT	concat(YEAR(M.datetime), '/', MONTH(M.datetime), '/',
+      SELECT	concat(YEAR(M.datetime), '/', LPAD(MONTH(M.datetime), '2', '0'), '/',
           (WEEK(M.datetime) - WEEK(DATE_SUB(M.datetime, INTERVAL DAYOFMONTH(M.datetime)-1 DAY)) + 1)) as week,
           date_format(M.datetime, '%Y%m%d') as date,
           sum((energy * (amount/2))) as energy_SUM, sum((carbohydrate * (amount/2))) as cbhydra_SUM,
-          sum((protein * (amount/2))) as protein_SUM, sum((fat * (amount/2))) as fat_SUM,
+          sum((protein * (amount/2))) as protein_SUM, sum((fat * (amount/2))) as fat_S00UM,
           sum((total_sugar * (amount/2))) as sugar_SUM, sum((salt * (amount/2))) as salt_SUM,
           sum((cholesterol * (amount/2))) as cholesterol_SUM
       FROM    meal M,
@@ -440,12 +442,9 @@ Future getConsumeInfo() async {
             )
           ) F INNER JOIN food_info FI
           ON	F.name = FI.food_name
-      WHERE 	M.user = 'test'
+      WHERE 	M.user = '$userId'
       GROUP BY week, date WITH ROLLUP;
   ''';
-  print(1);
-  String userId = Session.instance.userInfo['email'].toString();
   var result = await conn.query(sql);
-  print(result);
   return result;
 }
