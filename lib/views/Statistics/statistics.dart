@@ -1,14 +1,10 @@
 import 'package:ai_dang/views/Statistics/statisticsBuilder.dart';
-import 'package:ai_dang/views/home.dart';
-import 'package:ai_dang/views/predResult_back2.dart';
 import 'package:ai_dang/widgets/colors.dart';
 import 'package:ai_dang/widgets/infoWidget.dart';
 import 'package:async/async.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:multi_charts/multi_charts.dart' as multi_charts;
 import 'package:syncfusion_flutter_charts/charts.dart';
-import '../../utils/dbHandler.dart';
 import '../../utils/session.dart';
 import 'dart:math';
 
@@ -327,14 +323,14 @@ class _statisticsState extends State<statistics> with TickerProviderStateMixin {
               RichText(
                 textScaleFactor: 1.1,
                 text: TextSpan(
-                  text: '전체 섭취량 보다 ',
+                  text: '잘 했어요! 전체 섭취량 대비 ',
                   style: TextStyle(color: black, fontWeight: FontWeight.w400),
                   children: <TextSpan>[
                     TextSpan(
-                        text: '혈당을 18% 더 섭취',
+                        text: '약 5%정도 ',
                         style: TextStyle(
                             color: colorRed, fontWeight: FontWeight.w600)),
-                    const TextSpan(text: '하고 있어요.')
+                    const TextSpan(text: '혈당 섭취량이 줄었어요.')
                   ],
                 ),
               )
