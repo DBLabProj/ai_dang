@@ -1,3 +1,4 @@
+import 'package:ai_dang/utils/request.dart';
 import 'package:ai_dang/utils/session.dart';
 import 'package:ai_dang/views/account/signup.dart';
 import 'package:ai_dang/widgets/colors.dart';
@@ -25,14 +26,11 @@ class _loginPageState extends State<loginPage> {
 
   void checkUser(email, password) async {
 
-    EasyLoading.show(status: '로그인 중..');
+    // EasyLoading.show(status: '로그인 중..');
     var conn = await ConnHandler.instance.conn;
 
-    var result = await conn.query(
-        'select * from user where Email = "$email" and Password = "$password"');
-
-    // 비어있으면 true
-    if (result.isEmpty == false) {
+    var result = await checkLogin(email, password);
+    if (result['status'] == true) {
       login();
     } else {
       showErrorMessage();

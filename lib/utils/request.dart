@@ -1,4 +1,6 @@
 // 비동기 처리를
+import 'dart:convert';
+
 import 'package:ai_dang/views/predResult.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -90,4 +92,10 @@ Future sendImage(var image) async {
   } catch(e) {
     print(e);
   }
+}
+
+Future checkLogin(var id, var pw) async {
+  var url = Uri.parse('http://203.252.240.74:5000/login');
+  var response = await http.post(url, body: {'id': id, 'pw': pw});
+  return jsonDecode(response.body);
 }
