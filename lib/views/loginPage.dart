@@ -25,10 +25,7 @@ class _loginPageState extends State<loginPage> {
       MyTextField('password', Icons.vpn_key, '비밀번호', '비밀번호를 입력하세요.');
 
   void checkUser(email, password) async {
-
-    // EasyLoading.show(status: '로그인 중..');
-    var conn = await ConnHandler.instance.conn;
-
+    EasyLoading.show(status: '로그인 중..');
     var result = await checkLogin(email, password);
     if (result['status'] == true) {
       login();
