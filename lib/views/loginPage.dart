@@ -82,6 +82,13 @@ class _loginPageState extends State<loginPage> {
   }
 
   @override
+  void initState()  {
+    temp();
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double areaWidth = (MediaQuery.of(context).size.width) * 0.75;
     if (areaWidth > 300) {

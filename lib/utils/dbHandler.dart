@@ -28,7 +28,7 @@ class ConnHandler {
         db: 'ai_dang'
     );
     var conn = MySqlConnection.connect(settings);
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 2000));
     _conn = conn;
   }
 }
@@ -447,4 +447,11 @@ Future getConsumeInfo() async {
   ''';
   var result = await conn.query(sql);
   return result;
+}
+
+Future temp() async {
+  var conn = await ConnHandler.instance.conn;
+
+  String sql = 'SELECT 1';
+  await conn.query(sql);
 }
